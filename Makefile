@@ -15,7 +15,7 @@ SUB_MAKE=	make --no-print-directory -C Arcade
 CORE	=	$(SUB_MAKE) SRC_DIR=./Core/src INCLUDE_DIR=./Core/include NAME=../arcade FRIENDLY="Core"
 CENTIP	=	$(SUB_MAKE) SRC_DIR=./Games/Centipede/src INCLUDE_DIR=./Games/Centipede/include NAME=../games/lib_arcade_centipede.so FRIENDLY="Centipede"
 NIBBLER	=	$(SUB_MAKE) SRC_DIR=./Games/Nibbler/src INCLUDE_DIR=./Games/Nibbler/include NAME=../games/lib_arcade_nibbler.so FRIENDLY="Nibbler"
-NDK++	=	$(SUB_MAKE) SRC_DIR=./Graphicals/NDK++/src INCLUDE_DIR=./Graphicals/NDK++/include NAME=../lib/lib_arcade_ndk++.so FRIENDLY="NDK++"
+NCURSES	=	$(SUB_MAKE) SRC_DIR=./Graphicals/NCURSES/src INCLUDE_DIR=./Graphicals/NCURSES/include NAME=../lib/lib_arcade_ncurses.so FRIENDLY="NCURSES"
 SDL2	=	$(SUB_MAKE) SRC_DIR=./Graphicals/SDL2/src INCLUDE_DIR=./Graphicals/SDL2/include NAME=../lib/lib_arcade_sdl2.so FRIENDLY="SDL2"
 SFML	=	$(SUB_MAKE) SRC_DIR=./Graphicals/SFML/src INCLUDE_DIR=./Graphicals/SFML/include NAME=../lib/lib_arcade_sfml.so FRIENDLY="SFML"
 
@@ -35,7 +35,7 @@ games:
 			@$(NIBBLER) all
 
 graphicals:
-			@$(NDK++) all
+			@$(NCURSES) all
 			@$(SDL2) all
 			@$(SFML) all
 
@@ -43,7 +43,7 @@ clean:
 			@$(CORE) clean
 			@$(CENTIP) clean
 			@$(NIBBLER) clean
-			@$(NDK++) clean
+			@$(NCURSES) clean
 			@$(SDL2) clean
 			@$(SFML) clean
 			@$(RM) $(OBJ_UNIT)
@@ -53,7 +53,7 @@ fclean:
 			@$(CORE) fclean
 			@$(CENTIP) fclean
 			@$(NIBBLER) fclean
-			@$(NDK++) fclean
+			@$(NCURSES) fclean
 			@$(SDL2) fclean
 			@$(SFML) fclean
 			@$(RM) $(OBJ_UNIT)

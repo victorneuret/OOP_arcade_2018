@@ -19,7 +19,7 @@ add_library(
 )
 
 add_library(
-        lib_arcade_ndk++
+        lib_arcade_ncurses
         SHARED
         Arcade/Games/Centipede/src/Main.cpp
 )
