@@ -1,0 +1,12 @@
+*
+
+!*/
+!*.cpp
+!*.hpp
+!SubMake
+!Makefile
+!.gitignore
+!CMakeLists.txt
+!README.md
+
+cmake-*
