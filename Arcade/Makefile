@@ -11,8 +11,9 @@ RM		=	rm -f
 
 SRC		=	$(shell find $(SRC_DIR) -name "*.cpp")
 OBJ		=	$(SRC:.cpp=.o)
+CMN_DIR	=	./Common/include
 
-CPPFLAGS=	-I $(INCLUDE_DIR) -W -Wall -Wextra -Weffc++ -std=gnu++17
+CPPFLAGS=	-I $(CMN_DIR) -I $(INCLUDE_DIR) -W -Wall -Wextra -Weffc++ -std=gnu++17
 
 %.o:		%.cpp
 			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
