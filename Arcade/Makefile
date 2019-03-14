@@ -9,11 +9,11 @@ SHELL	=	/bin/sh
 CXX		=	g++
 RM		=	rm -f
 
-SRC		=	$(shell find $(SRC_DIR) -name "*.cpp")
+CMN_DIR	=	./Common
+SRC		=	$(shell find $(SRC_DIR) -name "*.cpp") $(shell find $(CMN_DIR)/src -name "*.cpp")
 OBJ		=	$(SRC:.cpp=.o)
-CMN_DIR	=	./Common/include
 
-CPPFLAGS=	-I $(CMN_DIR) -I $(INCLUDE_DIR) -W -Wall -Wextra -Weffc++ -std=gnu++17
+CPPFLAGS=	-I $(CMN_DIR)/include -I $(INCLUDE_DIR) -W -Wall -Wextra -Weffc++ -std=gnu++17
 
 %.o:		%.cpp
 			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
