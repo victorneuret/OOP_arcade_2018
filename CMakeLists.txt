@@ -37,7 +37,7 @@ add_library(
 add_library(
         lib_arcade_ncurses
         SHARED
-        Arcade/Games/Centipede/src/Main.cpp
+        Arcade/Graphicals/NCURSES/src/Main.cpp
         Arcade/Common/include/Math/Rect.hpp
         Arcade/Common/include/Math/Vector.hpp
         Arcade/Common/include/IGame.hpp
@@ -52,7 +52,7 @@ add_library(
 add_library(
         lib_arcade_sdl2
         SHARED
-        Arcade/Games/Centipede/src/Main.cpp
+        Arcade/Graphicals/SDL2/src/Main.cpp
         Arcade/Common/include/Math/Rect.hpp
         Arcade/Common/include/Math/Vector.hpp
         Arcade/Common/include/IGame.hpp
@@ -67,7 +67,7 @@ add_library(
 add_library(
         lib_arcade_sfml
         SHARED
-        Arcade/Games/Centipede/src/Main.cpp
+        Arcade/Graphicals/SFML/src/Main.cpp
         Arcade/Common/include/Math/Rect.hpp
         Arcade/Common/include/Math/Vector.hpp
         Arcade/Common/include/IGame.hpp
