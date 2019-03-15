@@ -91,7 +91,7 @@ add_executable(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-)
+        Arcade/Core/src/Core.cpp Arcade/Core/include/Core.hpp)
 
 include_directories(Arcade/Common)
 
@@ -101,3 +101,5 @@ target_include_directories(lib_arcade_sdl2      PUBLIC Arcade/Graphicals/SDL2/in
 target_include_directories(lib_arcade_ncurses   PUBLIC Arcade/Games/NCURSES/include)
 target_include_directories(lib_arcade_nibbler   PUBLIC Arcade/Games/Nibbler/include)
 target_include_directories(lib_arcade_centipede PUBLIC Arcade/Games/Centipede/include)
+
+target_link_libraries(arcade dl stdc++fs)
