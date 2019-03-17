@@ -47,6 +47,7 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
 )
 
 add_library(
@@ -62,6 +63,8 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
+
 )
 
 add_library(
@@ -77,6 +80,8 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
+
 )
 
 add_executable(
@@ -91,6 +96,7 @@ add_executable(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
 )
 
 include_directories(Arcade/Common)
