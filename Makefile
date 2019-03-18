@@ -101,7 +101,7 @@ re:			fclean all
 tests_run:	LDFLAGS		+=	-lsfml-graphics -lsfml-window -lsfml-system		\
 							-llSDL -lncurses								\
 							-lcriterion --coverage
-tests_run:	CPPFLAGS	+= --coverage
+tests_run:	CPPFLAGS	+=	--coverage
 tests_run:	fclean $(OBJ_UNIT)
 			$(CXX) -o tests_run $(OBJ_UNIT) $(LDFLAGS)
 			@./tests_run --verbose -j1
