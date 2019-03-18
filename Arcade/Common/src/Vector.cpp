@@ -5,6 +5,7 @@
 ** Vector.cpp
 */
 
+#include <stdexcept>
 #include "Math/Vector.hpp"
 
 Vector::Vector(double x, double y) noexcept
@@ -53,8 +54,10 @@ Vector &Vector::operator*=(const double &val) noexcept
     return *this;
 }
 
-Vector &Vector::operator/=(const Vector &vec) noexcept
+Vector &Vector::operator/=(const Vector &vec)
 {
+    if (vec.x == 0 || vec.y == 0)
+        throw std::runtime_error("Division by 0");
     x /= vec.x;
     y /= vec.y;
     return *this;
@@ -62,6 +65,8 @@ Vector &Vector::operator/=(const Vector &vec) noexcept
 
 Vector &Vector::operator/=(const double &val) noexcept
 {
+    if (val == 0)
+        throw std::runtime_error("Division by 0");
     x /= val;
     y /= val;
     return *this;
@@ -99,11 +104,15 @@ Vector Vector::operator*(const double &val) const noexcept
 
 Vector Vector::operator/(const Vector &vec) const noexcept
 {
+    if (vec.x == 0 || vec.y == 0)
+        throw std::runtime_error("Division by 0");
     return Vector(x / vec.x, y / vec.y);
 }
 
 Vector Vector::operator/(const double &val) const noexcept
 {
+    if (val == 0)
+        throw std::runtime_error("Division by 0");
     return Vector(x / val, y / val);
 }
 
