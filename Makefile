@@ -14,6 +14,7 @@ FRIENDLY=	"Unit Tests"
 SUB_MAKE=	make --no-print-directory -C Arcade
 CORE	=	$(SUB_MAKE) SRC_DIR=./Core/src INCLUDE_DIR=./Core/include NAME=../arcade FRIENDLY="Core"
 CENTIP	=	$(SUB_MAKE) SRC_DIR=./Games/Centipede/src INCLUDE_DIR=./Games/Centipede/include NAME=../games/lib_arcade_centipede.so FRIENDLY="Centipede"
+MENU	=	$(SUB_MAKE) SRC_DIR=./Games/MainMenu/src INCLUDE_DIR=./Games/MainMenu/include NAME=../games/lib_arcade_main_menu.so FRIENDLY="MainMenu"
 NIBBLER	=	$(SUB_MAKE) SRC_DIR=./Games/Nibbler/src INCLUDE_DIR=./Games/Nibbler/include NAME=../games/lib_arcade_nibbler.so FRIENDLY="Nibbler"
 NCURSES	=	$(SUB_MAKE) SRC_DIR=./Graphicals/NCURSES/src INCLUDE_DIR=./Graphicals/NCURSES/include NAME=../lib/lib_arcade_ncurses.so FRIENDLY="NCURSES"
 SDL2	=	$(SUB_MAKE) SRC_DIR=./Graphicals/SDL2/src INCLUDE_DIR=./Graphicals/SDL2/include NAME=../lib/lib_arcade_sdl2.so FRIENDLY="SDL2"
@@ -31,6 +32,7 @@ core:
 			@$(CORE) all
 
 games:
+			@$(MENU) all
 			@$(CENTIP) all
 			@$(NIBBLER) all
 
@@ -41,6 +43,7 @@ graphicals:
 
 clean:
 			@$(CORE) clean
+			@$(MENU) clean
 			@$(CENTIP) clean
 			@$(NIBBLER) clean
 			@$(NCURSES) clean
@@ -51,6 +54,7 @@ clean:
 
 fclean:
 			@$(CORE) fclean
+			@$(MENU) fclean
 			@$(CENTIP) fclean
 			@$(NIBBLER) fclean
 			@$(NCURSES) fclean

@@ -5,6 +5,21 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -Weffc++")
 
 add_library(
+        lib_arcade_main_menu
+        SHARED
+        Arcade/Games/MainMenu/src/Main.cpp
+        Arcade/Common/include/Math/Rect.hpp
+        Arcade/Common/include/Math/Vector.hpp
+        Arcade/Common/include/IGame.hpp
+        Arcade/Common/include/IGraphicalLib.hpp
+        Arcade/Common/include/IRenderer.hpp
+        Arcade/Common/include/Graphical/ITexture.hpp
+        Arcade/Common/include/Graphical/ISprite.hpp
+        Arcade/Common/include/Graphical/Color.hpp
+        Arcade/Common/include/ISoundPlayer.hpp
+)
+
+add_library(
         lib_arcade_centipede
         SHARED
         Arcade/Games/Centipede/src/Main.cpp
