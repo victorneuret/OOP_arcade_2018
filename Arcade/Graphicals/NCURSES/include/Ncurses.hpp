@@ -10,7 +10,7 @@
 #include "IGraphicalLib.hpp"
 #include "NcursesRenderer.hpp"
 
-class Ncurses : public IGraphicLib {
+class Ncurses final : public IGraphicLib {
 public:
     Ncurses() = default;
     ~Ncurses() override = default;

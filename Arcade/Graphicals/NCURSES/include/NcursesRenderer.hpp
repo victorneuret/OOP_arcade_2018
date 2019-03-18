@@ -14,7 +14,7 @@
 #include "Graphical/Color.hpp"
 #include "IRenderer.hpp"
 
-class NcursesRenderer : public virtual IRenderer {
+class NcursesRenderer : public IRenderer {
 public:
     NcursesRenderer();
     ~NcursesRenderer() override;

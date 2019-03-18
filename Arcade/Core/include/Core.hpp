@@ -17,14 +17,14 @@ class Core {
 public:
 
     enum EXT_TYPE {
-        LIBRARY,
+        GRAPHICAL,
         GAME
     };
 
     explicit Core(const std::string &);
     ~Core();
 
-    void loadLibrary(const std::string &);
+    void loadGraphical(const std::string &);
     void loadGame(const std::string &);
     void addExtension(const std::string &, EXT_TYPE) noexcept;
     void loadDirectory(const std::string &) noexcept;

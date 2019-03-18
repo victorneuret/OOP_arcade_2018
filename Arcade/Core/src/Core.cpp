@@ -18,8 +18,8 @@
 Core::Core(const std::string &path)
     : _libs(), _games()
 {
-    addExtension(path, LIBRARY);
-    loadLibrary(_libs[0]);
+    addExtension(path, GRAPHICAL);
+    loadGraphical(_libs[0]);
 }
 
 Core::~Core()
@@ -34,14 +34,14 @@ void Core::addExtension(const std::string &path, EXT_TYPE type) noexcept
 {
     std::string absPath = std::regex_replace(std::filesystem::absolute(path).string(), std::regex("\\/\\.\\/"), "/");
 
-    if (type == LIBRARY && std::find(_libs.begin(), _libs.end(), absPath) == _libs.end()) {
+    if (type == GRAPHICAL && std::find(_libs.begin(), _libs.end(), absPath) == _libs.end()) {
         _libs.push_back(absPath);
     } else if (type == GAME && std::find(_games.begin(), _games.end(), absPath) == _games.end()) {
         _games.push_back(absPath);
     }
 }
 
-void Core::loadLibrary(const std::string &path)
+void Core::loadGraphical(const std::string &path)
 {
     if (_dl_lib.second)
         dlclose(_dl_lib.second);
@@ -61,14 +61,14 @@ void Core::loadGame(const std::string &path)
 
 void Core::loadNext(EXT_TYPE type) noexcept
 {
-    if (type == LIBRARY && _libs.size() > 1) {
+    if (type == GRAPHICAL && _libs.size() > 1) {
         const auto it = std::find(_libs.begin(), _libs.end(), _dl_lib.first);
         if (it == _libs.end())
-           loadLibrary(*_libs.begin());
+           loadGraphical(*_libs.begin());
         else if (it + 1 == _libs.end())
-            loadLibrary(*_libs.begin());
+            loadGraphical(*_libs.begin());
         else
-            loadLibrary(*(it + 1));
+            loadGraphical(*(it + 1));
     } else if (type == GAME && _games.size() > 1) {
         const auto it = std::find(_games.begin(), _games.end(), _dl_game.first);
         if (it == _games.end())
@@ -82,14 +82,14 @@ void Core::loadNext(EXT_TYPE type) noexcept
 
 void Core::loadPrev(EXT_TYPE type) noexcept
 {
-    if (type == LIBRARY && _libs.size() > 1) {
+    if (type == GRAPHICAL && _libs.size() > 1) {
         const auto it = std::find(_libs.begin(), _libs.end(), _dl_lib.first);
         if (it == _libs.end())
-            loadLibrary(*_libs.begin());
+            loadGraphical(*_libs.begin());
         else if (it == _libs.begin())
-            loadLibrary(*(_libs.end() - 1));
+            loadGraphical(*(_libs.end() - 1));
         else
-            loadLibrary(*(it - 1));
+            loadGraphical(*(it - 1));
     } else if (type == GAME && _games.size() > 1) {
         const auto it = std::find(_games.begin(), _games.end(), _dl_game.first);
         if (it == _games.end())
@@ -108,7 +108,7 @@ void Core::loadDirectory(const std::string &path) noexcept
     for (const auto &f: std::filesystem::directory_iterator(path)) {
         if (std::regex_match(f.path().string(), rgx)) {
             if (path == LIB_PATH)
-                addExtension(f.path().string(), LIBRARY);
+                addExtension(f.path().string(), GRAPHICAL);
             else if (path == GAME_PATH)
                 addExtension(f.path().string(), GAME);
         }
