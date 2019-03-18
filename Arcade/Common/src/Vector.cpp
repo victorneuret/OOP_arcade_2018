@@ -63,7 +63,7 @@ Vector &Vector::operator/=(const Vector &vec)
     return *this;
 }
 
-Vector &Vector::operator/=(const double &val) noexcept
+Vector &Vector::operator/=(const double &val)
 {
     if (val == 0)
         throw std::runtime_error("Division by 0");
@@ -102,14 +102,14 @@ Vector Vector::operator*(const double &val) const noexcept
     return Vector(x * val, y * val);
 }
 
-Vector Vector::operator/(const Vector &vec) const noexcept
+Vector Vector::operator/(const Vector &vec) const
 {
     if (vec.x == 0 || vec.y == 0)
         throw std::runtime_error("Division by 0");
     return Vector(x / vec.x, y / vec.y);
 }
 
-Vector Vector::operator/(const double &val) const noexcept
+Vector Vector::operator/(const double &val) const
 {
     if (val == 0)
         throw std::runtime_error("Division by 0");
