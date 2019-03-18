@@ -47,6 +47,10 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Graphicals/NCURSES/src/Ncurses.cpp
+        Arcade/Graphicals/NCURSES/include/Ncurses.hpp
+        Arcade/Graphicals/NCURSES/src/NcursesRenderer.cpp
+        Arcade/Graphicals/NCURSES/include/NcursesRenderer.hpp
 )
 
 add_library(
@@ -91,14 +95,16 @@ add_executable(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-        Arcade/Core/src/Core.cpp Arcade/Core/include/Core.hpp)
+        Arcade/Core/src/Core.cpp
+        Arcade/Core/include/Core.hpp
+)
 
-include_directories(Arcade/Common)
+include_directories(Arcade/Common/include)
 
 target_include_directories(arcade               PUBLIC Arcade/Core/include)
 target_include_directories(lib_arcade_sfml      PUBLIC Arcade/Graphicals/SFML/include)
 target_include_directories(lib_arcade_sdl2      PUBLIC Arcade/Graphicals/SDL2/include)
-target_include_directories(lib_arcade_ncurses   PUBLIC Arcade/Games/NCURSES/include)
+target_include_directories(lib_arcade_ncurses   PUBLIC Arcade/Graphicals/NCURSES/include)
 target_include_directories(lib_arcade_nibbler   PUBLIC Arcade/Games/Nibbler/include)
 target_include_directories(lib_arcade_centipede PUBLIC Arcade/Games/Centipede/include)
 

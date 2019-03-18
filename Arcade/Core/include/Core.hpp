@@ -24,19 +24,12 @@ public:
     explicit Core(const std::string &);
     ~Core();
 
-    const std::string &getLib() const noexcept {
-        return _dl_lib.first;
-    };
-
-    const std::string &getGame() const noexcept {
-        return _dl_game.first;
-    };
-
     void loadLibrary(const std::string &);
     void loadGame(const std::string &);
-    void loadDirectory(const std::string &);
-    void loadNext(EXT_TYPE type);
-    void loadPrev(EXT_TYPE type);
+    void addExtension(const std::string &, EXT_TYPE) noexcept;
+    void loadDirectory(const std::string &) noexcept;
+    void loadNext(EXT_TYPE) noexcept;
+    void loadPrev(EXT_TYPE) noexcept;
 
 private:
     std::pair<std::string, void *> _dl_lib = {"", nullptr};

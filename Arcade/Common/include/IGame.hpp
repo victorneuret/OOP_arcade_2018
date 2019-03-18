@@ -9,7 +9,6 @@
 
 class IGame {
 public:
-	IGame();
 	virtual ~IGame() = default;
 
 	virtual bool tick() = 0;
