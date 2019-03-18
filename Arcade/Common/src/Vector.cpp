@@ -5,8 +5,6 @@
 ** Vector.cpp
 */
 
-#include <cstdint>
-
 #include "include/Math/Vector.hpp"
 
 

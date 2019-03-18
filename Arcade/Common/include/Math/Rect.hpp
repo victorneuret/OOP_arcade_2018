@@ -17,6 +17,6 @@ struct Rect {
     Rect(double x, double y, double w, double h) noexcept;
     ~Rect() = default;
 
-    Vector &getPosition() const noexcept;
-    Vector &getSize() const noexcept;
+    Vector &getPosition() noexcept;
+    Vector &getSize() noexcept;
 };
