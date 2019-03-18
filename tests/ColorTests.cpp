@@ -6,8 +6,9 @@
 */
 
 #include <criterion/criterion.h>
+#include <iostream>
 
-#include "include/Graphical/Color.hpp"
+#include "Graphical/Color.hpp"
 
 Test(Color, contructor)
 {
@@ -17,4 +18,11 @@ Test(Color, contructor)
     cr_assert_eq(color1.g, 75);
     cr_assert_eq(color1.b, 25);
     cr_assert_eq(color1.a, 255);
+}
+
+Test(Color, getter)
+{
+    Color color(0xf5, 0xe5, 0xa4);
+
+    cr_assert_eq(0xf5e5a4ff, color.getValue());
 }

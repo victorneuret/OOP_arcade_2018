@@ -16,5 +16,5 @@ Color::Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a) noexcept
 
 uint32_t Color::getValue() const noexcept
 {
-    return (a << 24) | (b << 16) | (g << 8) | (r);
+    return (r << 24) | (g << 16) | (b << 8) | (a);
 }
