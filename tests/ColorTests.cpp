@@ -2,11 +2,10 @@
 ** EPITECH PROJECT, 2018
 ** arcade
 ** File description:
-** Color-test.c
+** ColorTest
 */
 
 #include <criterion/criterion.h>
-#include <iostream>
 
 #include "Graphical/Color.hpp"
 
