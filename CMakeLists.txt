@@ -17,6 +17,7 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
         Arcade/Common/src/Vector.cpp
         Arcade/Common/src/Rect.cpp
 )
@@ -34,6 +35,7 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
         Arcade/Common/src/Vector.cpp
         Arcade/Common/src/Rect.cpp
 )
@@ -109,7 +111,7 @@ add_executable(
         Arcade/Common/src/Rect.cpp
 )
 
-include_directories(Arcade/Common)
+include_directories(Arcade/Common/include)
 
 target_include_directories(arcade               PUBLIC Arcade/Core/include)
 target_include_directories(lib_arcade_sfml      PUBLIC Arcade/Graphicals/SFML/include)

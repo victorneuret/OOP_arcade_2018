@@ -5,8 +5,7 @@
 ** Vector.cpp
 */
 
-#include "include/Math/Vector.hpp"
-
+#include "Math/Vector.hpp"
 
 Vector::Vector(double x, double y) noexcept
         : x(x), y(y)

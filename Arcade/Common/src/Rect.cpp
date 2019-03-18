@@ -5,7 +5,7 @@
 ** Rect.cpp
 */
 
-#include "include/Math/Rect.hpp"
+#include "Math/Rect.hpp"
 
 Rect::Rect(const Vector &pos, const Vector &size) noexcept
     : pos(pos), size(size)
