@@ -17,7 +17,7 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-)
+        Arcade/Common/src/Vector.cpp)
 
 add_library(
         lib_arcade_nibbler
@@ -32,7 +32,7 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-)
+        Arcade/Common/src/Vector.cpp)
 
 add_library(
         lib_arcade_ncurses
@@ -48,7 +48,7 @@ add_library(
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Color.cpp
-)
+        Arcade/Common/src/Vector.cpp)
 
 add_library(
         lib_arcade_sdl2
@@ -65,7 +65,7 @@ add_library(
         Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Color.cpp
 
-)
+        Arcade/Common/src/Vector.cpp)
 
 add_library(
         lib_arcade_sfml
@@ -82,7 +82,7 @@ add_library(
         Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Color.cpp
 
-)
+        Arcade/Common/src/Vector.cpp)
 
 add_executable(
         arcade
@@ -97,7 +97,7 @@ add_executable(
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Color.cpp
-)
+        Arcade/Common/src/Vector.cpp)
 
 include_directories(Arcade/Common)
 
