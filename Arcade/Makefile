@@ -13,7 +13,7 @@ CMN_DIR	=	./Common
 SRC		=	$(shell find $(SRC_DIR) -name "*.cpp") $(shell find $(CMN_DIR)/src -name "*.cpp")
 OBJ		=	$(SRC:.cpp=.o)
 
-CXXFLAGS=	-std=gnu++17 -fPIC
+CXXFLAGS=	-std=c++17 -fPIC
 CPPFLAGS=	-I $(CMN_DIR)/include -I $(INCLUDE_DIR) -W -Wall -Wextra -Weffc++
 
 %.o:		%.cpp
@@ -24,7 +24,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			@printf "%12s: Linking %s\n\n" $(FRIENDLY) $(NAME)
-			@$(CXX) -shared -o $(NAME) $(OBJ)
+			@$(CXX) -shared -o $(NAME) $(OBJ) $(LDFLAGS)
 
 clean:
 			@$(RM) $(OBJ)
