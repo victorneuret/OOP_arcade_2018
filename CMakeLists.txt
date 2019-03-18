@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 project(arcade)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -Weffc++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W -Wall -Wextra -Weffc++ -fPIC")
 
 add_library(
         _arcade_main_menu
@@ -32,6 +32,9 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
+        Arcade/Common/src/Vector.cpp
+        Arcade/Common/src/Rect.cpp
 )
 
 add_library(
@@ -47,6 +50,9 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
+        Arcade/Common/src/Vector.cpp
+        Arcade/Common/src/Rect.cpp
 )
 
 add_library(
@@ -62,6 +68,9 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
+        Arcade/Common/src/Vector.cpp
+        Arcade/Common/src/Rect.cpp
 )
 
 add_library(
@@ -77,6 +86,9 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
+        Arcade/Common/src/Vector.cpp
+        Arcade/Common/src/Rect.cpp
 )
 
 add_library(
@@ -92,6 +104,9 @@ add_library(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
+        Arcade/Common/src/Vector.cpp
+        Arcade/Common/src/Rect.cpp
 )
 
 add_executable(
@@ -106,9 +121,12 @@ add_executable(
         Arcade/Common/include/Graphical/ISprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Color.cpp
+        Arcade/Common/src/Vector.cpp
+        Arcade/Common/src/Rect.cpp
 )
 
-include_directories(Arcade/Common)
+include_directories(Arcade/Common/include)
 
 target_include_directories(arcade            PUBLIC Arcade/Core/include)
 target_include_directories(_arcade_sfml      PUBLIC Arcade/Graphicals/SFML/include)
