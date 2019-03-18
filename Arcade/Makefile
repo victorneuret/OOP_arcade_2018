@@ -13,7 +13,7 @@ CMN_DIR	=	./Common
 SRC		=	$(shell find $(SRC_DIR) -name "*.cpp") $(shell find $(CMN_DIR)/src -name "*.cpp")
 OBJ		=	$(SRC:.cpp=.o)
 
-CXXFLAGS=	-std=c++17
+CXXFLAGS=	-std=c++17 -fPIC
 CPPFLAGS=	-I $(CMN_DIR)/include -I $(INCLUDE_DIR) -W -Wall -Wextra -Weffc++
 
 %.o:		%.cpp
