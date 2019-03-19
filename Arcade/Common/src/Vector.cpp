@@ -8,53 +8,53 @@
 #include <stdexcept>
 #include "Math/Vector.hpp"
 
-Vector::Vector(double x, double y) noexcept
-        : x(x), y(y)
+Arcade::Vector::Vector(double x, double y) noexcept
+    : x(x), y(y)
 {}
 
-Vector &Vector::operator+=(const Vector &vec) noexcept
+Arcade::Vector &Arcade::Vector::operator+=(const Vector &vec) noexcept
 {
     x += vec.x;
     y += vec.y;
     return *this;
 }
 
-Vector &Vector::operator+=(const double &val) noexcept
+Arcade::Vector &Arcade::Vector::operator+=(const double &val) noexcept
 {
     x += val;
     y += val;
     return *this;
 }
 
-Vector &Vector::operator-=(const Vector &vec) noexcept
+Arcade::Vector &Arcade::Vector::operator-=(const Vector &vec) noexcept
 {
     x -= vec.x;
     y -= vec.y;
     return *this;
 }
 
-Vector &Vector::operator-=(const double &val) noexcept
+Arcade::Vector &Arcade::Vector::operator-=(const double &val) noexcept
 {
     x -= val;
     y -= val;
     return *this;
 }
 
-Vector &Vector::operator*=(const Vector &vec) noexcept
+Arcade::Vector &Arcade::Vector::operator*=(const Vector &vec) noexcept
 {
     x *= vec.x;
     y *= vec.y;
     return *this;
 }
 
-Vector &Vector::operator*=(const double &val) noexcept
+Arcade::Vector &Arcade::Vector::operator*=(const double &val) noexcept
 {
     x *= val;
     y *= val;
     return *this;
 }
 
-Vector &Vector::operator/=(const Vector &vec)
+Arcade::Vector &Arcade::Vector::operator/=(const Vector &vec)
 {
     if (vec.x == 0 || vec.y == 0)
         throw std::runtime_error("Division by 0");
@@ -63,7 +63,7 @@ Vector &Vector::operator/=(const Vector &vec)
     return *this;
 }
 
-Vector &Vector::operator/=(const double &val)
+Arcade::Vector &Arcade::Vector::operator/=(const double &val)
 {
     if (val == 0)
         throw std::runtime_error("Division by 0");
@@ -72,70 +72,70 @@ Vector &Vector::operator/=(const double &val)
     return *this;
 }
 
-Vector Vector::operator+(const Vector &vec) const noexcept
+Arcade::Vector Arcade::Vector::operator+(const Vector &vec) const noexcept
 {
     return Vector(x + vec.x, y + vec.y);
 }
 
-Vector Vector::operator+(const double &val) const noexcept
+Arcade::Vector Arcade::Vector::operator+(const double &val) const noexcept
 {
     return Vector(x + val, y + val);
 }
 
-Vector Vector::operator-(const Vector &vec) const noexcept
+Arcade::Vector Arcade::Vector::operator-(const Vector &vec) const noexcept
 {
     return Vector(x - vec.x, y - vec.y);
 }
 
-Vector Vector::operator-(const double &val) const noexcept
+Arcade::Vector Arcade::Vector::operator-(const double &val) const noexcept
 {
     return Vector(x - val, y - val);
 }
 
-Vector Vector::operator*(const Vector &vec) const noexcept
+Arcade::Vector Arcade::Vector::operator*(const Vector &vec) const noexcept
 {
     return Vector(x * vec.x, y * vec.y);
 }
 
-Vector Vector::operator*(const double &val) const noexcept
+Arcade::Vector Arcade::Vector::operator*(const double &val) const noexcept
 {
     return Vector(x * val, y * val);
 }
 
-Vector Vector::operator/(const Vector &vec) const
+Arcade::Vector Arcade::Vector::operator/(const Vector &vec) const
 {
     if (vec.x == 0 || vec.y == 0)
         throw std::runtime_error("Division by 0");
     return Vector(x / vec.x, y / vec.y);
 }
 
-Vector Vector::operator/(const double &val) const
+Arcade::Vector Arcade::Vector::operator/(const double &val) const
 {
     if (val == 0)
         throw std::runtime_error("Division by 0");
     return Vector(x / val, y / val);
 }
 
-Vector &Vector::operator=(const Vector &vec) noexcept
+Arcade::Vector &Arcade::Vector::operator=(const Vector &vec) noexcept
 {
     x = vec.x;
     y = vec.y;
     return *this;
 }
 
-Vector &Vector::operator=(const double &val) noexcept
+Arcade::Vector &Arcade::Vector::operator=(const double &val) noexcept
 {
     x = val;
     y = val;
     return *this;
 }
 
-bool Vector::operator==(const Vector &vec) const noexcept
+bool Arcade::Vector::operator==(const Vector &vec) const noexcept
 {
     return (x == vec.x && y == vec.y);
 }
 
-bool Vector::operator!=(const Vector &vec) const noexcept
+bool Arcade::Vector::operator!=(const Vector &vec) const noexcept
 {
     return (x != vec.x || y != vec.y);
 }
