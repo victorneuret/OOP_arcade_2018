@@ -6,6 +6,7 @@
 */
 
 #include <stdexcept>
+
 #include "Math/Vector.hpp"
 
 Arcade::Vector::Vector(double x, double y) noexcept
