@@ -11,7 +11,7 @@
 
 Test(Vector, constructor)
 {
-    Vector vect(12, 64);
+    Arcade::Vector vect(12, 64);
 
     cr_assert_eq(vect.x, 12);
     cr_assert_eq(vect.y, 64);
@@ -19,8 +19,8 @@ Test(Vector, constructor)
 
 Test(Vector, OpreratorAddEqual)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     one += two;
     two += 2;
@@ -32,8 +32,8 @@ Test(Vector, OpreratorAddEqual)
 
 Test(Vector, OperatorMinusEqual)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     two -= one;
     one -= 1;
@@ -45,8 +45,8 @@ Test(Vector, OperatorMinusEqual)
 
 Test(Vector, OpreratorMultEqual)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     one *= two;
     two *= 2;
@@ -58,8 +58,8 @@ Test(Vector, OpreratorMultEqual)
 
 Test(Vector, OpreratorDivEqual)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     two /= one;
     one /= 2;
@@ -71,8 +71,8 @@ Test(Vector, OpreratorDivEqual)
 
 Test(Vector, OpreratorAdd)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     one = one + two;
     two = two + 2;
@@ -84,8 +84,8 @@ Test(Vector, OpreratorAdd)
 
 Test(Vector, OperatorMinus)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     two = two - one;
     one = one - 1;
@@ -97,8 +97,8 @@ Test(Vector, OperatorMinus)
 
 Test(Vector, OpreratorMult)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     one = one * two;
     two = two * 2;
@@ -110,8 +110,8 @@ Test(Vector, OpreratorMult)
 
 Test(Vector, OpreratorDiv)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     two = two / one;
     one = one / 2;
@@ -123,8 +123,8 @@ Test(Vector, OpreratorDiv)
 
 Test(Vector, OpreratorEqual)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     one = two;
     two = 2;
@@ -136,8 +136,8 @@ Test(Vector, OpreratorEqual)
 
 Test(Vector, OpreratorIsEqual)
 {
-    Vector one(1, 2);
-    Vector two(3, 4);
+    Arcade::Vector one(1, 2);
+    Arcade::Vector two(3, 4);
 
     cr_assert_eq(true, one == one);
     cr_assert_eq(false, one == two);

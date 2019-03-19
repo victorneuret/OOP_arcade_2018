@@ -11,7 +11,7 @@
 
 Test(Color, contructor)
 {
-    Color color1(125, 75, 25);
+    Arcade::Color color1(125, 75, 25);
 
     cr_assert_eq(color1.r, 125);
     cr_assert_eq(color1.g, 75);
@@ -21,7 +21,7 @@ Test(Color, contructor)
 
 Test(Color, getter)
 {
-    Color color(0xf5, 0xe5, 0xa4);
+    Arcade::Color color(0xf5, 0xe5, 0xa4);
 
     cr_assert_eq(0xf5e5a4ff, color.getValue());
 }
