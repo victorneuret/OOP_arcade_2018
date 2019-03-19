@@ -61,6 +61,10 @@ OBJ_UNIT=	$(SRC_UNIT:.cpp=.o)
 CXXFLAGS=	-std=c++17 -fPIC
 CPPFLAGS=	-Iinclude -I $(CMN_DIR)/include -W -Wall -Wextra -Weffc++
 
+ifeq ($(DEBUG), 1)
+	CXXFLAGS	+=	-g3 -DDEBUG=1
+endif
+
 all:		core games graphicals
 
 %.o:		%.cpp
