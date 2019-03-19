@@ -7,12 +7,14 @@
 
 #pragma once
 
-class IGame {
-public:
-	IGame();
-	virtual ~IGame() = default;
+namespace Arcade {
+    class IGame {
+    public:
+        IGame();
+        virtual ~IGame() = default;
 
-	virtual bool tick() = 0;
-	virtual bool render() = 0;
-	virtual bool isCloseRequested() const noexcept = 0;
-};
+        virtual bool tick() = 0;
+        virtual bool render() = 0;
+        virtual bool isCloseRequested() const noexcept = 0;
+    };
+}

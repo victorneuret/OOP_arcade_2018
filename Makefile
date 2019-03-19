@@ -50,24 +50,35 @@ SFML	=	$(SUB_MAKE) SRC_DIR=./Graphicals/SFML/src				\
 						NAME=../lib/lib_arcade_sfml.so 				\
 						FRIENDLY="SFML"
 
+CMN_DIR	=	./Arcade/Common
+CMN_SRC	=	$(shell find $(CMN_DIR)/src -name "*.cpp")
+CMN_OBJ	=	$(CMN_SRC:.cpp=.o)
+
 SRC_UNIT=	$(shell find tests -name "*.cpp" 2> /dev/null) 			\
 			$(shell find src -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)
 OBJ_UNIT=	$(SRC_UNIT:.cpp=.o)
 
-CXXFLAGS=	-std=c++17
-CPPFLAGS=	-Iinclude -W -Wall -Wextra -Weffc++
+CXXFLAGS=	-std=c++17 -fPIC
+CPPFLAGS=	-Iinclude -I $(CMN_DIR)/include -W -Wall -Wextra -Weffc++
 
 all:		core games graphicals
 
-core:
+%.o:		%.cpp
+			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
+			@$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
+
+common:		FRIENDLY="Common"
+common:		$(CMN_OBJ)
+
+core:		common
 			@$(CORE) all
 
-games:
+games:		common
 			@$(MENU) all
 			@$(CENTIP) all
 			@$(NIBBLER) all
 
-graphicals:
+graphicals:	common
 			@$(NCURSES) all
 			@$(SDL2) all
 			@$(SFML) all
@@ -91,7 +102,7 @@ fclean:
 			@$(NCURSES) fclean
 			@$(SDL2) fclean
 			@$(SFML) fclean
-			@$(RM) $(OBJ_UNIT)
+			@$(RM) $(OBJ_UNIT) $(CMN_OBJ)
 			@$(RM) tests_run
 			@printf "%12s: Removed object files\n" $(FRIENDLY)
 			@printf "%12s: Removed unit tests target\n\n" $(FRIENDLY)
