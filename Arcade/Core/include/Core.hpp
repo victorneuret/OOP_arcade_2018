@@ -12,6 +12,7 @@
 
 constexpr const char * const LIB_PATH = "./lib";
 constexpr const char * const GAME_PATH = "./games";
+constexpr const char * const MAIN_MENU_NAME = "lib_arcade_main_menu.so";
 
 class Core {
 public:
@@ -37,4 +38,3 @@ private:
     std::vector<std::string> _libs;
     std::vector<std::string> _games;
 };
-

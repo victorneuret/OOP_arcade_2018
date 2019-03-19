@@ -18,8 +18,10 @@
 Core::Core(const std::string &path)
     : _libs(), _games()
 {
+    //addExtension(std::string(GAME_PATH) + MAIN_MENU_NAME, GAME);
     addExtension(path, GRAPHICAL);
     loadGraphical(_libs[0]);
+    //loadGame(_games[0]);
 }
 
 Core::~Core()
@@ -47,7 +49,7 @@ void Core::loadGraphical(const std::string &path)
         dlclose(_dl_lib.second);
     _dl_lib = {path, dlopen(path.c_str(), RTLD_LAZY)};
     if (!_dl_lib.second)
-        throw std::runtime_error("Failed to load library " + path);
+        throw std::runtime_error(dlerror());
 }
 
 void Core::loadGame(const std::string &path)
@@ -56,7 +58,7 @@ void Core::loadGame(const std::string &path)
         dlclose(_dl_game.second);
     _dl_game = {path, dlopen(path.c_str(), RTLD_LAZY)};
     if (!_dl_game.second)
-        throw std::runtime_error("Failed to load game " + path);
+        throw std::runtime_error(dlerror());
 }
 
 void Core::loadNext(EXT_TYPE type) noexcept
