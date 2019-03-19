@@ -18,10 +18,12 @@
 Core::Core(const std::string &path)
     : _libs(), _games()
 {
-    //addExtension(std::string(GAME_PATH) + MAIN_MENU_NAME, GAME);
+    addExtension(std::string(GAME_PATH) + "/" + MAIN_MENU_NAME, GAME);
     addExtension(path, GRAPHICAL);
+    if (_games.empty() || _libs.empty())
+        throw std::runtime_error("Failed to load core modules");
     loadGraphical(_libs[0]);
-    //loadGame(_games[0]);
+    loadGame(_games[0]);
 }
 
 Core::~Core()
