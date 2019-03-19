@@ -9,21 +9,25 @@
 
 uint8_t Ncurses::getGameKeyState() const noexcept
 {
-    return NEXT_GAME_LIB;
+    return UP;
 }
 
 uint8_t Ncurses::getCoreKeyState() const noexcept
 {
-    return UP;
+    return EXIT;
 }
 
 void Ncurses::sendGameKeyInput(GameKey) noexcept
-{}
+{
+
+}
 
 void Ncurses::sendCoreKeyInput(CoreKey) noexcept
-{}
+{
 
-IRenderer &Ncurses::getRenderer() noexcept
+}
+
+Arcade::IRenderer &Ncurses::getRenderer() noexcept
 {
     return _render;
 }

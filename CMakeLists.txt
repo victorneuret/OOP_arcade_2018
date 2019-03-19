@@ -137,7 +137,7 @@ include_directories(Arcade/Common/include)
 target_include_directories(arcade            PUBLIC Arcade/Core/include)
 target_include_directories(_arcade_sfml      PUBLIC Arcade/Graphicals/SFML/include)
 target_include_directories(_arcade_sdl2      PUBLIC Arcade/Graphicals/SDL2/include)
-target_include_directories(_arcade_ncurses   PUBLIC Arcade/Games/NCURSES/include)
+target_include_directories(_arcade_ncurses   PUBLIC Arcade/Graphicals/NCURSES/include)
 target_include_directories(_arcade_nibbler   PUBLIC Arcade/Games/Nibbler/include)
 target_include_directories(_arcade_centipede PUBLIC Arcade/Games/Centipede/include)
 

@@ -10,7 +10,7 @@
 #include "IGraphicalLib.hpp"
 #include "NcursesRenderer.hpp"
 
-class Ncurses final : public IGraphicLib {
+class Ncurses final : public Arcade::IGraphicLib {
 public:
     Ncurses() = default;
     ~Ncurses() override = default;
@@ -20,10 +20,9 @@ public:
     void sendGameKeyInput(GameKey input) noexcept override;
     void sendCoreKeyInput(CoreKey input) noexcept override;
 
-    IRenderer &getRenderer() noexcept override;
+    Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;
 
 private:
     NcursesRenderer _render;
 };
-

@@ -14,20 +14,19 @@
 #include "Graphical/Color.hpp"
 #include "IRenderer.hpp"
 
-class NcursesRenderer : public IRenderer {
+class NcursesRenderer : public Arcade::IRenderer {
 public:
     NcursesRenderer();
     ~NcursesRenderer() override;
 
-    void drawRectangle(const Rect &rect, const Color &color, bool fill) override;
-    void drawLine(const Vector &start, const Vector &end, const Color &color) override;
-    void drawTexture(const std::string &imagePath, const Vector &pos) override;
-    void drawText(const std::string &text, uint8_t fontSize, const Vector &pos, const Color &color) override;
+    void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
+    void drawLine(const Arcade::Vector &start, const Arcade::Vector &end, const Arcade::Color &color) override;
+    void drawTexture(const std::string &imagePath, const Arcade::Vector &pos) override;
+    void drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color) override;
 
     void display() override;
     void clear() override;
 
 private:
-    void _init_color(const Color &color, bool fill = false) const noexcept;
+    void _init_color(const Arcade::Color &color, bool fill = false) const noexcept;
 };
-
