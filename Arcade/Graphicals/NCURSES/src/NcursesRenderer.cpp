@@ -17,7 +17,7 @@ NcursesRenderer::NcursesRenderer()
     start_color();
     keypad(stdscr, TRUE);
     if (has_colors() == FALSE)
-        throw std::runtime_error("Your terminal does not support color");
+        throw std::runtime_error("Your terminal does not support colors");
 }
 
 NcursesRenderer::~NcursesRenderer()
