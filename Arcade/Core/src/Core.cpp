@@ -14,6 +14,7 @@
 #include <iostream>
 #include <regex>
 #include <algorithm>
+#include <unistd.h>
 
 Core::Core(const std::string &path)
     : _libs(), _games()
@@ -28,10 +29,10 @@ Core::Core(const std::string &path)
 
 Core::~Core()
 {
-    if (_dl_lib.second)
-        dlclose(_dl_lib.second);
-    if (_dl_game.second)
-        dlclose(_dl_game.second);
+    if (_dl_lib.dl)
+        dlclose(_dl_lib.dl);
+    if (_dl_game.dl)
+        dlclose(_dl_game.dl);
 }
 
 void Core::addExtension(const std::string &path, EXT_TYPE type) noexcept
@@ -47,62 +48,80 @@ void Core::addExtension(const std::string &path, EXT_TYPE type) noexcept
 
 void Core::loadGraphical(const std::string &path)
 {
-    if (_dl_lib.second)
-        dlclose(_dl_lib.second);
-    _dl_lib = {path, dlopen(path.c_str(), RTLD_LAZY)};
-    if (!_dl_lib.second)
+    if (_dl_lib.dl) {
+        dlclose(_dl_lib.dl);
+        delete reinterpret_cast<Arcade::IGraphicLib *>(_dl_lib.instance);
+    }
+
+    _dl_lib = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
+    if (!_dl_lib.dl)
+        throw std::runtime_error(dlerror());
+    _dl_lib.instance = reinterpret_cast<instanceGraphical_ptr>(dlsym(_dl_lib.dl, "getInstance"))();
+    if (!_dl_lib.instance)
         throw std::runtime_error(dlerror());
 }
 
 void Core::loadGame(const std::string &path)
 {
-    if (_dl_game.second)
-        dlclose(_dl_game.second);
-    _dl_game = {path, dlopen(path.c_str(), RTLD_LAZY)};
-    if (!_dl_game.second)
+    if (_dl_game.dl) {
+        dlclose(_dl_game.dl);
+        delete reinterpret_cast<Arcade::IGame *>(_dl_game.instance);
+    }
+
+    _dl_game = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
+    if (!_dl_game.dl)
+        throw std::runtime_error(dlerror());
+    _dl_game.instance = reinterpret_cast<instanceGame_ptr>(dlsym(_dl_game.dl, "getInstance"))();
+    if (!_dl_game.instance)
         throw std::runtime_error(dlerror());
 }
 
-void Core::loadNext(EXT_TYPE type) noexcept
+void Core::loadNextGame()
 {
-    if (type == GRAPHICAL && _libs.size() > 1) {
-        const auto it = std::find(_libs.begin(), _libs.end(), _dl_lib.first);
-        if (it == _libs.end())
-           loadGraphical(*_libs.begin());
-        else if (it + 1 == _libs.end())
-            loadGraphical(*_libs.begin());
-        else
-            loadGraphical(*(it + 1));
-    } else if (type == GAME && _games.size() > 1) {
-        const auto it = std::find(_games.begin(), _games.end(), _dl_game.first);
-        if (it == _games.end())
-            loadGame(*_games.begin());
-        else if (it + 1 == _games.end())
-            loadGame(*_games.begin());
-        else
-            loadGame(*(it + 1));
-    }
+    const auto it = std::find(_games.begin(), _games.end(), _dl_game.path);
+
+    if (it == _games.end())
+        loadGame(*_games.begin());
+    else if (it + 1 == _games.end())
+        loadGame(*_games.begin());
+    else
+        loadGame(*(it + 1));
 }
 
-void Core::loadPrev(EXT_TYPE type) noexcept
+void Core::loadNextGraphical()
 {
-    if (type == GRAPHICAL && _libs.size() > 1) {
-        const auto it = std::find(_libs.begin(), _libs.end(), _dl_lib.first);
-        if (it == _libs.end())
-            loadGraphical(*_libs.begin());
-        else if (it == _libs.begin())
-            loadGraphical(*(_libs.end() - 1));
-        else
-            loadGraphical(*(it - 1));
-    } else if (type == GAME && _games.size() > 1) {
-        const auto it = std::find(_games.begin(), _games.end(), _dl_game.first);
-        if (it == _games.end())
-            loadGame(*_games.begin());
-        else if (it == _games.begin())
-            loadGame(*(_games.end() - 1));
-        else
-            loadGame(*(it - 1));
-    }
+    const auto it = std::find(_libs.begin(), _libs.end(), _dl_lib.path);
+
+    if (it == _libs.end())
+       loadGraphical(*_libs.begin());
+    else if (it + 1 == _libs.end())
+        loadGraphical(*_libs.begin());
+    else
+        loadGraphical(*(it + 1));
+}
+
+void Core::loadPrevGame()
+{
+    const auto it = std::find(_games.begin(), _games.end(), _dl_game.path);
+
+    if (it == _games.end())
+        loadGame(*_games.begin());
+    else if (it == _games.begin())
+        loadGame(*(_games.end() - 1));
+    else
+        loadGame(*(it - 1));
+}
+
+void Core::loadPrevGraphical()
+{
+    const auto it = std::find(_libs.begin(), _libs.end(), _dl_lib.path);
+
+    if (it == _libs.end())
+        loadGraphical(*_libs.begin());
+    else if (it == _libs.begin())
+        loadGraphical(*(_libs.end() - 1));
+    else
+        loadGraphical(*(it - 1));
 }
 
 void Core::loadDirectory(const std::string &path) noexcept
@@ -117,4 +136,26 @@ void Core::loadDirectory(const std::string &path) noexcept
                 addExtension(f.path().string(), GAME);
         }
     }
+}
+
+Arcade::IGraphicLib *Core::getGraphical()
+{
+    return reinterpret_cast<Arcade::IGraphicLib *>(_dl_lib.instance);
+}
+
+Arcade::IGame *Core::getGame()
+{
+    return reinterpret_cast<Arcade::IGame *>(_dl_game.instance);
+}
+
+bool Core::tick()
+{
+    return true;
+}
+
+void Core::render()
+{
+    getGame()->tick();
+    getGame()->render(getGraphical());
+    usleep(20000);
 }
