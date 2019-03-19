@@ -55,17 +55,15 @@ CMN_SRC	=	$(shell find $(CMN_DIR)/src -name "*.cpp")
 CMN_OBJ	=	$(CMN_SRC:.cpp=.o)
 
 SRC_UNIT=	$(shell find tests -name "*.cpp" 2> /dev/null) 			\
-			$(shell find src -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)
+			$(shell find Arcade -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)	\
+			$(shell find games -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)	\
+			$(shell find lib -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)
 OBJ_UNIT=	$(SRC_UNIT:.cpp=.o)
 
 CXXFLAGS=	-std=c++17 -fPIC
 CPPFLAGS=	-Iinclude -I $(CMN_DIR)/include -W -Wall -Wextra -Weffc++
 
 all:		core games graphicals
-
-%.o:		%.cpp
-			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
-			@$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
 
 common:		FRIENDLY="Common"
 common:		$(CMN_OBJ)
@@ -109,12 +107,17 @@ fclean:
 
 re:			fclean all
 
+%.o:		%.cpp
+			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
+			@$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
+
 tests_run:	LDFLAGS		+=	-lsfml-graphics -lsfml-window -lsfml-system		\
-							-llSDL -lncurses								\
+							-lSDL2 -lncurses								\
 							-lcriterion --coverage
 tests_run:	CPPFLAGS	+=	--coverage
 tests_run:	fclean $(OBJ_UNIT)
-			$(CXX) -o tests_run $(OBJ_UNIT) $(LDFLAGS)
+			@printf "%12s: Linking %s\n" $(FRIENDLY)
+			@$(CXX) -o tests_run $(OBJ_UNIT) $(LDFLAGS)
 			@./tests_run --verbose -j1
 
 cov_gen:
