@@ -105,7 +105,7 @@ void Core::loadDirectory(const std::string &path) noexcept
 {
     const std::regex rgx("^.*/lib_arcade_\\w+.so$");
 
-    for (const auto &f: std::filesystem::directory_iterator(path)) {
+    for (const auto &f : std::filesystem::directory_iterator(path)) {
         if (std::regex_match(f.path().string(), rgx)) {
             if (path == LIB_PATH)
                 addExtension(f.path().string(), GRAPHICAL);
