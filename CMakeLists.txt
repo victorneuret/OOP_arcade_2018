@@ -94,7 +94,6 @@ add_library(
 add_library(
         _arcade_sfml
         SHARED
-        Arcade/Graphicals/SFML/src/Main.cpp
         Arcade/Common/include/Math/Rect.hpp
         Arcade/Common/include/Math/Vector.hpp
         Arcade/Common/include/IGame.hpp
@@ -107,6 +106,8 @@ add_library(
         Arcade/Common/src/Color.cpp
         Arcade/Common/src/Vector.cpp
         Arcade/Common/src/Rect.cpp
+        Arcade/Graphicals/SFML/src/SFMLlib.cpp
+        Arcade/Graphicals/SFML/include/SFMLlib.hpp
 )
 
 add_executable(
