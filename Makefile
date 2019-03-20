@@ -55,9 +55,7 @@ CMN_SRC	=	$(shell find $(CMN_DIR)/src -name "*.cpp")
 CMN_OBJ	=	$(CMN_SRC:.cpp=.o)
 
 SRC_UNIT=	$(shell find tests -name "*.cpp" 2> /dev/null) 			\
-			$(shell find Arcade -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)	\
-			$(shell find games -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)	\
-			$(shell find lib -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)
+			$(shell find Arcade -name "*.cpp" -not -name "Main.cpp" 2> /dev/null)
 OBJ_UNIT=	$(SRC_UNIT:.cpp=.o)
 
 CXXFLAGS=	-std=c++17 -fPIC
