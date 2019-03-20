@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <map>
+
 #include "IGraphicalLib.hpp"
 #include "SFMLRenderer.hpp"
 
@@ -26,5 +28,12 @@ public:
 private:
     SFMLRenderer renderer;
     bool _closeRequested = false;
+
+    const std::map<sf::Keyboard::Key, GameKey> _gameKeysAssociations = {
+        { sf::Keyboard::Up,    GameKey::UP },
+        { sf::Keyboard::Down,  GameKey::DOWN },
+        { sf::Keyboard::Left,  GameKey::LEFT },
+        { sf::Keyboard::Right, GameKey::RIGHT }
+    };
 };
 

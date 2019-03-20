@@ -17,14 +17,9 @@ uint8_t SFML::getGameKeyState() const noexcept
 {
     uint8_t state = 0;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        state += GameKey::UP;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        state += GameKey::DOWN;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        state += GameKey::LEFT;
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        state += GameKey::RIGHT;
+    for (const auto &keyPair : _gameKeysAssociations)
+        if (sf::Keyboard::isKeyPressed(keyPair.first))
+            state += keyPair.second;
 
     return state;
 }
