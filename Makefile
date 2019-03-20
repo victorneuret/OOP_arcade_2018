@@ -135,8 +135,12 @@ tests_run:	LDFLAGS		+=	-lsfml-graphics -lsfml-window -lsfml-system		\
 							-lcriterion --coverage
 tests_run:	CPPFLAGS	+=	--coverage
 tests_run:	fclean $(OBJ_UNIT)
+ifndef RAW
 			@printf "%12s: Linking %s\n" $(FRIENDLY)
 			@$(CXX) -o tests_run $(OBJ_UNIT) $(LDFLAGS)
+else
+			$(CXX) -o tests_run $(OBJ_UNIT) $(LDFLAGS)
+endif
 			@./tests_run --verbose -j1
 
 cov_gen:
