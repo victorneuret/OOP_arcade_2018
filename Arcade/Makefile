@@ -16,6 +16,10 @@ OBJ		=	$(SRC:.cpp=.o)
 CXXFLAGS=	-std=c++17 -fPIC
 CPPFLAGS=	-I $(CMN_DIR)/include -I $(INCLUDE_DIR) -W -Wall -Wextra -Weffc++
 
+ifeq ($(DEBUG), 1)
+	CXXFLAGS	+=	-g3 -DDEBUG=1
+endif
+
 %.o:		%.cpp
 			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
 			@$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
@@ -24,7 +28,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			@printf "%12s: Linking %s\n\n" $(FRIENDLY) $(NAME)
-			@$(CXX) -shared -o $(NAME) $(OBJ) $(LDFLAGS)
+			@$(CXX) -o $(NAME) $(OBJ) $(LDFLAGS)
 
 clean:
 			@$(RM) $(OBJ)

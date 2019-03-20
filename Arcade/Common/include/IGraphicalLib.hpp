@@ -42,7 +42,7 @@ namespace Arcade {
         virtual void sendGameKeyInput(GameKey input) noexcept = 0;
         virtual void sendCoreKeyInput(CoreKey input) noexcept = 0;
 
-        virtual IRenderer &getRenderer() const noexcept = 0;
+        virtual IRenderer &getRenderer() noexcept = 0;
         virtual bool isCloseRequested() const noexcept = 0;
     };
 }

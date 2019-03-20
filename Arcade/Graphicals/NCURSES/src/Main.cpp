@@ -2,10 +2,14 @@
 ** EPITECH PROJECT, 2019
 ** arcade
 ** File description:
-** Main.cpp
+** Ncurses.cpp
 */
 
-int main()
+#include "IGraphicalLib.hpp"
+#include "Ncurses.hpp"
+
+extern "C"
+Arcade::IGraphicLib *getInstance()
 {
-    return 0;
+    return new Ncurses;
 }

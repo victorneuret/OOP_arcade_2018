@@ -14,39 +14,43 @@ SUB_MAKE=	make --no-print-directory -C Arcade
 
 CORE	=	$(SUB_MAKE) SRC_DIR=./Core/src							\
 						INCLUDE_DIR=./Core/include					\
+						LDFLAGS="-ldl -lstdc++fs"					\
 						NAME=../arcade								\
 						FRIENDLY="Core"
 
 MENU	=	$(SUB_MAKE) SRC_DIR=./Games/MainMenu/src				\
 						INCLUDE_DIR=./Games/MainMenu/include 		\
+						LDFLAGS="-shared"							\
 						NAME=../games/lib_arcade_main_menu.so		\
 						FRIENDLY="MainMenu"
 
 CENTIP	=	$(SUB_MAKE) SRC_DIR=./Games/Centipede/src				\
 						INCLUDE_DIR=./Games/Centipede/include		\
+						LDFLAGS="-shared"							\
 						NAME=../games/lib_arcade_centipede.so		\
 						FRIENDLY="Centipede"
 
 NIBBLER	=	$(SUB_MAKE) SRC_DIR=./Games/Nibbler/src					\
 						INCLUDE_DIR=./Games/Nibbler/include 		\
+						LDFLAGS="-shared"							\
 						NAME=../games/lib_arcade_nibbler.so 		\
 						FRIENDLY="Nibbler"
 
 NCURSES	=	$(SUB_MAKE) SRC_DIR=./Graphicals/NCURSES/src			\
 						INCLUDE_DIR=./Graphicals/NCURSES/include	\
-						LDFLAGS="-lncurses"							\
+						LDFLAGS="-lncurses -shared"					\
 						NAME=../lib/lib_arcade_ncurses.so 			\
 						FRIENDLY="NCURSES"
 
 SDL2	=	$(SUB_MAKE) SRC_DIR=./Graphicals/SDL2/src				\
 						INCLUDE_DIR=./Graphicals/SDL2/include 		\
-						LDFLAGS="-lSDL"								\
+						LDFLAGS="-lSDL -shared"						\
 						NAME=../lib/lib_arcade_sdl2.so 				\
 						FRIENDLY="SDL2"
 
 SFML	=	$(SUB_MAKE) SRC_DIR=./Graphicals/SFML/src				\
 						INCLUDE_DIR=./Graphicals/SFML/include 		\
-						LDFLAGS="-lsfml-graphics -lsfml-window -lsfml-system" \
+						LDFLAGS="-lsfml-graphics -lsfml-window -lsfml-system -shared" \
 						NAME=../lib/lib_arcade_sfml.so 				\
 						FRIENDLY="SFML"
 
@@ -60,6 +64,10 @@ OBJ_UNIT=	$(SRC_UNIT:.cpp=.o)
 
 CXXFLAGS=	-std=c++17 -fPIC
 CPPFLAGS=	-Iinclude -I $(CMN_DIR)/include -W -Wall -Wextra -Weffc++
+
+ifeq ($(DEBUG), 1)
+	CXXFLAGS	+=	-g3 -DDEBUG=1
+endif
 
 all:		core games graphicals
 

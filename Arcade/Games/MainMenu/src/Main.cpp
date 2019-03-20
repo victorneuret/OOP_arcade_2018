@@ -5,7 +5,11 @@
 ** Main.cpp
 */
 
-int main()
+#include "IGame.hpp"
+#include "MainMenu.hpp"
+
+extern "C"
+Arcade::IGame *getInstance()
 {
-    return 0;
+    return new MainMenu;
 }
