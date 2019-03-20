@@ -17,17 +17,8 @@ constexpr const char * const LIB_PATH = "./lib";
 constexpr const char * const GAME_PATH = "./games";
 constexpr const char * const MAIN_MENU_NAME = "lib_arcade_main_menu.so";
 
-class Core {
+class Core final {
 public:
-    typedef Arcade::IGame *(*instanceGame_ptr)();
-    typedef Arcade::IGame *(*instanceGraphical_ptr)();
-
-    typedef struct Extension {
-        std::string path;
-        void *dl;
-        void *instance;
-    } Extension_t;
-
     enum EXT_TYPE {
         GRAPHICAL,
         GAME
@@ -36,22 +27,32 @@ public:
     explicit Core(const std::string &path);
     ~Core();
 
+    Arcade::IGraphicLib *getGraphical();
+    Arcade::IGame *getGame();
+    void loadDirectory(const std::string &path) noexcept;
+    void tick();
+    void render();
+
+private:
+    using instanceGame_ptr = Arcade::IGame *(*)();
+    using instanceGraphical_ptr =  Arcade::IGame *(*)();
+
+    struct Extension {
+        std::string path;
+        void *dl;
+        void *instance;
+    };
+
     void loadGraphical(const std::string &path);
     void loadGame(const std::string &path);
     void addExtension(const std::string &path, EXT_TYPE type) noexcept;
-    void loadDirectory(const std::string &path) noexcept;
     void loadNextGraphical();
     void loadPrevGraphical();
     void loadNextGame();
     void loadPrevGame();
-    Arcade::IGraphicLib *getGraphical();
-    Arcade::IGame *getGame();
-    bool tick();
-    void render();
 
-private:
-    Extension_t _dl_lib = {"", nullptr, nullptr};
-    Extension_t  _dl_game = {"", nullptr, nullptr};
+    Extension _dl_lib = {"", nullptr, nullptr};
+    Extension  _dl_game = {"", nullptr, nullptr};
     std::vector<std::string> _libs;
     std::vector<std::string> _games;
 };

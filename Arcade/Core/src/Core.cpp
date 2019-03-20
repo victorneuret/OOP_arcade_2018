@@ -148,10 +148,8 @@ Arcade::IGame *Core::getGame()
     return reinterpret_cast<Arcade::IGame *>(_dl_game.instance);
 }
 
-bool Core::tick()
-{
-    return true;
-}
+void Core::tick()
+{}
 
 void Core::render()
 {
