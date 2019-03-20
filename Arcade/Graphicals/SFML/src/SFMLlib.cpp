@@ -8,11 +8,11 @@
 #include "SFMLlib.hpp"
 
 SFMLlib::SFMLlib() noexcept
-    : window(sf::VideoMode(800, 600), "SFML", sf::Style::Close)
+    : _window(sf::VideoMode(800, 600), "SFML", sf::Style::Close)
 {
 }
 
-void SFMLlib::drawRectangle(const Rect &rect, const Color &color, bool fill)
+void SFMLlib::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
 {
     sf::RectangleShape sfRect;
 
@@ -27,31 +27,23 @@ void SFMLlib::drawRectangle(const Rect &rect, const Color &color, bool fill)
         sfRect.setFillColor(sf::Color::Transparent);
     }
 
-    window.draw(sfRect);
+    _window.draw(sfRect);
 }
 
-void SFMLlib::drawCircle(const Vector &pos, double radius, const Color &color)
+void SFMLlib::drawTexture(const std::string &imagePath, const Arcade::Vector &pos)
 {
 }
 
-void SFMLlib::drawLine(const Vector &start, const Vector &end)
-{
-}
-
-void SFMLlib::drawTexture(const std::string &imagePath, const Vector &pos)
-{
-}
-
-void SFMLlib::drawText(const std::string &text, uint8_t fontSize, const Vector &pos)
+void SFMLlib::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos)
 {
 }
 
 void SFMLlib::display()
 {
-    window.display();
+    _window.display();
 }
 
 void SFMLlib::clear()
 {
-    window.clear(sf::Color::Black);
+    _window.clear(sf::Color::Black);
 }
