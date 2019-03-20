@@ -28,7 +28,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			@printf "%12s: Linking %s\n\n" $(FRIENDLY) $(NAME)
-			@$(CXX) -shared -o $(NAME) $(OBJ) $(LDFLAGS)
+			@$(CXX) -o $(NAME) $(OBJ) $(LDFLAGS)
 
 clean:
 			@$(RM) $(OBJ)
