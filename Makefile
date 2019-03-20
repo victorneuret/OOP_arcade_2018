@@ -65,7 +65,7 @@ OBJ_UNIT=	$(SRC_UNIT:.cpp=.o)
 CXXFLAGS=	-std=c++17 -fPIC
 CPPFLAGS=	-Iinclude -I $(CMN_DIR)/include -W -Wall -Wextra -Weffc++
 
-ifeq ($(DEBUG), 1)
+ifdef DEBUG
 	CXXFLAGS	+=	-g3 -DDEBUG=1
 endif
 
@@ -95,8 +95,13 @@ clean:
 			@$(NCURSES) clean
 			@$(SDL2) clean
 			@$(SFML) clean
+
+ifndef RAW
 			@$(RM) $(OBJ_UNIT)
 			@printf "%12s: Removed object files\n" $(FRIENDLY)
+else
+			$(RM) $(OBJ_UNIT)
+endif
 
 fclean:
 			@$(CORE) fclean
@@ -106,16 +111,24 @@ fclean:
 			@$(NCURSES) fclean
 			@$(SDL2) fclean
 			@$(SFML) fclean
+
+ifndef RAW
 			@$(RM) $(OBJ_UNIT) $(CMN_OBJ)
 			@$(RM) tests_run
 			@printf "%12s: Removed object files\n" $(FRIENDLY)
 			@printf "%12s: Removed unit tests target\n\n" $(FRIENDLY)
+else
+			$(RM) $(OBJ_UNIT) $(CMN_OBJ)
+			$(RM) tests_run
+endif
 
 re:			fclean all
 
+ifndef RAW
 %.o:		%.cpp
 			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
 			@$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
+endif
 
 tests_run:	LDFLAGS		+=	-lsfml-graphics -lsfml-window -lsfml-system		\
 							-lSDL2 -lncurses								\

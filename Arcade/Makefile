@@ -16,15 +16,30 @@ OBJ		=	$(SRC:.cpp=.o)
 CXXFLAGS=	-std=c++17 -fPIC
 CPPFLAGS=	-I $(CMN_DIR)/include -I $(INCLUDE_DIR) -W -Wall -Wextra -Weffc++
 
-ifeq ($(DEBUG), 1)
+ifdef DEBUG
 	CXXFLAGS	+=	-g3 -DDEBUG=1
 endif
+
+ifdef RAW	############################## RAW MAKEFILE ##############################
+
+all:		$(NAME)
+
+$(NAME):	$(OBJ)
+			$(CXX) -o $(NAME) $(OBJ) $(LDFLAGS)
+
+clean:
+			$(RM) $(OBJ)
+
+fclean:		clean
+			$(RM) $(NAME)
+
+else		############################## PRETTY MAKEFILE ##############################
+
+all:		$(NAME)
 
 %.o:		%.cpp
 			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
 			@$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
-
-all:		$(NAME)
 
 $(NAME):	$(OBJ)
 			@printf "%12s: Linking %s\n\n" $(FRIENDLY) $(NAME)
@@ -37,6 +52,8 @@ clean:
 fclean:		clean
 			@$(RM) $(NAME)
 			@printf "%12s: Removed target\n\n" $(FRIENDLY)
+
+endif		############################## END MAKEFILE ##############################
 
 re:			fclean all
 
