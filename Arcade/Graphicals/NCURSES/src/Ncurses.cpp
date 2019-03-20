@@ -35,6 +35,9 @@ void Ncurses::sendGameKeyInput(GameKey) noexcept
 void Ncurses::sendCoreKeyInput(CoreKey) noexcept
 {}
 
+void Ncurses::pollEvents()
+{}
+
 Arcade::IRenderer &Ncurses::getRenderer() noexcept
 {
     return _render;

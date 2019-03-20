@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** arcade
 ** File description:
-** SFMLlib.hpp
+** SFMLRenderer.hpp
 */
 
 #pragma once
@@ -11,9 +11,9 @@
 
 #include "IRenderer.hpp"
 
-class SFMLlib final : public Arcade::IRenderer {
+class SFMLRenderer final : public Arcade::IRenderer {
 public:
-    SFMLlib() noexcept;
+    SFMLRenderer() noexcept;
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
     void drawTexture(const std::string &imagePath, const Arcade::Vector &pos) override;
@@ -22,7 +22,9 @@ public:
     void display() override;
     void clear() override;
 
+    sf::RenderWindow &getWindow();
 private:
     sf::RenderWindow _window;
+    sf::Font _sfFont;
 };
 

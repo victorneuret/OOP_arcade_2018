@@ -22,6 +22,8 @@ public:
     uint8_t getCoreKeyState() const noexcept override;
     void sendGameKeyInput(GameKey input) noexcept override;
     void sendCoreKeyInput(CoreKey input) noexcept override;
+    void pollEvents() override;
+
     Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;
 

@@ -6,10 +6,10 @@
 */
 
 #include "IGraphicalLib.hpp"
-#include "Ncurses.hpp"
+#include "SFML.hpp"
 
 extern "C"
 Arcade::IGraphicLib *getInstance()
 {
-    return new Ncurses;
+    return new SFML;
 }

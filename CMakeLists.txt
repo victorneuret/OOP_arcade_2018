@@ -60,7 +60,6 @@ add_library(
 add_library(
         _arcade_ncurses
         SHARED
-        Arcade/Graphicals/NCURSES/src/Main.cpp
         Arcade/Common/include/Math/Rect.hpp
         Arcade/Common/include/Math/Vector.hpp
         Arcade/Common/include/IGame.hpp
@@ -77,7 +76,7 @@ add_library(
         Arcade/Graphicals/NCURSES/include/Ncurses.hpp
         Arcade/Graphicals/NCURSES/src/NcursesRenderer.cpp
         Arcade/Graphicals/NCURSES/include/NcursesRenderer.hpp
-)
+        Arcade/Graphicals/NCURSES/src/Main.cpp)
 
 add_library(
         _arcade_sdl2
@@ -112,9 +111,11 @@ add_library(
         Arcade/Common/src/Color.cpp
         Arcade/Common/src/Vector.cpp
         Arcade/Common/src/Rect.cpp
-        Arcade/Graphicals/SFML/src/SFMLlib.cpp
-        Arcade/Graphicals/SFML/include/SFMLlib.hpp
-)
+        Arcade/Graphicals/SFML/src/SFMLRenderer.cpp
+        Arcade/Graphicals/SFML/include/SFMLRenderer.hpp
+        Arcade/Graphicals/SFML/src/SFML.cpp
+        Arcade/Graphicals/SFML/include/SFML.hpp
+        Arcade/Graphicals/SFML/src/Main.cpp)
 
 add_executable(
         arcade
