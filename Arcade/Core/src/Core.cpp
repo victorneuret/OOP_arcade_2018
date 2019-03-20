@@ -19,23 +19,29 @@
 Core::Core(const std::string &path)
     : _libs(), _games()
 {
-    addExtension(std::string(GAME_PATH) + "/" + MAIN_MENU_NAME, GAME);
-    addExtension(path, GRAPHICAL);
+    _addExtension(std::string(GAME_PATH) + "/" + MAIN_MENU_NAME, GAME);
+    _addExtension(path, GRAPHICAL);
     if (_games.empty() || _libs.empty())
         throw std::runtime_error("Failed to load core modules");
-    loadGraphical(_libs[0]);
-    loadGame(_games[0]);
+    _loadDirectory(LIB_PATH);
+    _loadDirectory(GAME_PATH);
+    _loadGraphical(_libs[0]);
+    _loadGame(_games[0]);
 }
 
 Core::~Core()
 {
-    if (_dl_lib.dl)
-        dlclose(_dl_lib.dl);
-    if (_dl_game.dl)
-        dlclose(_dl_game.dl);
+    if (_loadedGame.dl) {
+        delete reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
+        dlclose(_loadedGame.dl);
+    }
+    if (_loadedLib.dl) {
+        delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
+        dlclose(_loadedLib.dl);
+    }
 }
 
-void Core::addExtension(const std::string &path, EXT_TYPE type) noexcept
+void Core::_addExtension(const std::string &path, EXT_TYPE type) noexcept
 {
     std::string absPath = std::regex_replace(std::filesystem::absolute(path).string(), std::regex("\\/\\.\\/"), "/");
 
@@ -46,114 +52,167 @@ void Core::addExtension(const std::string &path, EXT_TYPE type) noexcept
     }
 }
 
-void Core::loadGraphical(const std::string &path)
+void Core::_loadGraphical(const std::string &path)
 {
-    if (_dl_lib.dl) {
-        dlclose(_dl_lib.dl);
-        delete reinterpret_cast<Arcade::IGraphicLib *>(_dl_lib.instance);
+    void *func = nullptr;
+
+    if (_loadedLib.dl) {
+        delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
+        dlclose(_loadedLib.dl);
     }
 
-    _dl_lib = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
-    if (!_dl_lib.dl)
+    _loadedLib = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
+    if (!_loadedLib.dl)
         throw std::runtime_error(dlerror());
-    _dl_lib.instance = reinterpret_cast<instanceGraphical_ptr>(dlsym(_dl_lib.dl, "getInstance"))();
-    if (!_dl_lib.instance)
+    func = dlsym(_loadedLib.dl, "getInstance");
+    if (!func)
         throw std::runtime_error(dlerror());
+    _loadedLib.instance = reinterpret_cast<instanceGraphicalPtr>(func)();
+    if (!_loadedLib.instance)
+        throw std::runtime_error("Failed to create instance for graphical: " + _loadedGame.path);
 }
 
-void Core::loadGame(const std::string &path)
+void Core::_loadGame(const std::string &path)
 {
-    if (_dl_game.dl) {
-        dlclose(_dl_game.dl);
-        delete reinterpret_cast<Arcade::IGame *>(_dl_game.instance);
+    void *func = nullptr;
+
+    if (_loadedGame.dl) {
+        delete reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
+        dlclose(_loadedGame.dl);
     }
 
-    _dl_game = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
-    if (!_dl_game.dl)
+    _loadedGame = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
+    if (!_loadedGame.dl)
         throw std::runtime_error(dlerror());
-    _dl_game.instance = reinterpret_cast<instanceGame_ptr>(dlsym(_dl_game.dl, "getInstance"))();
-    if (!_dl_game.instance)
+    func = dlsym(_loadedGame.dl, "getInstance");
+    if (!func)
         throw std::runtime_error(dlerror());
+    _loadedGame.instance = reinterpret_cast<instanceGamePtr>(func)();
+    if (!_loadedGame.instance)
+        throw std::runtime_error("Failed to create instance for game: " + _loadedGame.path);
 }
 
-void Core::loadNextGame()
+void Core::_loadNextGame()
 {
-    const auto it = std::find(_games.begin(), _games.end(), _dl_game.path);
+    const auto it = std::find(_games.begin(), _games.end(), _loadedGame.path);
 
     if (it == _games.end())
-        loadGame(*_games.begin());
+        _loadGame(*_games.begin());
     else if (it + 1 == _games.end())
-        loadGame(*_games.begin());
+        _loadGame(*_games.begin());
     else
-        loadGame(*(it + 1));
+        _loadGame(*(it + 1));
 }
 
-void Core::loadNextGraphical()
+void Core::_loadNextGraphical()
 {
-    const auto it = std::find(_libs.begin(), _libs.end(), _dl_lib.path);
+    const auto it = std::find(_libs.begin(), _libs.end(), _loadedLib.path);
 
     if (it == _libs.end())
-       loadGraphical(*_libs.begin());
+        _loadGraphical(*_libs.begin());
     else if (it + 1 == _libs.end())
-        loadGraphical(*_libs.begin());
+        _loadGraphical(*_libs.begin());
     else
-        loadGraphical(*(it + 1));
+        _loadGraphical(*(it + 1));
 }
 
-void Core::loadPrevGame()
+void Core::_loadPrevGame()
 {
-    const auto it = std::find(_games.begin(), _games.end(), _dl_game.path);
+    const auto it = std::find(_games.begin(), _games.end(), _loadedGame.path);
 
     if (it == _games.end())
-        loadGame(*_games.begin());
+        _loadGame(*_games.begin());
     else if (it == _games.begin())
-        loadGame(*(_games.end() - 1));
+        _loadGame(*(_games.end() - 1));
     else
-        loadGame(*(it - 1));
+        _loadGame(*(it - 1));
 }
 
-void Core::loadPrevGraphical()
+void Core::_loadPrevGraphical()
 {
-    const auto it = std::find(_libs.begin(), _libs.end(), _dl_lib.path);
+    const auto it = std::find(_libs.begin(), _libs.end(), _loadedLib.path);
 
     if (it == _libs.end())
-        loadGraphical(*_libs.begin());
+        _loadGraphical(*_libs.begin());
     else if (it == _libs.begin())
-        loadGraphical(*(_libs.end() - 1));
+        _loadGraphical(*(_libs.end() - 1));
     else
-        loadGraphical(*(it - 1));
+        _loadGraphical(*(it - 1));
 }
 
-void Core::loadDirectory(const std::string &path) noexcept
+void Core::_restartGame()
+{
+    if (_loadedGame.instance)
+        delete reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
+    _loadedGame.instance = reinterpret_cast<instanceGamePtr>(dlsym(_loadedGame.dl, "getInstance"))();
+    if (!_loadedGame.instance)
+        throw std::runtime_error(dlerror());
+}
+
+void Core::_backToMenu()
+{
+    _loadGame(_games[0]);
+}
+
+void Core::_exit()
+{
+    _isCloseRequested = true;
+}
+
+void Core::loop()
+{
+    while (!_isCloseRequested) {
+        _tick();
+        _render();
+        usleep(20000);
+    }
+}
+
+void Core::_loadDirectory(const std::string &path) noexcept
 {
     const std::regex rgx("^.*/lib_arcade_\\w+.so$");
 
     for (const auto &f : std::filesystem::directory_iterator(path)) {
         if (std::regex_match(f.path().string(), rgx)) {
             if (path == LIB_PATH)
-                addExtension(f.path().string(), GRAPHICAL);
+                _addExtension(f.path().string(), GRAPHICAL);
             else if (path == GAME_PATH)
-                addExtension(f.path().string(), GAME);
+                _addExtension(f.path().string(), GAME);
         }
     }
 }
 
-Arcade::IGraphicLib *Core::getGraphical()
+Arcade::IGraphicLib *Core::_getGraphical()
 {
-    return reinterpret_cast<Arcade::IGraphicLib *>(_dl_lib.instance);
+    if (!_loadedLib.instance)
+        throw std::runtime_error("Failed to load graphical");
+    return reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
 }
 
-Arcade::IGame *Core::getGame()
+Arcade::IGame *Core::_getGame()
 {
-    return reinterpret_cast<Arcade::IGame *>(_dl_game.instance);
+    if (!_loadedGame.instance)
+        throw std::runtime_error("Failed to load game");
+    return reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
 }
 
-void Core::tick()
-{}
-
-void Core::render()
+void Core::_tick()
 {
-    getGame()->tick();
-    getGame()->render(getGraphical());
-    usleep(20000);
+    if (_isCloseRequested || _getGraphical()->isCloseRequested() || _getGame()->isCloseRequested())
+        return _exit();
+
+    uint8_t key = _getGraphical()->getCoreKeyState();
+
+    for (const auto &c : _coreKeys) {
+        if (c.first & key)
+            (this->*c.second)();
+    }
+    _getGame()->tick(_getGraphical());
+}
+
+void Core::_render()
+{
+    if (_isCloseRequested || _getGraphical()->isCloseRequested() || _getGame()->isCloseRequested())
+        return _exit();
+    _getGame()->render(_getGraphical());
 }

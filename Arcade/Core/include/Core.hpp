@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <map>
 
 #include "IGraphicalLib.hpp"
 #include "IGame.hpp"
@@ -26,16 +27,12 @@ public:
 
     explicit Core(const std::string &path);
     ~Core();
-
-    Arcade::IGraphicLib *getGraphical();
-    Arcade::IGame *getGame();
-    void loadDirectory(const std::string &path) noexcept;
-    void tick();
-    void render();
+    void loop();
 
 private:
-    using instanceGame_ptr = Arcade::IGame *(*)();
-    using instanceGraphical_ptr =  Arcade::IGame *(*)();
+    using instanceGamePtr = Arcade::IGame *(*)();
+    using instanceGraphicalPtr =  Arcade::IGame *(*)();
+    using CorePtr = void (Core::*)();
 
     struct Extension {
         std::string path;
@@ -43,16 +40,36 @@ private:
         void *instance;
     };
 
-    void loadGraphical(const std::string &path);
-    void loadGame(const std::string &path);
-    void addExtension(const std::string &path, EXT_TYPE type) noexcept;
-    void loadNextGraphical();
-    void loadPrevGraphical();
-    void loadNextGame();
-    void loadPrevGame();
+    void _loadGraphical(const std::string &path);
+    void _loadGame(const std::string &path);
+    void _addExtension(const std::string &path, EXT_TYPE type) noexcept;
+    void _loadDirectory(const std::string &path) noexcept;
+    Arcade::IGraphicLib *_getGraphical();
+    Arcade::IGame *_getGame();
 
-    Extension _dl_lib = {"", nullptr, nullptr};
-    Extension  _dl_game = {"", nullptr, nullptr};
+    void _loadNextGraphical();
+    void _loadPrevGraphical();
+    void _loadNextGame();
+    void _loadPrevGame();
+    void _restartGame();
+    void _backToMenu();
+    void _exit();
+    void _tick();
+    void _render();
+
+    Extension _loadedLib = {"", nullptr, nullptr};
+    Extension _loadedGame = {"", nullptr, nullptr};
+    bool _isCloseRequested = false;
     std::vector<std::string> _libs;
     std::vector<std::string> _games;
+
+    const std::map<uint8_t, CorePtr> _coreKeys = {
+        {Arcade::IGraphicLib::PREV_GRAPHICAL_LIB, &Core::_loadPrevGraphical},
+        {Arcade::IGraphicLib::NEXT_GRAPHICAL_LIB, &Core::_loadNextGraphical},
+        {Arcade::IGraphicLib::PREV_GAME_LIB, &Core::_loadPrevGame},
+        {Arcade::IGraphicLib::NEXT_GAME_LIB, &Core::_loadNextGame},
+        {Arcade::IGraphicLib::RESTART_GAME, &Core::_restartGame},
+        {Arcade::IGraphicLib::BACK_TO_MENU, &Core::_backToMenu},
+        {Arcade::IGraphicLib::EXIT, &Core::_exit}
+    };
 };

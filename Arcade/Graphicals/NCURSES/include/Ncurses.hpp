@@ -24,6 +24,7 @@ public:
     void sendCoreKeyInput(CoreKey input) noexcept override;
     Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;
+    void pollEvents() override;
 
 private:
     NcursesRenderer _render;

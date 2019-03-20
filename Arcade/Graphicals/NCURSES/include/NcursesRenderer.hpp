@@ -27,5 +27,6 @@ public:
     void clear() override;
 
 private:
-    void _initColor(const Arcade::Color &color, bool fill = false) const noexcept;
+    void _initColor(const Arcade::Color &color, bool fill = false) noexcept;
+    uint16_t _colorIndex = 0;
 };

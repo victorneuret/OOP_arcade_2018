@@ -14,7 +14,7 @@ namespace Arcade {
     public:
         virtual ~IGame() = default;
 
-        virtual void tick() = 0;
+        virtual void tick(IGraphicLib *graphic) = 0;
         virtual void render(IGraphicLib *graphic) = 0;
         virtual bool isCloseRequested() const noexcept = 0;
     };
