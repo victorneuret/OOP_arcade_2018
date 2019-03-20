@@ -5,6 +5,8 @@
 ** SFMLlib.cpp
 */
 
+#include <SFMLlib.hpp>
+
 #include "SFMLlib.hpp"
 
 SFMLlib::SFMLlib() noexcept
@@ -34,7 +36,7 @@ void SFMLlib::drawTexture(const std::string &imagePath, const Arcade::Vector &po
 {
 }
 
-void SFMLlib::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos)
+void SFMLlib::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color)
 {
 }
 
