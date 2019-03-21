@@ -6,6 +6,7 @@
 */
 
 #include "MainMenu.hpp"
+#include <iostream>
 
 void MainMenu::tick()
 {}
@@ -16,17 +17,19 @@ void MainMenu::render(Arcade::IGraphicLib *graphic)
         return;
 
     uint8_t key = graphic->getGameKeyState();
+    graphic->pollEvents();
 
     graphic->getRenderer().clear();
-    if (key == Arcade::IGraphicLib::UP)
-        graphic->getRenderer().drawText("UP", 20, {10, 10}, {255, 0, 0});
+    if (key == Arcade::IGraphicLib::UP) {
+        graphic->getRenderer().drawRectangle(Arcade::Rect(0, 0, 30, 30), Arcade::Color(0xff, 0x00, 0x00));
+        std::cout << "UP" << std::endl;
+    }
     else if (key == Arcade::IGraphicLib::DOWN)
-        graphic->getRenderer().drawText("DOWN", 20, {10, 10}, {255, 0, 0});
+        graphic->getRenderer().drawRectangle(Arcade::Rect(30, 0, 30, 30), Arcade::Color(0xff, 0xff, 0xff));
     else if (key == Arcade::IGraphicLib::LEFT)
-        graphic->getRenderer().drawText("LEFT", 20, {10, 10}, {255, 0, 0});
+        graphic->getRenderer().drawRectangle(Arcade::Rect(0, 30, 30, 30), Arcade::Color(0x00, 0xff, 0x00));
     else if (key == Arcade::IGraphicLib::RIGHT)
-        graphic->getRenderer().drawText("RIGHT", 20, {10, 10}, {255, 0, 0});
-
+        graphic->getRenderer().drawRectangle(Arcade::Rect(30, 30, 30, 30), Arcade::Color(0x00, 0x00, 0xff));
     graphic->getRenderer().display();
 }
 

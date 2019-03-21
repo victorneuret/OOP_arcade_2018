@@ -11,6 +11,7 @@
 #include <unordered_map>
 
 #include "IGraphicalLib.hpp"
+#include "SdlRenderer.hpp"
 
 class Sdl final : public Arcade::IGraphicLib {
 public:
@@ -26,6 +27,7 @@ public:
     void pollEvents() override;
 
 private:
+    SdlRenderer _renderer;
     bool _closeRequested = false;
     const std::unordered_map<int, uint8_t> _gameKeys = {
             {'z', UP},

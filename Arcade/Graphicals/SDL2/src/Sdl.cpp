@@ -15,6 +15,7 @@ Arcade::IGraphicLib *getInstance()
 }
 
 Sdl::Sdl()
+    : _renderer()
 {}
 
 uint8_t Sdl::getGameKeyState() const noexcept
@@ -64,7 +65,7 @@ void Sdl::pollEvents()
 
 Arcade::IRenderer &Sdl::getRenderer() noexcept
 {
-
+    return _renderer;
 }
 
 bool Sdl::isCloseRequested() const noexcept
