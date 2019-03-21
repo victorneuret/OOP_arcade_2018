@@ -44,7 +44,7 @@ NCURSES	=	$(SUB_MAKE) SRC_DIR=./Graphicals/NCURSES/src			\
 
 SDL2	=	$(SUB_MAKE) SRC_DIR=./Graphicals/SDL2/src				\
 						INCLUDE_DIR=./Graphicals/SDL2/include 		\
-						LDFLAGS="-lSDL -shared"						\
+						LDFLAGS="-lSDL2 -shared"						\
 						NAME=../lib/lib_arcade_sdl2.so 				\
 						FRIENDLY="SDL2"
 

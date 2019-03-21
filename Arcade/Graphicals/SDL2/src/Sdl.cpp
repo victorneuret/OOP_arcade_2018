@@ -43,14 +43,23 @@ uint8_t Sdl::getCoreKeyState() const noexcept
     return 0;
 }
 
-void Sdl::sendGameKeyInput(GameKey input) noexcept
+void Sdl::sendGameKeyInput(GameKey) noexcept
 {
 
 }
 
-void Sdl::sendCoreKeyInput(CoreKey input) noexcept
+void Sdl::sendCoreKeyInput(CoreKey) noexcept
 {
 
+}
+
+void Sdl::pollEvents()
+{
+    SDL_Event event;
+
+    while (SDL_PollEvent(&event) != 0)
+        if (event.type == SDL_QUIT)
+            _closeRequested = true;
 }
 
 Arcade::IRenderer &Sdl::getRenderer() noexcept
@@ -60,5 +69,5 @@ Arcade::IRenderer &Sdl::getRenderer() noexcept
 
 bool Sdl::isCloseRequested() const noexcept
 {
-
+    return _closeRequested;
 }

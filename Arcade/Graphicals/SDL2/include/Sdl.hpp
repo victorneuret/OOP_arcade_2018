@@ -23,8 +23,10 @@ public:
     void sendCoreKeyInput(CoreKey input) noexcept override;
     Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;
+    void pollEvents() override;
 
 private:
+    bool _closeRequested = false;
     const std::unordered_map<int, uint8_t> _gameKeys = {
             {'z', UP},
             {'s', DOWN},
