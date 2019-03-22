@@ -19,10 +19,9 @@ uint8_t SDL::getGameKeyState() const noexcept
 
     while (SDL_PollEvent(&event) != 0)
         if (event.type == SDL_KEYDOWN)
-            key = event.key.keysym.sym;
-    if (_gameKeys.find(key) != _gameKeys.end())
-        return _gameKeys.at(key);
-    return 0;
+            if (_gameKeys.find(event.key.keysym.sym) != _gameKeys.end())
+                key += _gameKeys.at(event.key.keysym.sym);
+    return key;
 }
 
 uint8_t SDL::getCoreKeyState() const noexcept
@@ -32,10 +31,9 @@ uint8_t SDL::getCoreKeyState() const noexcept
 
     while (SDL_PollEvent(&event) != 0)
         if (event.type == SDL_KEYDOWN)
-            key = event.key.keysym.sym;
-    if (_coreKeys.find(key) != _coreKeys.end())
-        return _coreKeys.at(key);
-    return 0;
+            if (_coreKeys.find(event.key.keysym.sym) != _coreKeys.end())
+                key += _coreKeys.at(event.key.keysym.sym);
+    return key;
 }
 
 void SDL::sendGameKeyInput(GameKey) noexcept
