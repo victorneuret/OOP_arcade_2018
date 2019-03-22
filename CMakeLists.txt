@@ -98,6 +98,7 @@ add_library(
         Arcade/Graphicals/SDL2/include/SDL.hpp
         Arcade/Graphicals/SDL2/include/SDLRenderer.hpp
         Arcade/Graphicals/SDL2/src/SDLRenderer.cpp
+        Arcade/Graphicals/SDL2/src/Main.cpp
 )
 
 add_library(

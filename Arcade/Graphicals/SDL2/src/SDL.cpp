@@ -8,12 +8,6 @@
 #include "IGraphicalLib.hpp"
 #include "SDL.hpp"
 
-extern "C"
-Arcade::IGraphicLib *getInstance()
-{
-    return new SDL;
-}
-
 SDL::SDL()
     : _renderer()
 {}
