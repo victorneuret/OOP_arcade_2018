@@ -39,7 +39,7 @@ private:
         {'l', SELECT}
     };
     const std::map<int, Arcade::IGraphicLib::CoreKey> _coreKeys = {
-        {'b',    PREV_GRAPHICAL_LIB},
+        {'b',   PREV_GRAPHICAL_LIB},
         {'n',   NEXT_GRAPHICAL_LIB},
         {'c',   PREV_GAME_LIB},
         {'v',   NEXT_GAME_LIB},

@@ -30,8 +30,9 @@ NcursesRenderer::~NcursesRenderer()
 
 void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
 {
-    WINDOW *tmpWin = derwin(_win, static_cast<int>(_size * rect.size.y), static_cast<int>(_size* rect.size.x),
-                            static_cast<int>(_size * rect.pos.y), static_cast<int>(_size * rect.pos.x));
+    WINDOW *tmpWin = derwin(_win, static_cast<int>(_size * rect.size.y),
+        static_cast<int>(_size* rect.size.x), static_cast<int>(_size * rect.pos.y),
+        static_cast<int>(_size * rect.pos.x));
 
     _initColor(color, fill);
     box(tmpWin, 0, 0);

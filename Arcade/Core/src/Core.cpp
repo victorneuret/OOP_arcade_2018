@@ -209,6 +209,7 @@ void Core::_tick()
         if (c.first & key)
             (this->*c.second)();
     }
+    _getGraphical()->pollEvents();
     _getGame()->tick(_getGraphical());
 }
 
