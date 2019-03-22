@@ -45,7 +45,7 @@ private:
             {SDLK_DOWN,     PREV_GAME_LIB},
             {SDLK_RIGHT,    NEXT_GAME_LIB},
             {'r',           RESTART_GAME},
-            {'q',           BACK_TO_MENU},
+            {'a',           BACK_TO_MENU},
             {'e',           EXIT}
     };
 };
