@@ -15,7 +15,10 @@
 class SdlRenderer final : public Arcade::IRenderer {
 public:
     SdlRenderer();
+    SdlRenderer(const SdlRenderer &copy);
     ~SdlRenderer() noexcept;
+
+    SdlRenderer &operator=(const SdlRenderer &copy);
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
     void drawTexture(const std::string &imagePath, const Arcade::Vector &pos) override;

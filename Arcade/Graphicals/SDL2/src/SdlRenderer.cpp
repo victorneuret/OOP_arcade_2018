@@ -22,11 +22,24 @@ SdlRenderer::SdlRenderer()
         throw std::runtime_error("Renderer could not be created! SDL Error: " + std::string(SDL_GetError()));
 }
 
+SdlRenderer::SdlRenderer(const SdlRenderer &copy)
+{
+    _window = copy._window;
+    _renderer = copy._renderer;
+}
+
 SdlRenderer::~SdlRenderer()
 {
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
     SDL_Quit();
+}
+
+SdlRenderer &SdlRenderer::operator=(const SdlRenderer &copy)
+{
+    _window = copy._window;
+    _renderer = copy._renderer;
+    return *this;
 }
 
 void SdlRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
