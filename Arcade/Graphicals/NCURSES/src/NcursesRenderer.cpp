@@ -18,23 +18,27 @@ NcursesRenderer::NcursesRenderer()
     nocbreak();
     start_color();
     keypad(stdscr, TRUE);
+    _size = LINES > COLS ? COLS : LINES;
+    _win = newwin(_size, _size, LINES / 2 - (_size / 2), COLS / 2 - (_size / 2));
 }
 
 NcursesRenderer::~NcursesRenderer()
 {
     endwin();
+    delwin(_win);
 }
 
 void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
 {
-    WINDOW *win = newwin(static_cast<int> (LINES * rect.size.y), static_cast<int>(COLS * rect.size.x),
-        static_cast<int>(LINES * rect.pos.y), static_cast<int>(COLS * rect.pos.x));
+    WINDOW *tmpWin = derwin(_win, static_cast<int>(_size * rect.size.y), static_cast<int>(_size* rect.size.x),
+                            static_cast<int>(_size * rect.pos.y), static_cast<int>(_size * rect.pos.x));
 
     _initColor(color, fill);
-    box(win, 0, 0);
-    wbkgd(win, COLOR_PAIR(_colorIndex));
-    wrefresh(win);
-    werase(win);
+    box(tmpWin, 0, 0);
+    wbkgd(tmpWin, COLOR_PAIR(_colorIndex));
+    wnoutrefresh(tmpWin);
+    werase(tmpWin);
+    delwin(tmpWin);
 }
 
 void NcursesRenderer::drawTexture(const std::string &, const Arcade::Vector &)
@@ -43,20 +47,27 @@ void NcursesRenderer::drawTexture(const std::string &, const Arcade::Vector &)
 void NcursesRenderer::drawText(const std::string &text, uint8_t, const Arcade::Vector &pos, const Arcade::Color &color)
 {
     _initColor(color);
-    attron(COLOR_PAIR(_colorIndex));
-    mvprintw(static_cast<int>(LINES * pos.y), static_cast<int>(COLS * pos.x), text.c_str());
-    attroff(COLOR_PAIR(_colorIndex));
+    wattron(_win, COLOR_PAIR(_colorIndex));
+    mvwaddstr(_win, static_cast<int>(_size * pos.y),
+        static_cast<int>(_size * pos.x), text.c_str());
+    wattroff(_win, COLOR_PAIR(_colorIndex));
 }
 
 void NcursesRenderer::display()
 {
-    refresh();
+    wnoutrefresh(_win);
+    doupdate();
 }
 
 void NcursesRenderer::clear()
 {
+    werase(_win);
+    if (_size != (LINES > COLS ? COLS : LINES)) {
+        _size = LINES > COLS ? COLS : LINES;
+        wresize(_win, _size, _size);
+        wmove(_win, LINES / 2 - (_size / 2), COLS / 2 - (_size / 2));
+    }
     _colorIndex = 0;
-    erase();
 }
 
 void NcursesRenderer::_initColor(const Arcade::Color &color, bool fill) noexcept

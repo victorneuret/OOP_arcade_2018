@@ -14,14 +14,13 @@
 
 class MainMenu final : public Arcade::IGame {
 public:
-    MainMenu() {
-        INDEX++;
-    };
+    MainMenu() = default;
     ~MainMenu() override = default;
 
     void tick(Arcade::IGraphicLib *graphic) override;
     void render(Arcade::IGraphicLib *graphic) override;
     bool isCloseRequested() const noexcept override;
+    void reloadResources(Arcade::IGraphicLib *) override;
 
 private:
     using MainMenuPtr = void (MainMenu::*)();
@@ -40,7 +39,6 @@ private:
         {Arcade::IGraphicLib::PRIMARY, &MainMenu::primaryPressed}
     };
 
-    std::pair<uint8_t, uint8_t> _selection = {0, 0};
-    static int INDEX;
+    std::pair<int, int> _selection{0, 0};
 };
 

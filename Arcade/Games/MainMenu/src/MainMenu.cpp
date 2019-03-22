@@ -6,10 +6,10 @@
 */
 
 #include <sstream>
+#include <MainMenu.hpp>
+
 
 #include "MainMenu.hpp"
-
-int MainMenu::INDEX = 0;
 
 void MainMenu::tick(Arcade::IGraphicLib *graphic)
 {
@@ -51,14 +51,14 @@ void MainMenu::primaryPressed()
 
 void MainMenu::render(Arcade::IGraphicLib *graphic)
 {
-    std::stringstream str;
-
     if (!graphic)
         return;
-    str << " hello " << INDEX;
     graphic->getRenderer().clear();
-    graphic->getRenderer().drawText(str.str(), 10, {0.5, 0.5}, {255, 0, 0});
-    graphic->getRenderer().drawRectangle({{0, 0}, {0.5, 0.5}}, {0, 0, 255});
+    graphic->getRenderer().drawRectangle(Arcade::Rect{0.0, 0.0, 0.5, 0.5}, Arcade::Color{255, 0, 0});
+    graphic->getRenderer().drawRectangle(Arcade::Rect{0.5, 0.5, 0.5, 0.5}, Arcade::Color{0, 0, 255});
+    graphic->getRenderer().drawText("this is a test", 10, Arcade::Vector{
+        0.5 + static_cast<double>(_selection.first) / 40,
+        0.5 + static_cast<double>(_selection.second) / 40}, Arcade::Color{255, 0, 0});
     graphic->getRenderer().display();
 }
 
@@ -66,3 +66,6 @@ bool MainMenu::isCloseRequested() const noexcept
 {
     return false;
 }
+
+void MainMenu::reloadResources(Arcade::IGraphicLib *)
+{}

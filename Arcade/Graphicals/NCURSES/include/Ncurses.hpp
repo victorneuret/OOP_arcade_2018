@@ -44,7 +44,7 @@ private:
         {KEY_DOWN,  PREV_GAME_LIB},
         {KEY_UP,    NEXT_GAME_LIB},
         {'r',       RESTART_GAME},
-        {'q',       BACK_TO_MENU},
+        {'a',       BACK_TO_MENU},
         {'e',       EXIT}
     };
 };

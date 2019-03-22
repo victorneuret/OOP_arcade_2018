@@ -15,6 +15,8 @@
 #include <regex>
 #include <algorithm>
 #include <unistd.h>
+#include <thread>
+#include <chrono>
 
 Core::Core(const std::string &path)
     : _libs(), _games()
@@ -164,7 +166,7 @@ void Core::loop()
     while (!_isCloseRequested) {
         _tick();
         _render();
-        usleep(20000);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 24));
     }
 }
 
