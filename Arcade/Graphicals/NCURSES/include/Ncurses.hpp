@@ -28,7 +28,7 @@ public:
 
 private:
     NcursesRenderer _render;
-    const std::map<int, uint8_t> _gameKeys = {
+    const std::map<int, Arcade::IGraphicLib::GameKey> _gameKeys = {
         {'z', UP},
         {'s', DOWN},
         {'q', LEFT},
@@ -38,7 +38,7 @@ private:
         {'k', START},
         {'l', SELECT}
     };
-    const std::map<int, uint8_t> _coreKeys = {
+    const std::map<int, Arcade::IGraphicLib::CoreKey> _coreKeys = {
         {'b',    PREV_GRAPHICAL_LIB},
         {'n',   NEXT_GRAPHICAL_LIB},
         {'c',   PREV_GAME_LIB},
