@@ -29,7 +29,7 @@ public:
 private:
     SDLRenderer _renderer;
     bool _closeRequested = false;
-    const std::unordered_map<int, uint8_t> _gameKeys = {
+    const std::unordered_map<int, GameKey> _gameKeys = {
             {'z', UP},
             {'s', DOWN},
             {'q', LEFT},
@@ -39,7 +39,7 @@ private:
             {'k', START},
             {'l', SELECT}
     };
-    const std::unordered_map<int, uint8_t> _coreKeys = {
+    const std::unordered_map<int, CoreKey> _coreKeys = {
             {SDLK_LEFT,     PREV_GRAPHICAL_LIB},
             {SDLK_RIGHT,    NEXT_GRAPHICAL_LIB},
             {SDLK_DOWN,     PREV_GAME_LIB},
