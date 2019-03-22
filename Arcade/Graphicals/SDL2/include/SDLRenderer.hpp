@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** arcade
 ** File description:
-** SdlRenderer.hpp
+** SDLRenderer.hpp
 */
 
 #pragma once
@@ -13,13 +13,13 @@
 
 #include "IRenderer.hpp"
 
-class SdlRenderer final : public Arcade::IRenderer {
+class SDLRenderer final : public Arcade::IRenderer {
 public:
-    SdlRenderer();
-    SdlRenderer(const SdlRenderer &copy);
-    ~SdlRenderer() noexcept;
+    SDLRenderer();
+    SDLRenderer(const SDLRenderer &copy);
+    ~SDLRenderer() noexcept;
 
-    SdlRenderer &operator=(const SdlRenderer &copy);
+    SDLRenderer &operator=(const SDLRenderer &copy);
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
     void drawTexture(const std::string &imagePath, const Arcade::Vector &pos) override;

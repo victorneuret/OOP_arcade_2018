@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** arcade
 ** File description:
-** Sdl.hpp
+** SDL.hpp
 */
 
 #pragma once
@@ -11,12 +11,12 @@
 #include <unordered_map>
 
 #include "IGraphicalLib.hpp"
-#include "SdlRenderer.hpp"
+#include "SDLRenderer.hpp"
 
-class Sdl final : public Arcade::IGraphicLib {
+class SDL final : public Arcade::IGraphicLib {
 public:
-    Sdl();
-    ~Sdl() override = default;
+    SDL();
+    ~SDL() override = default;
 
     uint8_t getGameKeyState() const noexcept override;
     uint8_t getCoreKeyState() const noexcept override;
@@ -27,7 +27,7 @@ public:
     void pollEvents() override;
 
 private:
-    SdlRenderer _renderer;
+    SDLRenderer _renderer;
     bool _closeRequested = false;
     const std::unordered_map<int, uint8_t> _gameKeys = {
             {'z', UP},

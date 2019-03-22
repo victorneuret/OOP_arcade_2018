@@ -2,16 +2,16 @@
 ** EPITECH PROJECT, 2019
 ** arcade
 ** File description:
-** SdlRenderer.cpp
+** SDLRenderer.cpp
 */
 
 #include <iostream>
 #include <SDL2/SDL_ttf.h>
 
 #include "IGraphicalLib.hpp"
-#include "SdlRenderer.hpp"
+#include "SDLRenderer.hpp"
 
-SdlRenderer::SdlRenderer()
+SDLRenderer::SDLRenderer()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         throw std::runtime_error("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
@@ -24,13 +24,13 @@ SdlRenderer::SdlRenderer()
     TTF_Init();
 }
 
-SdlRenderer::SdlRenderer(const SdlRenderer &copy)
+SDLRenderer::SDLRenderer(const SDLRenderer &copy)
 {
     _window = copy._window;
     _renderer = copy._renderer;
 }
 
-SdlRenderer::~SdlRenderer()
+SDLRenderer::~SDLRenderer()
 {
     TTF_Quit();
     SDL_DestroyRenderer(_renderer);
@@ -38,14 +38,14 @@ SdlRenderer::~SdlRenderer()
     SDL_Quit();
 }
 
-SdlRenderer &SdlRenderer::operator=(const SdlRenderer &copy)
+SDLRenderer &SDLRenderer::operator=(const SDLRenderer &copy)
 {
     _window = copy._window;
     _renderer = copy._renderer;
     return *this;
 }
 
-void SdlRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
+void SDLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
 {
     SDL_Surface* screenSurface = SDL_GetWindowSurface(_window);
     SDL_Rect newRect = {
@@ -62,12 +62,12 @@ void SdlRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &c
         SDL_RenderDrawRect(_renderer, &newRect);
 }
 
-void SdlRenderer::drawTexture(const std::string &, const Arcade::Vector &)
+void SDLRenderer::drawTexture(const std::string &, const Arcade::Vector &)
 {
 
 }
 
-void SdlRenderer::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color)
+void SDLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color)
 {
     SDL_Surface* screenSurface = SDL_GetWindowSurface(_window);
     TTF_Font *font = TTF_OpenFont("res/arcade.ttf", fontSize);
@@ -88,7 +88,7 @@ void SdlRenderer::drawText(const std::string &text, uint8_t fontSize, const Arca
     TTF_CloseFont(font);
 }
 
-void SdlRenderer::display()
+void SDLRenderer::display()
 {
     //SDL_Surface* screenSurface = SDL_GetWindowSurface(_window);
     //SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00));
@@ -96,7 +96,7 @@ void SdlRenderer::display()
     SDL_RenderPresent(_renderer);
 }
 
-void SdlRenderer::clear()
+void SDLRenderer::clear()
 {
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 255);
     SDL_RenderClear(_renderer);

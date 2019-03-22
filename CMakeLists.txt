@@ -82,7 +82,7 @@ add_library(
 add_library(
         _arcade_sdl2
         SHARED
-        Arcade/Graphicals/SDL2/src/Sdl.cpp
+        Arcade/Graphicals/SDL2/src/SDL.cpp
         Arcade/Common/include/Math/Rect.hpp
         Arcade/Common/include/Math/Vector.hpp
         Arcade/Common/include/IGame.hpp
@@ -95,9 +95,9 @@ add_library(
         Arcade/Common/src/Color.cpp
         Arcade/Common/src/Vector.cpp
         Arcade/Common/src/Rect.cpp
-        Arcade/Graphicals/SDL2/include/Sdl.hpp
-        Arcade/Graphicals/SDL2/include/SdlRenderer.hpp
-        Arcade/Graphicals/SDL2/src/SdlRenderer.cpp
+        Arcade/Graphicals/SDL2/include/SDL.hpp
+        Arcade/Graphicals/SDL2/include/SDLRenderer.hpp
+        Arcade/Graphicals/SDL2/src/SDLRenderer.cpp
 )
 
 add_library(

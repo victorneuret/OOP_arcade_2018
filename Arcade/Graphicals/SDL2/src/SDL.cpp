@@ -6,19 +6,19 @@
 */
 
 #include "IGraphicalLib.hpp"
-#include "Sdl.hpp"
+#include "SDL.hpp"
 
 extern "C"
 Arcade::IGraphicLib *getInstance()
 {
-    return new Sdl;
+    return new SDL;
 }
 
-Sdl::Sdl()
+SDL::SDL()
     : _renderer()
 {}
 
-uint8_t Sdl::getGameKeyState() const noexcept
+uint8_t SDL::getGameKeyState() const noexcept
 {
     SDL_Event event;
     uint8_t key = 0;
@@ -31,7 +31,7 @@ uint8_t Sdl::getGameKeyState() const noexcept
     return 0;
 }
 
-uint8_t Sdl::getCoreKeyState() const noexcept
+uint8_t SDL::getCoreKeyState() const noexcept
 {
     SDL_Event event;
     uint8_t key = 0;
@@ -44,17 +44,17 @@ uint8_t Sdl::getCoreKeyState() const noexcept
     return 0;
 }
 
-void Sdl::sendGameKeyInput(GameKey) noexcept
+void SDL::sendGameKeyInput(GameKey) noexcept
 {
 
 }
 
-void Sdl::sendCoreKeyInput(CoreKey) noexcept
+void SDL::sendCoreKeyInput(CoreKey) noexcept
 {
 
 }
 
-void Sdl::pollEvents()
+void SDL::pollEvents()
 {
     SDL_Event event;
 
@@ -63,12 +63,12 @@ void Sdl::pollEvents()
             _closeRequested = true;
 }
 
-Arcade::IRenderer &Sdl::getRenderer() noexcept
+Arcade::IRenderer &SDL::getRenderer() noexcept
 {
     return _renderer;
 }
 
-bool Sdl::isCloseRequested() const noexcept
+bool SDL::isCloseRequested() const noexcept
 {
     return _closeRequested;
 }
