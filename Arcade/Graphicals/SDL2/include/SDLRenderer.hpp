@@ -16,10 +16,10 @@
 class SDLRenderer final : public Arcade::IRenderer {
 public:
     SDLRenderer();
-    SDLRenderer(const SDLRenderer &copy);
+    SDLRenderer(const SDLRenderer &copy) = delete;
     ~SDLRenderer() noexcept;
 
-    SDLRenderer &operator=(const SDLRenderer &copy);
+    SDLRenderer &operator=(const SDLRenderer &copy) = delete;
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
     void drawTexture(const std::string &imagePath, const Arcade::Vector &pos) override;

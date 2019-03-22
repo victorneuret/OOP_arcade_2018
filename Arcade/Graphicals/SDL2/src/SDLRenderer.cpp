@@ -24,25 +24,12 @@ SDLRenderer::SDLRenderer()
     TTF_Init();
 }
 
-SDLRenderer::SDLRenderer(const SDLRenderer &copy)
-{
-    _window = copy._window;
-    _renderer = copy._renderer;
-}
-
 SDLRenderer::~SDLRenderer()
 {
     TTF_Quit();
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
     SDL_Quit();
-}
-
-SDLRenderer &SDLRenderer::operator=(const SDLRenderer &copy)
-{
-    _window = copy._window;
-    _renderer = copy._renderer;
-    return *this;
 }
 
 void SDLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
