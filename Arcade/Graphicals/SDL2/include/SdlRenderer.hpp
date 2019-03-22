@@ -14,7 +14,7 @@
 
 class SdlRenderer final : public Arcade::IRenderer {
 public:
-    SdlRenderer() noexcept;
+    SdlRenderer();
     ~SdlRenderer() noexcept;
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
