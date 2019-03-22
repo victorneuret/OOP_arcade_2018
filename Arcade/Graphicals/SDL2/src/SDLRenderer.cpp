@@ -34,7 +34,7 @@ SDLRenderer::~SDLRenderer()
 
 void SDLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
 {
-    SDL_Surface* screenSurface = SDL_GetWindowSurface(_window);
+    SDL_Surface *screenSurface = SDL_GetWindowSurface(_window);
     SDL_Rect newRect = {
             static_cast<int>(rect.pos.x * screenSurface->w),
             static_cast<int>(rect.pos.y * screenSurface->h),
@@ -56,20 +56,30 @@ void SDLRenderer::drawTexture(const std::string &, const Arcade::Vector &)
 
 void SDLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color)
 {
-    SDL_Surface* screenSurface = SDL_GetWindowSurface(_window);
-    TTF_Font *font = TTF_OpenFont("res/arcade.ttf", fontSize);
-    if (!font)
-        throw std::runtime_error(std::string(TTF_GetError()));
-    SDL_Color fontColor = {color.r, color.g, color.b, color.a};
-    SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), fontColor);
-    SDL_Texture * texture = SDL_CreateTextureFromSurface(_renderer, surface);
     int textureWidth = 0;
     int textureHeight = 0;
     SDL_Rect textureRect;
 
+    SDL_Surface *screenSurface = SDL_GetWindowSurface(_window);
+
+    TTF_Font *font = TTF_OpenFont("res/arcade.ttf", fontSize);
+    if (!font)
+        throw std::runtime_error(std::string(TTF_GetError()));
+    SDL_Color fontColor = {color.r, color.g, color.b, color.a};
+
+    SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), fontColor);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surface);
+
     SDL_QueryTexture(texture, NULL, NULL, &textureWidth, &textureHeight);
-    textureRect = {static_cast<int>(pos.x * screenSurface->w), static_cast<int>(pos.y * screenSurface->h), textureWidth, textureHeight};
+    textureRect = {
+            static_cast<int>(pos.x * screenSurface->w),
+            static_cast<int>(pos.y * screenSurface->h),
+            textureWidth,
+            textureHeight
+    };
+
     SDL_RenderCopy(_renderer, texture, NULL, &textureRect);
+
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);
     TTF_CloseFont(font);
@@ -77,9 +87,6 @@ void SDLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arca
 
 void SDLRenderer::display()
 {
-    //SDL_Surface* screenSurface = SDL_GetWindowSurface(_window);
-    //SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00));
-    //SDL_UpdateWindowSurface(_window);
     SDL_RenderPresent(_renderer);
 }
 
