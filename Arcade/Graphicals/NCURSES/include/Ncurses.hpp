@@ -39,12 +39,12 @@ private:
         {'l', SELECT}
     };
     const std::map<int, uint8_t> _coreKeys = {
-        {KEY_LEFT,  PREV_GRAPHICAL_LIB},
-        {KEY_RIGHT, NEXT_GRAPHICAL_LIB},
-        {KEY_DOWN,  PREV_GAME_LIB},
-        {KEY_UP,    NEXT_GAME_LIB},
-        {'r',       RESTART_GAME},
-        {'a',       BACK_TO_MENU},
-        {'e',       EXIT}
+        {'b',    PREV_GRAPHICAL_LIB},
+        {'n',   NEXT_GRAPHICAL_LIB},
+        {'c',   PREV_GAME_LIB},
+        {'v',   NEXT_GAME_LIB},
+        {'r',   RESTART_GAME},
+        {'a',   BACK_TO_MENU},
+        {'e',   EXIT}
     };
 };

@@ -38,7 +38,7 @@ Core::~Core()
         dlclose(_loadedGame.dl);
     }
     if (_loadedLib.dl) {
-        delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
+        // delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
         dlclose(_loadedLib.dl);
     }
 }
@@ -59,7 +59,7 @@ void Core::_loadGraphical(const std::string &path)
     void *func = nullptr;
 
     if (_loadedLib.dl) {
-        delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
+        // delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
         dlclose(_loadedLib.dl);
     }
 
