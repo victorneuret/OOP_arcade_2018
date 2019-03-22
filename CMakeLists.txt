@@ -95,7 +95,10 @@ add_library(
         Arcade/Common/src/Color.cpp
         Arcade/Common/src/Vector.cpp
         Arcade/Common/src/Rect.cpp
-        Arcade/Graphicals/SDL2/include/Sdl.hpp Arcade/Graphicals/SDL2/include/SdlRenderer.hpp Arcade/Graphicals/SDL2/src/SdlRenderer.cpp)
+        Arcade/Graphicals/SDL2/include/Sdl.hpp
+        Arcade/Graphicals/SDL2/include/SdlRenderer.hpp
+        Arcade/Graphicals/SDL2/src/SdlRenderer.cpp
+)
 
 add_library(
         _arcade_sfml
