@@ -6,6 +6,8 @@
 */
 
 #include <stdexcept>
+#include <thread>
+#include <chrono>
 
 #include "NcursesRenderer.hpp"
 
@@ -24,8 +26,8 @@ NcursesRenderer::NcursesRenderer()
 
 NcursesRenderer::~NcursesRenderer()
 {
-    endwin();
     delwin(_win);
+    endwin();
 }
 
 void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
@@ -58,6 +60,7 @@ void NcursesRenderer::display()
 {
     wnoutrefresh(_win);
     doupdate();
+    std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 24));
 }
 
 void NcursesRenderer::clear()

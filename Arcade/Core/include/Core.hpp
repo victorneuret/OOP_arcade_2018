@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+#include <functional>
 
 #include "IGraphicalLib.hpp"
 #include "IGame.hpp"
@@ -30,9 +31,8 @@ public:
     void loop();
 
 private:
-    using instanceGamePtr = Arcade::IGame *(*)();
-    using instanceGraphicalPtr =  Arcade::IGame *(*)();
-    using CorePtr = void (Core::*)();
+    using InstanceGamePtr = Arcade::IGame *(*)();
+    using InstanceGraphicalPtr = Arcade::IGraphicLib *(*)();
 
     struct Extension {
         std::string path;
@@ -46,6 +46,7 @@ private:
     void _loadDirectory(const std::string &path) noexcept;
     Arcade::IGraphicLib *_getGraphical();
     Arcade::IGame *_getGame();
+    bool _shouldExit() noexcept;
 
     void _loadNextGraphical();
     void _loadPrevGraphical();
@@ -63,13 +64,13 @@ private:
     std::vector<std::string> _libs;
     std::vector<std::string> _games;
 
-    const std::unordered_map<uint8_t, CorePtr> _coreKeys = {
-        {Arcade::IGraphicLib::PREV_GRAPHICAL_LIB, &Core::_loadPrevGraphical},
-        {Arcade::IGraphicLib::NEXT_GRAPHICAL_LIB, &Core::_loadNextGraphical},
-        {Arcade::IGraphicLib::PREV_GAME_LIB, &Core::_loadPrevGame},
-        {Arcade::IGraphicLib::NEXT_GAME_LIB, &Core::_loadNextGame},
-        {Arcade::IGraphicLib::RESTART_GAME, &Core::_restartGame},
-        {Arcade::IGraphicLib::BACK_TO_MENU, &Core::_backToMenu},
-        {Arcade::IGraphicLib::EXIT, &Core::_exit}
+    const std::unordered_map<uint8_t, std::function<void ()>> _coreKeys = {
+        {Arcade::IGraphicLib::PREV_GRAPHICAL_LIB, std::bind(&Core::_loadPrevGraphical, this)},
+        {Arcade::IGraphicLib::NEXT_GRAPHICAL_LIB, std::bind(&Core::_loadNextGraphical, this)},
+        {Arcade::IGraphicLib::PREV_GAME_LIB, std::bind(&Core::_loadPrevGame, this)},
+        {Arcade::IGraphicLib::NEXT_GAME_LIB, std::bind(&Core::_loadNextGame, this)},
+        {Arcade::IGraphicLib::RESTART_GAME, std::bind(&Core::_restartGame, this)},
+        {Arcade::IGraphicLib::BACK_TO_MENU, std::bind(&Core::_backToMenu, this)},
+        {Arcade::IGraphicLib::EXIT, std::bind(&Core::_exit, this)}
     };
 };

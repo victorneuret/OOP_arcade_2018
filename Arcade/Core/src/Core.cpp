@@ -15,8 +15,8 @@
 #include <regex>
 #include <algorithm>
 #include <unistd.h>
-#include <thread>
-#include <chrono>
+#include <Core.hpp>
+
 
 Core::Core(const std::string &path)
     : _libs(), _games()
@@ -38,8 +38,8 @@ Core::~Core()
         dlclose(_loadedGame.dl);
     }
     if (_loadedLib.dl) {
-        // delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
-        dlclose(_loadedLib.dl);
+         delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
+         dlclose(_loadedLib.dl);
     }
 }
 
@@ -56,28 +56,27 @@ void Core::_addExtension(const std::string &path, EXT_TYPE type) noexcept
 
 void Core::_loadGraphical(const std::string &path)
 {
-    void *func = nullptr;
-
     if (_loadedLib.dl) {
-        // delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
+        delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
         dlclose(_loadedLib.dl);
     }
 
     _loadedLib = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
     if (!_loadedLib.dl)
         throw std::runtime_error(dlerror());
-    func = dlsym(_loadedLib.dl, "getInstance");
+
+    std::function<Arcade::IGraphicLib *()> func = reinterpret_cast<InstanceGraphicalPtr>
+        (dlsym(_loadedLib.dl, "getInstance"));
+
     if (!func)
         throw std::runtime_error(dlerror());
-    _loadedLib.instance = reinterpret_cast<instanceGraphicalPtr>(func)();
+    _loadedLib.instance = func();
     if (!_loadedLib.instance)
         throw std::runtime_error("Failed to create instance for graphical: " + _loadedGame.path);
 }
 
 void Core::_loadGame(const std::string &path)
 {
-    void *func = nullptr;
-
     if (_loadedGame.dl) {
         delete reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
         dlclose(_loadedGame.dl);
@@ -86,10 +85,13 @@ void Core::_loadGame(const std::string &path)
     _loadedGame = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
     if (!_loadedGame.dl)
         throw std::runtime_error(dlerror());
-    func = dlsym(_loadedGame.dl, "getInstance");
+
+    std::function<Arcade::IGame *()> func = reinterpret_cast<InstanceGamePtr>
+        (dlsym(_loadedGame.dl, "getInstance"));
+
     if (!func)
         throw std::runtime_error(dlerror());
-    _loadedGame.instance = reinterpret_cast<instanceGamePtr>(func)();
+    _loadedGame.instance = func();
     if (!_loadedGame.instance)
         throw std::runtime_error("Failed to create instance for game: " + _loadedGame.path);
 }
@@ -146,7 +148,13 @@ void Core::_restartGame()
 {
     if (_loadedGame.instance)
         delete reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
-    _loadedGame.instance = reinterpret_cast<instanceGamePtr>(dlsym(_loadedGame.dl, "getInstance"))();
+
+    std::function<Arcade::IGame *()> func = reinterpret_cast<InstanceGamePtr>
+        (dlsym(_loadedGame.dl, "getInstance"));
+
+    if (!func)
+        throw std::runtime_error(dlerror());
+    _loadedGame.instance = func();
     if (!_loadedGame.instance)
         throw std::runtime_error(dlerror());
 }
@@ -163,10 +171,9 @@ void Core::_exit()
 
 void Core::loop()
 {
-    while (!_isCloseRequested) {
+    while (!_shouldExit()) {
         _tick();
         _render();
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 24));
     }
 }
 
@@ -200,14 +207,14 @@ Arcade::IGame *Core::_getGame()
 
 void Core::_tick()
 {
-    if (_isCloseRequested || _getGraphical()->isCloseRequested() || _getGame()->isCloseRequested())
+    if (_shouldExit())
         return _exit();
 
     uint8_t key = _getGraphical()->getCoreKeyState();
 
     for (const auto &c : _coreKeys) {
         if (c.first & key)
-            (this->*c.second)();
+            c.second();
     }
     _getGraphical()->pollEvents();
     _getGame()->tick(_getGraphical());
@@ -215,7 +222,12 @@ void Core::_tick()
 
 void Core::_render()
 {
-    if (_isCloseRequested || _getGraphical()->isCloseRequested() || _getGame()->isCloseRequested())
+    if (_shouldExit())
         return _exit();
     _getGame()->render(_getGraphical());
+}
+
+bool Core::_shouldExit() noexcept
+{
+    return (_isCloseRequested || _getGraphical()->isCloseRequested() || _getGame()->isCloseRequested());
 }

@@ -8,6 +8,7 @@
 #pragma once
 
 #include <unordered_map>
+#include <functional>
 
 #include "IGame.hpp"
 #include "IGraphicalLib.hpp"
@@ -31,12 +32,12 @@ private:
     void moveRight();
     void primaryPressed();
 
-    const std::unordered_map<uint8_t, MainMenuPtr> _gameKeys = {
-        {Arcade::IGraphicLib::UP, &MainMenu::moveUp},
-        {Arcade::IGraphicLib::DOWN, &MainMenu::moveDown},
-        {Arcade::IGraphicLib::LEFT, &MainMenu::moveLeft},
-        {Arcade::IGraphicLib::RIGHT, &MainMenu::moveRight},
-        {Arcade::IGraphicLib::PRIMARY, &MainMenu::primaryPressed}
+    const std::unordered_map<uint8_t, std::function<void ()>> _gameKeys = {
+        {Arcade::IGraphicLib::UP, std::bind(&MainMenu::moveUp, this)},
+        {Arcade::IGraphicLib::DOWN, std::bind(&MainMenu::moveDown, this)},
+        {Arcade::IGraphicLib::LEFT, std::bind(&MainMenu::moveLeft, this)},
+        {Arcade::IGraphicLib::RIGHT, std::bind(&MainMenu::moveRight, this)},
+        {Arcade::IGraphicLib::PRIMARY, std::bind(&MainMenu::primaryPressed, this)}
     };
 
     std::pair<int, int> _selection{0, 0};

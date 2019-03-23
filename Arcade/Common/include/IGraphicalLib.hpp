@@ -35,7 +35,7 @@ namespace Arcade {
             EXIT = (1 << 6)
         };
 
-        virtual ~IGraphicLib() = 0;
+        virtual ~IGraphicLib() = default;
 
         virtual uint8_t getGameKeyState() const noexcept = 0;
         virtual uint8_t getCoreKeyState() const noexcept = 0;

@@ -18,7 +18,7 @@ void MainMenu::tick(Arcade::IGraphicLib *graphic)
 
     for (const auto &c : _gameKeys) {
         if (c.first & key)
-            (this->*c.second)();
+            c.second();
     }
 }
 
