@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include <map>
+#include <unordered_map>
 
 #include "IGraphicalLib.hpp"
 #include "IGame.hpp"
@@ -63,7 +63,7 @@ private:
     std::vector<std::string> _libs;
     std::vector<std::string> _games;
 
-    const std::map<uint8_t, CorePtr> _coreKeys = {
+    const std::unordered_map<uint8_t, CorePtr> _coreKeys = {
         {Arcade::IGraphicLib::PREV_GRAPHICAL_LIB, &Core::_loadPrevGraphical},
         {Arcade::IGraphicLib::NEXT_GRAPHICAL_LIB, &Core::_loadNextGraphical},
         {Arcade::IGraphicLib::PREV_GAME_LIB, &Core::_loadPrevGame},

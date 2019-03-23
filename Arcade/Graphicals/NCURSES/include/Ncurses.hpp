@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <ncurses.h>
 
 #include "IGraphicalLib.hpp"
@@ -28,7 +28,7 @@ public:
 
 private:
     NcursesRenderer _render;
-    const std::map<int, Arcade::IGraphicLib::GameKey> _gameKeys = {
+    const std::unordered_map<int, Arcade::IGraphicLib::GameKey> _gameKeys = {
         {'z', UP},
         {'s', DOWN},
         {'q', LEFT},
@@ -38,7 +38,7 @@ private:
         {'k', START},
         {'l', SELECT}
     };
-    const std::map<int, Arcade::IGraphicLib::CoreKey> _coreKeys = {
+    const std::unordered_map<int, Arcade::IGraphicLib::CoreKey> _coreKeys = {
         {'b',   PREV_GRAPHICAL_LIB},
         {'n',   NEXT_GRAPHICAL_LIB},
         {'c',   PREV_GAME_LIB},

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <map>
+#include <unordered_map>
 
 #include "IGame.hpp"
 #include "IGraphicalLib.hpp"
@@ -31,7 +31,7 @@ private:
     void moveRight();
     void primaryPressed();
 
-    const std::map<uint8_t, MainMenuPtr> _gameKeys = {
+    const std::unordered_map<uint8_t, MainMenuPtr> _gameKeys = {
         {Arcade::IGraphicLib::UP, &MainMenu::moveUp},
         {Arcade::IGraphicLib::DOWN, &MainMenu::moveDown},
         {Arcade::IGraphicLib::LEFT, &MainMenu::moveLeft},
