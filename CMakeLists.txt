@@ -13,12 +13,14 @@ add_library(
         Arcade/Common/include/IGame.hpp
         Arcade/Common/include/IGraphicalLib.hpp
         Arcade/Common/include/IRenderer.hpp
-        Arcade/Common/include/Graphical/ITexture.hpp
-        Arcade/Common/include/Graphical/ISprite.hpp
+        Arcade/Common/include/Graphical/ATexture.hpp
+        Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Games/MainMenu/src/MainMenu.cpp
         Arcade/Games/MainMenu/include/MainMenu.hpp
+        Arcade/Common/src/Graphical/ATexture.cpp
+        Arcade/Common/src/Graphical/ASprite.cpp
 )
 
 add_library(
@@ -30,13 +32,15 @@ add_library(
         Arcade/Common/include/IGame.hpp
         Arcade/Common/include/IGraphicalLib.hpp
         Arcade/Common/include/IRenderer.hpp
-        Arcade/Common/include/Graphical/ITexture.hpp
-        Arcade/Common/include/Graphical/ISprite.hpp
+        Arcade/Common/include/Graphical/ATexture.hpp
+        Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-        Arcade/Common/src/Color.cpp
-        Arcade/Common/src/Vector.cpp
-        Arcade/Common/src/Rect.cpp
+        Arcade/Common/src/Graphical/Color.cpp
+        Arcade/Common/src/Math/Vector.cpp
+        Arcade/Common/src/Math/Rect.cpp
+        Arcade/Common/src/Graphical/ATexture.cpp
+        Arcade/Common/src/Graphical/ASprite.cpp
 )
 
 add_library(
@@ -48,13 +52,15 @@ add_library(
         Arcade/Common/include/IGame.hpp
         Arcade/Common/include/IGraphicalLib.hpp
         Arcade/Common/include/IRenderer.hpp
-        Arcade/Common/include/Graphical/ITexture.hpp
-        Arcade/Common/include/Graphical/ISprite.hpp
+        Arcade/Common/include/Graphical/ATexture.hpp
+        Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-        Arcade/Common/src/Color.cpp
-        Arcade/Common/src/Vector.cpp
-        Arcade/Common/src/Rect.cpp
+        Arcade/Common/src/Graphical/Color.cpp
+        Arcade/Common/src/Math/Vector.cpp
+        Arcade/Common/src/Math/Rect.cpp
+        Arcade/Common/src/Graphical/ATexture.cpp
+        Arcade/Common/src/Graphical/ASprite.cpp
 )
 
 add_library(
@@ -65,18 +71,21 @@ add_library(
         Arcade/Common/include/IGame.hpp
         Arcade/Common/include/IGraphicalLib.hpp
         Arcade/Common/include/IRenderer.hpp
-        Arcade/Common/include/Graphical/ITexture.hpp
-        Arcade/Common/include/Graphical/ISprite.hpp
+        Arcade/Common/include/Graphical/ATexture.hpp
+        Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-        Arcade/Common/src/Color.cpp
-        Arcade/Common/src/Vector.cpp
-        Arcade/Common/src/Rect.cpp
+        Arcade/Common/src/Graphical/Color.cpp
+        Arcade/Common/src/Math/Vector.cpp
+        Arcade/Common/src/Math/Rect.cpp
         Arcade/Graphicals/NCURSES/src/Ncurses.cpp
         Arcade/Graphicals/NCURSES/include/Ncurses.hpp
         Arcade/Graphicals/NCURSES/src/NcursesRenderer.cpp
         Arcade/Graphicals/NCURSES/include/NcursesRenderer.hpp
-        Arcade/Graphicals/NCURSES/src/Main.cpp)
+        Arcade/Graphicals/NCURSES/src/Main.cpp
+        Arcade/Common/src/Graphical/ATexture.cpp
+        Arcade/Common/src/Graphical/ASprite.cpp
+)
 
 add_library(
         _arcade_sdl2
@@ -87,13 +96,15 @@ add_library(
         Arcade/Common/include/IGame.hpp
         Arcade/Common/include/IGraphicalLib.hpp
         Arcade/Common/include/IRenderer.hpp
-        Arcade/Common/include/Graphical/ITexture.hpp
-        Arcade/Common/include/Graphical/ISprite.hpp
+        Arcade/Common/include/Graphical/ATexture.hpp
+        Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-        Arcade/Common/src/Color.cpp
-        Arcade/Common/src/Vector.cpp
-        Arcade/Common/src/Rect.cpp
+        Arcade/Common/src/Graphical/Color.cpp
+        Arcade/Common/src/Math/Vector.cpp
+        Arcade/Common/src/Math/Rect.cpp
+        Arcade/Common/src/Graphical/ATexture.cpp
+        Arcade/Common/src/Graphical/ASprite.cpp
 )
 
 add_library(
@@ -104,18 +115,25 @@ add_library(
         Arcade/Common/include/IGame.hpp
         Arcade/Common/include/IGraphicalLib.hpp
         Arcade/Common/include/IRenderer.hpp
-        Arcade/Common/include/Graphical/ITexture.hpp
-        Arcade/Common/include/Graphical/ISprite.hpp
+        Arcade/Common/include/Graphical/ATexture.hpp
+        Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-        Arcade/Common/src/Color.cpp
-        Arcade/Common/src/Vector.cpp
-        Arcade/Common/src/Rect.cpp
+        Arcade/Common/src/Graphical/Color.cpp
+        Arcade/Common/src/Math/Vector.cpp
+        Arcade/Common/src/Math/Rect.cpp
         Arcade/Graphicals/SFML/src/SFMLRenderer.cpp
         Arcade/Graphicals/SFML/include/SFMLRenderer.hpp
         Arcade/Graphicals/SFML/src/SFML.cpp
         Arcade/Graphicals/SFML/include/SFML.hpp
-        Arcade/Graphicals/SFML/src/Main.cpp)
+        Arcade/Graphicals/SFML/src/Main.cpp
+        Arcade/Common/src/Graphical/ATexture.cpp
+        Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Graphicals/SFML/src/SFMLTexture.cpp
+        Arcade/Graphicals/SFML/include/SFMLTexture.hpp
+        Arcade/Graphicals/SFML/src/SFMLSprite.cpp
+        Arcade/Graphicals/SFML/include/SFMLSprite.hpp
+)
 
 add_executable(
         arcade
@@ -125,15 +143,17 @@ add_executable(
         Arcade/Common/include/IGame.hpp
         Arcade/Common/include/IGraphicalLib.hpp
         Arcade/Common/include/IRenderer.hpp
-        Arcade/Common/include/Graphical/ITexture.hpp
-        Arcade/Common/include/Graphical/ISprite.hpp
+        Arcade/Common/include/Graphical/ATexture.hpp
+        Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
-        Arcade/Common/src/Color.cpp
-        Arcade/Common/src/Vector.cpp
-        Arcade/Common/src/Rect.cpp
+        Arcade/Common/src/Graphical/Color.cpp
+        Arcade/Common/src/Math/Vector.cpp
+        Arcade/Common/src/Math/Rect.cpp
         Arcade/Core/src/Core.cpp
         Arcade/Core/include/Core.hpp
+        Arcade/Common/src/Graphical/ATexture.cpp
+        Arcade/Common/src/Graphical/ASprite.cpp
 )
 
 include_directories(Arcade/Common/include)

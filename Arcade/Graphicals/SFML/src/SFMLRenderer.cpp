@@ -9,6 +9,7 @@
 
 #include "IGraphicalLib.hpp"
 #include "SFMLRenderer.hpp"
+#include "SFMLSprite.hpp"
 
 SFMLRenderer::SFMLRenderer() noexcept
     : _window(sf::VideoMode(800, 600), "SFML", sf::Style::Close), _sfFont()
@@ -34,8 +35,11 @@ void SFMLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &
     _window.draw(sfRect);
 }
 
-void SFMLRenderer::drawTexture(const std::string &, const Arcade::Vector &)
+void SFMLRenderer::drawSprite(const Arcade::ASprite &sprite)
 {
+    const auto &sfmlSprite = dynamic_cast<const SFMLSprite *>(&sprite);
+
+    _window.draw(sfmlSprite->getSfSprite());
 }
 
 void SFMLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color)

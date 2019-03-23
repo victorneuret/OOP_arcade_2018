@@ -14,6 +14,7 @@ namespace Arcade {
         Vector pos;
         Vector size;
 
+        Rect() noexcept;
         Rect(const Vector &pos, const Vector &size) noexcept;
         Rect(double x, double y, double w, double h) noexcept;
         ~Rect() = default;

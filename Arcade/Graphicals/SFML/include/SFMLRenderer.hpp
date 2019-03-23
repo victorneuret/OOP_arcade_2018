@@ -14,9 +14,10 @@
 class SFMLRenderer final : public Arcade::IRenderer {
 public:
     SFMLRenderer() noexcept;
+    ~SFMLRenderer() override = default;
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
-    void drawTexture(const std::string &imagePath, const Arcade::Vector &pos) override;
+    void drawSprite(const Arcade::ASprite &sprite) override;
     void drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color) override;
 
     void display() override;
@@ -27,4 +28,3 @@ private:
     sf::RenderWindow _window;
     sf::Font _sfFont;
 };
-

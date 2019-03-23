@@ -12,6 +12,8 @@
 
 namespace Arcade {
     class ISoundPlayer {
+        virtual ~ISoundPlayer() = 0;
+
         virtual void playSound(const std::string &soundPath) = 0;
         virtual void playMusic(const std::string &musicPath) = 0;
         virtual void setVolume(uint8_t value) noexcept = 0;

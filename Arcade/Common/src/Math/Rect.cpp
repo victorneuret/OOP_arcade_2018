@@ -7,6 +7,11 @@
 
 #include "Math/Rect.hpp"
 
+Arcade::Rect::Rect() noexcept
+    : pos(Vector(0, 0)), size(Vector(0, 0))
+{
+}
+
 Arcade::Rect::Rect(const Vector &pos, const Vector &size) noexcept
     : pos(pos), size(size)
 {}

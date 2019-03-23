@@ -12,7 +12,7 @@
 namespace Arcade {
     class IGame {
     public:
-        virtual ~IGame() = default;
+        virtual ~IGame() = 0;
 
         virtual void tick() = 0;
         virtual void render(IGraphicLib *graphic) = 0;
