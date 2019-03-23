@@ -9,6 +9,8 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
+#include <functional>
 
 #include "IGraphicalLib.hpp"
 #include "IGame.hpp"
@@ -26,16 +28,11 @@ public:
 
     explicit Core(const std::string &path);
     ~Core();
-
-    Arcade::IGraphicLib *getGraphical();
-    Arcade::IGame *getGame();
-    void loadDirectory(const std::string &path) noexcept;
-    void tick();
-    void render();
+    void loop();
 
 private:
-    using instanceGame_ptr = Arcade::IGame *(*)();
-    using instanceGraphical_ptr =  Arcade::IGame *(*)();
+    using InstanceGamePtr = Arcade::IGame *(*)();
+    using InstanceGraphicalPtr = Arcade::IGraphicLib *(*)();
 
     struct Extension {
         std::string path;
@@ -43,16 +40,37 @@ private:
         void *instance;
     };
 
-    void loadGraphical(const std::string &path);
-    void loadGame(const std::string &path);
-    void addExtension(const std::string &path, EXT_TYPE type) noexcept;
-    void loadNextGraphical();
-    void loadPrevGraphical();
-    void loadNextGame();
-    void loadPrevGame();
+    void _loadGraphical(const std::string &path);
+    void _loadGame(const std::string &path);
+    void _addExtension(const std::string &path, EXT_TYPE type) noexcept;
+    void _loadDirectory(const std::string &path) noexcept;
+    Arcade::IGraphicLib *_getGraphical();
+    Arcade::IGame *_getGame();
+    bool _shouldExit() noexcept;
 
-    Extension _dl_lib = {"", nullptr, nullptr};
-    Extension  _dl_game = {"", nullptr, nullptr};
+    void _loadNextGraphical();
+    void _loadPrevGraphical();
+    void _loadNextGame();
+    void _loadPrevGame();
+    void _restartGame();
+    void _backToMenu();
+    void _exit();
+    void _tick();
+    void _render();
+
+    Extension _loadedLib = {"", nullptr, nullptr};
+    Extension _loadedGame = {"", nullptr, nullptr};
+    bool _isCloseRequested = false;
     std::vector<std::string> _libs;
     std::vector<std::string> _games;
+
+    const std::unordered_map<uint8_t, std::function<void ()>> _coreKeys = {
+        {Arcade::IGraphicLib::PREV_GRAPHICAL_LIB, std::bind(&Core::_loadPrevGraphical, this)},
+        {Arcade::IGraphicLib::NEXT_GRAPHICAL_LIB, std::bind(&Core::_loadNextGraphical, this)},
+        {Arcade::IGraphicLib::PREV_GAME_LIB, std::bind(&Core::_loadPrevGame, this)},
+        {Arcade::IGraphicLib::NEXT_GAME_LIB, std::bind(&Core::_loadNextGame, this)},
+        {Arcade::IGraphicLib::RESTART_GAME, std::bind(&Core::_restartGame, this)},
+        {Arcade::IGraphicLib::BACK_TO_MENU, std::bind(&Core::_backToMenu, this)},
+        {Arcade::IGraphicLib::EXIT, std::bind(&Core::_exit, this)}
+    };
 };

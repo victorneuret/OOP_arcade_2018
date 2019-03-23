@@ -18,12 +18,7 @@ int main(int ac, char **av)
     try {
         Core c(av[1]);
 
-        c.loadDirectory(LIB_PATH);
-        c.loadDirectory(GAME_PATH);
-        while (true) {
-            c.tick();
-            c.render();
-        }
+        c.loop();
     } catch (const std::exception &error) {
         std::cerr << error.what() << std::endl;
         return 84;

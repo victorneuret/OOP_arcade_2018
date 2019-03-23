@@ -35,12 +35,13 @@ namespace Arcade {
             EXIT = (1 << 6)
         };
 
-        virtual ~IGraphicLib() = 0;
+        virtual ~IGraphicLib() = default;
 
         virtual uint8_t getGameKeyState() const noexcept = 0;
         virtual uint8_t getCoreKeyState() const noexcept = 0;
         virtual void sendGameKeyInput(GameKey input) noexcept = 0;
         virtual void sendCoreKeyInput(CoreKey input) noexcept = 0;
+        virtual void pollEvents() = 0;
 
         virtual IRenderer &getRenderer() noexcept = 0;
         virtual bool isCloseRequested() const noexcept = 0;

@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <map>
+#include <unordered_map>
 #include <ncurses.h>
 
 #include "IGraphicalLib.hpp"
@@ -24,10 +24,11 @@ public:
     void sendCoreKeyInput(CoreKey input) noexcept override;
     Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;
+    void pollEvents() override;
 
 private:
     NcursesRenderer _render;
-    const std::map<int, uint8_t> _gameKeys = {
+    const std::unordered_map<int, Arcade::IGraphicLib::GameKey> _gameKeys = {
         {'z', UP},
         {'s', DOWN},
         {'q', LEFT},
@@ -37,13 +38,13 @@ private:
         {'k', START},
         {'l', SELECT}
     };
-    const std::map<int, uint8_t> _coreKeys = {
-        {KEY_LEFT,  PREV_GRAPHICAL_LIB},
-        {KEY_RIGHT, NEXT_GRAPHICAL_LIB},
-        {KEY_DOWN,  PREV_GAME_LIB},
-        {KEY_UP,    NEXT_GAME_LIB},
-        {'r',       RESTART_GAME},
-        {'q',       BACK_TO_MENU},
-        {'e',       EXIT}
+    const std::unordered_map<int, Arcade::IGraphicLib::CoreKey> _coreKeys = {
+        {'b',   PREV_GRAPHICAL_LIB},
+        {'n',   NEXT_GRAPHICAL_LIB},
+        {'c',   PREV_GAME_LIB},
+        {'v',   NEXT_GAME_LIB},
+        {'r',   RESTART_GAME},
+        {'a',   BACK_TO_MENU},
+        {'e',   EXIT}
     };
 };
