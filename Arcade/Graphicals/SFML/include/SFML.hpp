@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include <map>
+#include <unordered_map>
 
 #include "IGraphicalLib.hpp"
 #include "SFMLRenderer.hpp"
@@ -29,7 +29,7 @@ private:
     SFMLRenderer renderer;
     bool _closeRequested = false;
 
-    const std::map<sf::Keyboard::Key, GameKey> _gameKeysAssociations = {
+    const std::unordered_map<sf::Keyboard::Key, GameKey> _gameKeys = {
         { sf::Keyboard::Up,    GameKey::UP },
         { sf::Keyboard::Down,  GameKey::DOWN },
         { sf::Keyboard::Left,  GameKey::LEFT },

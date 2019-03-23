@@ -11,9 +11,12 @@
 
 #include "IRenderer.hpp"
 
+constexpr float WIN_WIDTH = 800;
+constexpr float WIN_HEIGHT = 800;
+
 class SFMLRenderer final : public Arcade::IRenderer {
 public:
-    SFMLRenderer() noexcept;
+    SFMLRenderer();
     ~SFMLRenderer() override = default;
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;

@@ -17,7 +17,7 @@ uint8_t SFML::getGameKeyState() const noexcept
 {
     uint8_t state = 0;
 
-    for (const auto &keyPair : _gameKeysAssociations)
+    for (const auto &keyPair : _gameKeys)
         if (sf::Keyboard::isKeyPressed(keyPair.first))
             state += keyPair.second;
 

@@ -40,12 +40,12 @@ private:
         {'l', SELECT}
     };
     const std::unordered_map<int, Arcade::IGraphicLib::CoreKey> _coreKeys = {
-        {'b',   PREV_GRAPHICAL_LIB},
-        {'n',   NEXT_GRAPHICAL_LIB},
-        {'c',   PREV_GAME_LIB},
-        {'v',   NEXT_GAME_LIB},
-        {'r',   RESTART_GAME},
-        {'a',   BACK_TO_MENU},
-        {'e',   EXIT}
+        {'b', PREV_GRAPHICAL_LIB},
+        {'n', NEXT_GRAPHICAL_LIB},
+        {'c', PREV_GAME_LIB},
+        {'v', NEXT_GAME_LIB},
+        {'r', RESTART_GAME},
+        {'a', BACK_TO_MENU},
+        {'e', EXIT}
     };
 };

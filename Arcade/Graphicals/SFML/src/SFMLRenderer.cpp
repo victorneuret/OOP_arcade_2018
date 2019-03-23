@@ -11,18 +11,21 @@
 #include "SFMLRenderer.hpp"
 #include "SFMLSprite.hpp"
 
-SFMLRenderer::SFMLRenderer() noexcept
-    : _window(sf::VideoMode(800, 600), "SFML", sf::Style::Close), _sfFont()
+SFMLRenderer::SFMLRenderer()
+    : _window(sf::VideoMode((int) WIN_WIDTH, (int) WIN_HEIGHT), "SFML", sf::Style::Close), _sfFont()
 {
-    _sfFont.loadFromFile("res/arcade.ttf");
+    if (!_sfFont.loadFromFile("res/arcade.ttf"))
+        throw std::runtime_error("Failed to load default font");
 }
 
 void SFMLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
 {
     sf::RectangleShape sfRect;
 
-    sfRect.setPosition(static_cast<float>(rect.pos.x), static_cast<float>(rect.pos.y));
-    sfRect.setSize(sf::Vector2f(static_cast<float>(rect.size.x), static_cast<float>(rect.size.y)));
+    sfRect.setPosition(static_cast<float>(rect.pos.x * WIN_WIDTH),
+                       static_cast<float>(rect.pos.y * WIN_HEIGHT));
+    sfRect.setSize(sf::Vector2f(static_cast<float>(rect.size.x * WIN_WIDTH),
+                                static_cast<float>(rect.size.y * WIN_HEIGHT)));
 
     if (fill) {
         sfRect.setFillColor(sf::Color(color.getValue()));
@@ -50,7 +53,7 @@ void SFMLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arc
     sfText.setFont(_sfFont);
     sfText.setString(text);
     sfText.setCharacterSize(fontSize);
-    sfText.setPosition(static_cast<float>(pos.x), static_cast<float>(pos.y));
+    sfText.setPosition(static_cast<float>(pos.x * WIN_WIDTH), static_cast<float>(pos.y * WIN_HEIGHT));
 
     _window.draw(sfText);
 }

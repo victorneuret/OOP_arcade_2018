@@ -18,7 +18,7 @@ public:
     MainMenu() = default;
     ~MainMenu() override = default;
 
-    void tick(Arcade::IGraphicLib *graphic) override;
+    void tick(Arcade::IGraphicLib *graphic, double deltaTime) override;
     void render(Arcade::IGraphicLib *graphic) override;
     bool isCloseRequested() const noexcept override;
     void reloadResources(Arcade::IGraphicLib *) override;
@@ -40,6 +40,7 @@ private:
         {Arcade::IGraphicLib::PRIMARY, std::bind(&MainMenu::primaryPressed, this)}
     };
 
-    std::pair<int, int> _selection{0, 0};
+    std::pair<double, double> _selection{0, 0};
+    double _deltaTime = 0;
 };
 
