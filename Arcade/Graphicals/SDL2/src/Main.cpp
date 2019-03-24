@@ -2,10 +2,13 @@
 ** EPITECH PROJECT, 2019
 ** arcade
 ** File description:
-** Main.cpp
+** SDL.cpp
 */
 
-int main()
+#include "SDL.hpp"
+
+extern "C"
+Arcade::IGraphicLib *getInstance()
 {
-    return 0;
+    return new SDL;
 }

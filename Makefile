@@ -44,7 +44,7 @@ NCURSES	=	$(SUB_MAKE) SRC_DIR=./Graphicals/NCURSES/src			\
 
 SDL2	=	$(SUB_MAKE) SRC_DIR=./Graphicals/SDL2/src				\
 						INCLUDE_DIR=./Graphicals/SDL2/include 		\
-						LDFLAGS="-lSDL -shared"						\
+						LDFLAGS="-lSDL2 -lSDL2_ttf -shared"						\
 						NAME=../lib/lib_arcade_sdl2.so 				\
 						FRIENDLY="SDL2"
 
@@ -131,7 +131,7 @@ ifndef RAW
 endif
 
 tests_run:	LDFLAGS		+=	-lsfml-graphics -lsfml-window -lsfml-system		\
-							-lSDL2 -lncurses								\
+							-lSDL2 -lSDL2_ttf -lncurses						\
 							-lcriterion --coverage
 tests_run:	CPPFLAGS	+=	--coverage
 tests_run:	fclean $(OBJ_UNIT)
