@@ -6,7 +6,6 @@
 */
 
 #include "MainMenu.hpp"
-#include <iostream>
 
 void MainMenu::tick()
 {}
@@ -28,7 +27,7 @@ void MainMenu::render(Arcade::IGraphicLib *graphic)
     else if (key & Arcade::IGraphicLib::RIGHT)
         graphic->getRenderer().drawRectangle(Arcade::Rect(0.5, 0.5, 0.5, 0.5), Arcade::Color(0x00, 0x00, 0xff), false);
     else if (key & Arcade::IGraphicLib::SELECT)
-        graphic->getRenderer().drawText("Petit con !", 24, Arcade::Vector(0.5, 0.5), Arcade::Color(0xff, 0xff, 0xff));
+        graphic->getRenderer().drawText("Test text.", 24, Arcade::Vector(0.5, 0.5), Arcade::Color(0xff, 0xff, 0xff));
     graphic->getRenderer().display();
 }
 

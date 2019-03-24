@@ -5,6 +5,8 @@
 ** SDL.cpp
 */
 
+#include <iostream>
+
 #include "IGraphicalLib.hpp"
 #include "SDL.hpp"
 
@@ -14,25 +16,23 @@ SDL::SDL()
 
 uint8_t SDL::getGameKeyState() const noexcept
 {
-    SDL_Event event;
+    const uint8_t *keyArray = SDL_GetKeyboardState(NULL);
     uint8_t key = 0;
 
-    while (SDL_PollEvent(&event) != 0)
-        if (event.type == SDL_KEYDOWN)
-            if (_gameKeys.find(event.key.keysym.sym) != _gameKeys.end())
-                key += _gameKeys.at(event.key.keysym.sym);
+    for (const auto &keyPair : _gameKeys)
+        if (keyArray[keyPair.first])
+            key += keyPair.second;
     return key;
 }
 
 uint8_t SDL::getCoreKeyState() const noexcept
 {
-    SDL_Event event;
+    const uint8_t *keyArray = SDL_GetKeyboardState(NULL);
     uint8_t key = 0;
 
-    while (SDL_PollEvent(&event) != 0)
-        if (event.type == SDL_KEYDOWN)
-            if (_coreKeys.find(event.key.keysym.sym) != _coreKeys.end())
-                key += _coreKeys.at(event.key.keysym.sym);
+    for (const auto &keyPair : _coreKeys)
+        if (keyArray[keyPair.first])
+            key += keyPair.second;
     return key;
 }
 

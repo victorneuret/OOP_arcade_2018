@@ -30,22 +30,22 @@ private:
     SDLRenderer _renderer;
     bool _closeRequested = false;
     const std::unordered_map<int, GameKey> _gameKeys = {
-            {'z', UP},
-            {'s', DOWN},
-            {'q', LEFT},
-            {'d', RIGHT},
-            {'o', PRIMARY},
-            {'p', SECONDARY},
-            {'k', START},
-            {'l', SELECT}
+            {SDL_SCANCODE_W, UP},
+            {SDL_SCANCODE_S, DOWN},
+            {SDL_SCANCODE_A, LEFT},
+            {SDL_SCANCODE_D, RIGHT},
+            {SDL_SCANCODE_O, PRIMARY},
+            {SDL_SCANCODE_P, SECONDARY},
+            {SDL_SCANCODE_K, START},
+            {SDL_SCANCODE_L, SELECT}
     };
     const std::unordered_map<int, CoreKey> _coreKeys = {
-            {SDLK_LEFT,     PREV_GRAPHICAL_LIB},
-            {SDLK_RIGHT,    NEXT_GRAPHICAL_LIB},
-            {SDLK_DOWN,     PREV_GAME_LIB},
-            {SDLK_RIGHT,    NEXT_GAME_LIB},
-            {'r',           RESTART_GAME},
-            {'a',           BACK_TO_MENU},
-            {'e',           EXIT}
+            {SDL_SCANCODE_LEFT,     PREV_GRAPHICAL_LIB},
+            {SDL_SCANCODE_RIGHT,    NEXT_GRAPHICAL_LIB},
+            {SDL_SCANCODE_DOWN,     PREV_GAME_LIB},
+            {SDL_SCANCODE_UP,       NEXT_GAME_LIB},
+            {SDL_SCANCODE_R,        RESTART_GAME},
+            {SDL_SCANCODE_Q,        BACK_TO_MENU},
+            {SDL_SCANCODE_E,        EXIT}
     };
 };
