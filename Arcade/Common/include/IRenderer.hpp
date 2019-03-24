@@ -16,7 +16,7 @@
 namespace Arcade {
     class IRenderer {
     public:
-        virtual ~IRenderer() = 0;
+        virtual ~IRenderer() = default;
 
         virtual void drawRectangle(const Rect &rect, const Color &color, bool fill = true) = 0;
         virtual void drawTexture(const std::string &imagePath, const Vector &pos) = 0;

@@ -47,3 +47,6 @@ bool Ncurses::isCloseRequested() const noexcept
 {
     return false;
 }
+
+void Ncurses::pollEvents()
+{}
