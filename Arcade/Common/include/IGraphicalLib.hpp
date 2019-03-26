@@ -13,9 +13,6 @@
 #include "IRenderer.hpp"
 
 namespace Arcade {
-    using TextureCreateFunc = std::function<ATexture *(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor)>;
-    using SpriteCreateFunc = std::function<ASprite *(const ATexture *texture, const Vector &pos, const Rect &rect)>;
-
     class IGraphicLib {
     public:
         enum GameKey {
