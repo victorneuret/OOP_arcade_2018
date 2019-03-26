@@ -38,6 +38,26 @@ void Ncurses::sendCoreKeyInput(CoreKey) noexcept
 void Ncurses::pollEvents()
 {}
 
+Arcade::ATexture *Ncurses::createTexture(const void *, const size_t &, const Arcade::Color &)
+{
+    throw std::runtime_error("Ncurses::createTexture: Not implemented");
+}
+
+Arcade::ASprite *Ncurses::createSprite(const Arcade::ATexture *, const Arcade::Rect &, const Arcade::Rect &)
+{
+    throw std::runtime_error("Ncurses::createSprite: Not implemented");
+}
+
+Arcade::ATexture *Ncurses::recreateTexture(const Arcade::ATexture &)
+{
+    throw std::runtime_error("Ncurses::recreateTexture: Not implemented");
+}
+
+Arcade::ASprite *Ncurses::recreateSprite(const Arcade::ASprite &)
+{
+    throw std::runtime_error("Ncurses::recreateSprite: Not implemented");
+}
+
 Arcade::IRenderer &Ncurses::getRenderer() noexcept
 {
     return _render;

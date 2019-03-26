@@ -23,6 +23,12 @@ public:
     void sendCoreKeyInput(CoreKey input) noexcept override;
     void pollEvents() override;
 
+    Arcade::ATexture *createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor) override;
+    Arcade::ASprite *createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect,
+                                  const Arcade::Rect &posAndSize) override;
+    Arcade::ATexture *recreateTexture(const Arcade::ATexture &other) override;
+    Arcade::ASprite *recreateSprite(const Arcade::ASprite &other) override;
+
     Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;
 private:
@@ -30,10 +36,24 @@ private:
     bool _closeRequested = false;
 
     const std::unordered_map<sf::Keyboard::Key, GameKey> _gameKeys = {
-        { sf::Keyboard::Up,    GameKey::UP },
-        { sf::Keyboard::Down,  GameKey::DOWN },
-        { sf::Keyboard::Left,  GameKey::LEFT },
-        { sf::Keyboard::Right, GameKey::RIGHT }
+        {sf::Keyboard::Z, GameKey::UP},
+        {sf::Keyboard::S, GameKey::DOWN},
+        {sf::Keyboard::Q, GameKey::LEFT},
+        {sf::Keyboard::D, GameKey::RIGHT},
+        {sf::Keyboard::O, GameKey::PRIMARY},
+        {sf::Keyboard::P, GameKey::SECONDARY},
+        {sf::Keyboard::K, GameKey::START},
+        {sf::Keyboard::L, GameKey::SELECT}
+    };
+
+    const std::unordered_map<sf::Keyboard::Key, CoreKey> _coreKeys = {
+        {sf::Keyboard::B, CoreKey::PREV_GRAPHICAL_LIB},
+        {sf::Keyboard::N, CoreKey::NEXT_GRAPHICAL_LIB},
+        {sf::Keyboard::C, CoreKey::PREV_GAME_LIB},
+        {sf::Keyboard::V, CoreKey::NEXT_GAME_LIB},
+        {sf::Keyboard::R, CoreKey::RESTART_GAME},
+        {sf::Keyboard::A, CoreKey::BACK_TO_MENU},
+        {sf::Keyboard::E, CoreKey::EXIT}
     };
 };
 

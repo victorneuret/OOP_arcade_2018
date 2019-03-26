@@ -13,13 +13,15 @@
 
 class SFMLSprite : public Arcade::ASprite {
 public:
-    SFMLSprite(const std::shared_ptr<Arcade::ATexture> &texture,
-               const Arcade::Vector &pos,
-               const Arcade::Rect &rect = Arcade::Rect());
+    SFMLSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect, const Arcade::Rect &posAndSize);
     ~SFMLSprite() override = default;
 
-    void setPosition(const Arcade::Vector &newPos) override;
+    SFMLSprite(const ASprite &sprite) = delete;
+    ASprite &operator=(const ASprite &sprite) override = delete;
+
+    void setPosAndSize(const Arcade::Rect &posAndSize) override;
     void setTextureRect(const Arcade::Rect &newRect) override;
+
     const sf::Sprite &getSfSprite() const;
 private:
     sf::Sprite _sfSprite;

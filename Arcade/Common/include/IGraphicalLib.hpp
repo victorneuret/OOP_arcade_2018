@@ -8,10 +8,14 @@
 #pragma once
 
 #include <cstdint>
+#include <functional>
 
 #include "IRenderer.hpp"
 
 namespace Arcade {
+    using TextureCreateFunc = std::function<ATexture *(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor)>;
+    using SpriteCreateFunc = std::function<ASprite *(const ATexture *texture, const Vector &pos, const Rect &rect)>;
+
     class IGraphicLib {
     public:
         enum GameKey {
@@ -42,6 +46,14 @@ namespace Arcade {
         virtual void sendGameKeyInput(GameKey input) noexcept = 0;
         virtual void sendCoreKeyInput(CoreKey input) noexcept = 0;
         virtual void pollEvents() = 0;
+
+        // Textures and sprites creation
+        virtual ATexture *createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor) = 0;
+        virtual ASprite *createSprite(const ATexture *texture, const Rect &spriteSheetRect, const Rect &posAndSize) = 0;
+
+        // Happens when graphic lib changes
+        virtual ATexture *recreateTexture(const ATexture &other) = 0;
+        virtual ASprite *recreateSprite(const ASprite &other) = 0;
 
         virtual IRenderer &getRenderer() noexcept = 0;
         virtual bool isCloseRequested() const noexcept = 0;

@@ -16,6 +16,9 @@ SFMLRenderer::SFMLRenderer()
 {
     if (!_sfFont.loadFromFile("res/arcade.ttf"))
         throw std::runtime_error("Failed to load default font");
+
+    _window.setFramerateLimit(120);
+    _window.setPosition(sf::Vector2i(100, 100));
 }
 
 void SFMLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
@@ -65,7 +68,7 @@ void SFMLRenderer::display()
 
 void SFMLRenderer::clear()
 {
-    _window.clear(sf::Color::Black);
+    _window.clear(sf::Color(0, 42, 200));
 }
 
 sf::RenderWindow &SFMLRenderer::getWindow()

@@ -19,3 +19,14 @@ Arcade::Rect::Rect(const Vector &pos, const Vector &size) noexcept
 Arcade::Rect::Rect(double x, double y, double w, double h) noexcept
     : pos(Vector(x, y)), size(Vector(w, h))
 {}
+
+bool Arcade::Rect::operator==(const Arcade::Rect &rhs) const
+{
+    return pos == rhs.pos &&
+           size == rhs.size;
+}
+
+bool Arcade::Rect::operator!=(const Arcade::Rect &rhs) const
+{
+    return !(rhs == *this);
+}

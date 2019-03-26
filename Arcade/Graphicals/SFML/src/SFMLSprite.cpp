@@ -5,35 +5,48 @@
 ** SFMLSprite.cpp
 */
 
-#include <SFMLSprite.hpp>
-
+#include "SFML.hpp"
 #include "SFMLSprite.hpp"
 #include "SFMLTexture.hpp"
 
-SFMLSprite::SFMLSprite(const std::shared_ptr<Arcade::ATexture> &texture,
-                       const Arcade::Vector &pos,
-                       const Arcade::Rect &rect)
-    : ASprite(texture, pos, rect), _sfSprite()
+SFMLSprite::SFMLSprite(const Arcade::ATexture *texture,
+                       const Arcade::Rect &spriteSheetRect,
+                       const Arcade::Rect &posAndSize)
+    : ASprite(texture, spriteSheetRect, posAndSize), _sfSprite()
 {
-    const auto &sfmlTexture = dynamic_cast<const SFMLTexture *>(texture.get());
+    const auto &sfmlTexture = dynamic_cast<const SFMLTexture *>(texture);
 
     _sfSprite.setTexture(sfmlTexture->getSfTexure());
 
-    setPosition(pos);
-    setTextureRect(rect);
+    setTextureRect(spriteSheetRect);
+    setPosAndSize(posAndSize);
 }
 
-void SFMLSprite::setPosition(const Arcade::Vector &newPos)
+void SFMLSprite::setPosAndSize(const Arcade::Rect &posAndSize)
 {
-    _pos = newPos;
-    _sfSprite.setPosition(static_cast<float>(newPos.x), static_cast<float>(newPos.y));
+    const auto size = _sfSprite.getTexture()->getSize();
+
+    _posAndSize = posAndSize;
+    _sfSprite.setPosition(static_cast<float>(_posAndSize.pos.x * WIN_WIDTH),
+                          static_cast<float>(_posAndSize.pos.y * WIN_HEIGHT));
+
+    if (_spriteSheetRect.size == Arcade::Vector(0, 0))
+        _sfSprite.setScale(static_cast<float>(_posAndSize.size.x * WIN_WIDTH / size.x),
+                           static_cast<float>(_posAndSize.size.y * WIN_HEIGHT / size.y));
+    else
+        _sfSprite.setScale(static_cast<float>(_posAndSize.size.x * WIN_WIDTH / _spriteSheetRect.size.x),
+                           static_cast<float>(_posAndSize.size.y * WIN_HEIGHT / _spriteSheetRect.size.y));
 }
 
 void SFMLSprite::setTextureRect(const Arcade::Rect &newRect)
 {
-    _rect = newRect;
-    _sfSprite.setTextureRect(sf::IntRect(static_cast<int>(_rect.pos.x), static_cast<int>(_rect.pos.y),
-                                         static_cast<int>(_rect.size.x), static_cast<int>(_rect.size.y)));
+    _spriteSheetRect = newRect;
+
+    if (newRect != Arcade::Rect())
+        _sfSprite.setTextureRect(sf::IntRect(static_cast<int>(_spriteSheetRect.pos.x),
+                                             static_cast<int>(_spriteSheetRect.pos.y),
+                                             static_cast<int>(_spriteSheetRect.size.x),
+                                             static_cast<int>(_spriteSheetRect.size.y)));
 }
 
 const sf::Sprite &SFMLSprite::getSfSprite() const

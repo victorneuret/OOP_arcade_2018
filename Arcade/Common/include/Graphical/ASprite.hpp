@@ -7,26 +7,35 @@
 
 #pragma once
 
-#include <memory>
-
+#include <functional>
 #include "Math/Rect.hpp"
 #include "ATexture.hpp"
 
 namespace Arcade {
+    using Test = std::function<void(const char *)>;
+
     class ASprite {
     public:
-        // If rect == Rect(0, 0, 0, 0): load the whole texture.
-        ASprite(const std::shared_ptr<ATexture> &texture,
-                const Vector &pos,
-                const Rect &rect = Rect());
+        // If spriteSheetRect == Rect(0, 0, 0, 0): load the whole texture.
+        ASprite(const ATexture *texture, const Rect &spriteSheetRect, const Rect &posAndSize);
         virtual ~ASprite() = default;
 
-        virtual void setPosition(const Vector &newPos) = 0;
+        ASprite(const ASprite &) = delete;
+        virtual ASprite &operator=(const ASprite &) = delete;
+
+        virtual void setPosAndSize(const Rect &posAndSize) = 0;
         virtual void setTextureRect(const Rect &newRect) = 0;
-        virtual const std::shared_ptr<ATexture> &getTexture() const noexcept final;
+
+        virtual const ATexture *getTexture() const noexcept final;
+        virtual const Rect &getSpriteSheetRect() const final;
+        virtual const Rect &getPosAndSize() const final;
+        virtual const Color &getFallbackColor() const final;
+        virtual void setFallbackColor(const Color &color) noexcept final;
     protected:
-        const std::shared_ptr<ATexture> _texture;
-        Vector _pos;
-        Rect _rect;
+        const ATexture *_texture;
+        Rect _spriteSheetRect;
+        Rect _posAndSize;
+
+        Color _fallbackColor{255, 255, 255, 255};
     };
 }
