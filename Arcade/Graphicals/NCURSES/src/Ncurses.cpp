@@ -48,16 +48,6 @@ Arcade::ASprite *Ncurses::createSprite(const Arcade::ATexture *, const Arcade::R
     throw std::runtime_error("Ncurses::createSprite: Not implemented");
 }
 
-Arcade::ATexture *Ncurses::recreateTexture(const Arcade::ATexture &)
-{
-    throw std::runtime_error("Ncurses::recreateTexture: Not implemented");
-}
-
-Arcade::ASprite *Ncurses::recreateSprite(const Arcade::ASprite &)
-{
-    throw std::runtime_error("Ncurses::recreateSprite: Not implemented");
-}
-
 Arcade::IRenderer &Ncurses::getRenderer() noexcept
 {
     return _render;

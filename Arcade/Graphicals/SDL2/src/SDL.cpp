@@ -66,16 +66,6 @@ Arcade::ASprite *SDL::createSprite(const Arcade::ATexture *, const Arcade::Rect 
     return nullptr;
 }
 
-Arcade::ATexture *SDL::recreateTexture(const Arcade::ATexture &)
-{
-    return nullptr;
-}
-
-Arcade::ASprite *SDL::recreateSprite(const Arcade::ASprite &)
-{
-    return nullptr;
-}
-
 Arcade::IRenderer &SDL::getRenderer() noexcept
 {
     return _renderer;

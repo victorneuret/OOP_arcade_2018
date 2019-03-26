@@ -67,6 +67,8 @@ void MainMenu::render(Arcade::IGraphicLib *graphic)
                                     Arcade::Color(0, 255, 0));
     graphic->getRenderer().drawSprite(*_fullSprite);
     graphic->getRenderer().drawSprite(*_pacman);
+    graphic->getRenderer().drawRectangle(Arcade::Rect(0.33, 0.33, 0.66, 0.66), Arcade::Color(0, 42, 200), false);
+    graphic->getRenderer().drawRectangle(Arcade::Rect(0.45, 0.45, 0.1, 0.1), Arcade::Color(0, 200, 42), true);
     graphic->getRenderer().display();
 }
 

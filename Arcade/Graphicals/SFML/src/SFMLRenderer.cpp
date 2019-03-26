@@ -68,7 +68,7 @@ void SFMLRenderer::display()
 
 void SFMLRenderer::clear()
 {
-    _window.clear(sf::Color(0, 42, 200));
+    _window.clear(sf::Color(0, 0, 0));
 }
 
 sf::RenderWindow &SFMLRenderer::getWindow()

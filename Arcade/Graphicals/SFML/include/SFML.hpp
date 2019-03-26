@@ -26,8 +26,6 @@ public:
     Arcade::ATexture *createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor) override;
     Arcade::ASprite *createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect,
                                   const Arcade::Rect &posAndSize) override;
-    Arcade::ATexture *recreateTexture(const Arcade::ATexture &other) override;
-    Arcade::ASprite *recreateSprite(const Arcade::ASprite &other) override;
 
     Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;

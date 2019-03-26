@@ -12,8 +12,6 @@
 #include "ATexture.hpp"
 
 namespace Arcade {
-    using Test = std::function<void(const char *)>;
-
     class ASprite {
     public:
         // If spriteSheetRect == Rect(0, 0, 0, 0): load the whole texture.

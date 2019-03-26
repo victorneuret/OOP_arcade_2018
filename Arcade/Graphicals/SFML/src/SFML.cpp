@@ -62,16 +62,6 @@ Arcade::ASprite *SFML::createSprite(const Arcade::ATexture *texture, const Arcad
     return new SFMLSprite(texture, spriteSheetRect, posAndSize);
 }
 
-Arcade::ATexture *SFML::recreateTexture(const Arcade::ATexture &)
-{
-    throw std::runtime_error("Not implemented");
-}
-
-Arcade::ASprite *SFML::recreateSprite(const Arcade::ASprite &)
-{
-    throw std::runtime_error("Not implemented");
-}
-
 Arcade::IRenderer &SFML::getRenderer() noexcept
 {
     return renderer;

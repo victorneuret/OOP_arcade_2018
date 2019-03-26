@@ -16,7 +16,6 @@ add_library(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Games/MainMenu/src/MainMenu.cpp
         Arcade/Games/MainMenu/include/MainMenu.hpp
         Arcade/Common/src/Graphical/ATexture.cpp
@@ -35,7 +34,6 @@ add_library(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Graphical/Color.cpp
         Arcade/Common/src/Math/Vector.cpp
         Arcade/Common/src/Math/Rect.cpp
@@ -55,7 +53,6 @@ add_library(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Graphical/Color.cpp
         Arcade/Common/src/Math/Vector.cpp
         Arcade/Common/src/Math/Rect.cpp
@@ -74,7 +71,6 @@ add_library(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Graphical/Color.cpp
         Arcade/Common/src/Math/Vector.cpp
         Arcade/Common/src/Math/Rect.cpp
@@ -99,7 +95,6 @@ add_library(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
         Arcade/Common/src/Graphical/Color.cpp
@@ -122,7 +117,6 @@ add_library(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Graphical/Color.cpp
         Arcade/Common/src/Math/Vector.cpp
         Arcade/Common/src/Math/Rect.cpp
@@ -150,7 +144,6 @@ add_executable(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/include/ISoundPlayer.hpp
         Arcade/Common/src/Graphical/Color.cpp
         Arcade/Common/src/Math/Vector.cpp
         Arcade/Common/src/Math/Rect.cpp
