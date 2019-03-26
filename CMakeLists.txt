@@ -90,7 +90,7 @@ add_library(
 add_library(
         _arcade_sdl2
         SHARED
-        Arcade/Graphicals/SDL2/src/Main.cpp
+        Arcade/Graphicals/SDL2/src/SDL.cpp
         Arcade/Common/include/Math/Rect.hpp
         Arcade/Common/include/Math/Vector.hpp
         Arcade/Common/include/IGame.hpp
@@ -100,11 +100,15 @@ add_library(
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
         Arcade/Common/include/ISoundPlayer.hpp
+        Arcade/Common/src/Graphical/ATexture.cpp
+        Arcade/Common/src/Graphical/ASprite.cpp
         Arcade/Common/src/Graphical/Color.cpp
         Arcade/Common/src/Math/Vector.cpp
         Arcade/Common/src/Math/Rect.cpp
-        Arcade/Common/src/Graphical/ATexture.cpp
-        Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Graphicals/SDL2/include/SDL.hpp
+        Arcade/Graphicals/SDL2/include/SDLRenderer.hpp
+        Arcade/Graphicals/SDL2/src/SDLRenderer.cpp
+        Arcade/Graphicals/SDL2/src/Main.cpp
 )
 
 add_library(
