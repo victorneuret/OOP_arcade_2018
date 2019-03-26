@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2019
 ** arcade
 ** File description:
-** Ncurses.cpp
+** Main.cpp
 */
 
 #include "IGraphicalLib.hpp"

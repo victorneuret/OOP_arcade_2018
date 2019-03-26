@@ -44,8 +44,10 @@ void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Colo
     delwin(tmpWin);
 }
 
-void NcursesRenderer::drawTexture(const std::string &, const Arcade::Vector &)
-{}
+void NcursesRenderer::drawSprite(const Arcade::ASprite &)
+{
+    // TODO: Antoine: draw rectangle with color `fallbackColor`
+}
 
 void NcursesRenderer::drawText(const std::string &text, uint8_t, const Arcade::Vector &pos, const Arcade::Color &color)
 {

@@ -6,6 +6,7 @@
 */
 
 #include <iostream>
+#include <SDL.hpp>
 
 #include "IGraphicalLib.hpp"
 #include "SDL.hpp"
@@ -16,7 +17,7 @@ SDL::SDL()
 
 uint8_t SDL::getGameKeyState() const noexcept
 {
-    const uint8_t *keyArray = SDL_GetKeyboardState(NULL);
+    const uint8_t *keyArray = SDL_GetKeyboardState(nullptr);
     uint8_t key = 0;
 
     for (const auto &keyPair : _gameKeys)
@@ -27,7 +28,7 @@ uint8_t SDL::getGameKeyState() const noexcept
 
 uint8_t SDL::getCoreKeyState() const noexcept
 {
-    const uint8_t *keyArray = SDL_GetKeyboardState(NULL);
+    const uint8_t *keyArray = SDL_GetKeyboardState(nullptr);
     uint8_t key = 0;
 
     for (const auto &keyPair : _coreKeys)
@@ -53,6 +54,16 @@ void SDL::pollEvents()
     while (SDL_PollEvent(&event) != 0)
         if (event.type == SDL_QUIT)
             _closeRequested = true;
+}
+
+Arcade::ATexture *SDL::createTexture(const void *, const size_t &, const Arcade::Color &)
+{
+    return nullptr;
+}
+
+Arcade::ASprite *SDL::createSprite(const Arcade::ATexture *, const Arcade::Rect &, const Arcade::Rect &)
+{
+    return nullptr;
 }
 
 Arcade::IRenderer &SDL::getRenderer() noexcept

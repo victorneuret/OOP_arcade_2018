@@ -6,42 +6,53 @@
 */
 
 #include <sstream>
+#include <MainMenu.hpp>
 
 #include "MainMenu.hpp"
+#include "TestSprite.hpp"
 
-void MainMenu::tick(Arcade::IGraphicLib *graphic)
+void MainMenu::tick(Arcade::IGraphicLib *graphic, double deltaTime)
 {
+    _deltaTime = deltaTime;
+
     if (!graphic)
         return;
 
+    if (_texture == nullptr) {
+        _texture = graphic->createTexture(IMAGE_DATA, sizeof(IMAGE_DATA), Arcade::Color(42, 55, 88));
+        _fullSprite = graphic->createSprite(_texture, Arcade::Rect(), Arcade::Rect(0.10, 0.10, 0.33, 0.33));
+        _pacman = graphic->createSprite(_texture, Arcade::Rect(0, 0, 16, 16), Arcade::Rect(0, 0, 0.1, 0.1));
+    }
+
     uint8_t key = graphic->getGameKeyState();
 
-    for (const auto &c : _gameKeys) {
+    for (const auto &c : _gameKeys)
         if (c.first & key)
             c.second();
-    }
 }
 
 void MainMenu::moveUp()
 {
     if (_selection.second > 0)
-        _selection.second -= 1;
+        _selection.second -= 0.5 * _deltaTime;
 }
 
 void MainMenu::moveDown()
 {
-    _selection.second += 1;
+    if (_selection.second < 1)
+        _selection.second += 0.5 * _deltaTime;
 }
 
 void MainMenu::moveLeft()
 {
     if (_selection.first > 0)
-        _selection.first -= 1;
+        _selection.first -= 0.5 * _deltaTime;
 }
 
 void MainMenu::moveRight()
 {
-    _selection.first += 1;
+    if (_selection.first < 1)
+        _selection.first += 0.5 * _deltaTime;
 }
 
 void MainMenu::primaryPressed()
@@ -52,11 +63,12 @@ void MainMenu::render(Arcade::IGraphicLib *graphic)
     if (!graphic)
         return;
     graphic->getRenderer().clear();
-    graphic->getRenderer().drawRectangle(Arcade::Rect{0.0, 0.0, 0.5, 0.5}, Arcade::Color{255, 0, 0});
-    graphic->getRenderer().drawRectangle(Arcade::Rect{0.5, 0.5, 0.5, 0.5}, Arcade::Color{0, 0, 255});
-    graphic->getRenderer().drawText("this is a test", 10, Arcade::Vector{
-        0.5 + static_cast<double>(_selection.first) / 40,
-        0.5 + static_cast<double>(_selection.second) / 40}, Arcade::Color{255, 0, 0});
+    graphic->getRenderer().drawText("this is a test", 16, Arcade::Vector(_selection.first, _selection.second),
+                                    Arcade::Color(0, 255, 0));
+    graphic->getRenderer().drawSprite(*_fullSprite);
+    graphic->getRenderer().drawSprite(*_pacman);
+    graphic->getRenderer().drawRectangle(Arcade::Rect(0.33, 0.33, 0.66, 0.66), Arcade::Color(0, 42, 200), false);
+    graphic->getRenderer().drawRectangle(Arcade::Rect(0.45, 0.45, 0.1, 0.1), Arcade::Color(0, 200, 42), true);
     graphic->getRenderer().display();
 }
 

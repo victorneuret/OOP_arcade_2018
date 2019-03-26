@@ -15,16 +15,19 @@ SDLRenderer::SDLRenderer()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         throw std::runtime_error("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
+
     _window = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN);
     if (!_window)
         throw std::runtime_error("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
+
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     if (!_renderer)
         throw std::runtime_error("Renderer could not be created! SDL Error: " + std::string(SDL_GetError()));
+
     TTF_Init();
 }
 
-SDLRenderer::~SDLRenderer()
+SDLRenderer::~SDLRenderer() noexcept
 {
     TTF_Quit();
     SDL_DestroyRenderer(_renderer);
@@ -43,15 +46,15 @@ void SDLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &c
     };
 
     SDL_SetRenderDrawColor(_renderer, color.r, color.g, color.b, color.a);
+
     if (fill)
         SDL_RenderFillRect(_renderer, &newRect);
     else
         SDL_RenderDrawRect(_renderer, &newRect);
 }
 
-void SDLRenderer::drawTexture(const std::string &, const Arcade::Vector &)
+void SDLRenderer::drawSprite(const Arcade::ASprite &)
 {
-
 }
 
 void SDLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color)
@@ -70,7 +73,7 @@ void SDLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arca
     SDL_Surface *surface = TTF_RenderText_Solid(font, text.c_str(), fontColor);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(_renderer, surface);
 
-    SDL_QueryTexture(texture, NULL, NULL, &textureWidth, &textureHeight);
+    SDL_QueryTexture(texture, nullptr, nullptr, &textureWidth, &textureHeight);
     textureRect = {
             static_cast<int>(pos.x * screenSurface->w),
             static_cast<int>(pos.y * screenSurface->h),
@@ -78,7 +81,7 @@ void SDLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arca
             textureHeight
     };
 
-    SDL_RenderCopy(_renderer, texture, NULL, &textureRect);
+    SDL_RenderCopy(_renderer, texture, nullptr, &textureRect);
 
     SDL_DestroyTexture(texture);
     SDL_FreeSurface(surface);

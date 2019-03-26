@@ -20,11 +20,18 @@ public:
 
     uint8_t getGameKeyState() const noexcept override;
     uint8_t getCoreKeyState() const noexcept override;
+
     void sendGameKeyInput(GameKey input) noexcept override;
     void sendCoreKeyInput(CoreKey input) noexcept override;
-    Arcade::IRenderer &getRenderer() noexcept override;
-    bool isCloseRequested() const noexcept override;
+
     void pollEvents() override;
+
+    Arcade::ATexture *createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor) override;
+    Arcade::ASprite *createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect,
+                                  const Arcade::Rect &posAndSize) override;
+
+    Arcade::IRenderer &getRenderer() noexcept;
+    bool isCloseRequested() const noexcept override;
 
 private:
     SDLRenderer _renderer;
