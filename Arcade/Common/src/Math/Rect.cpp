@@ -32,11 +32,3 @@ bool Arcade::Rect::operator!=(const Arcade::Rect &rhs) const noexcept
 {
     return !(rhs == *this);
 }
-
-Arcade::Rect &Arcade::Rect::operator=(const Arcade::Rect &rhs) noexcept
-{
-    pos = rhs.pos;
-    size = rhs.size;
-
-    return *this;
-}

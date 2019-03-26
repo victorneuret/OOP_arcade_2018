@@ -21,6 +21,6 @@ namespace Arcade {
 
         bool operator==(const Rect &rhs) const noexcept;
         bool operator!=(const Rect &rhs) const noexcept;
-        Rect &operator=(const Rect &rhs) noexcept;
+        Rect &operator=(const Rect &rhs) noexcept = default;
     };
 }
