@@ -9,6 +9,7 @@
 
 #include "MainMenu.hpp"
 
+
 void MainMenu::tick(Arcade::IGraphicLib *graphic)
 {
     if (!graphic)

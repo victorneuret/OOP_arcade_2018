@@ -55,6 +55,8 @@ add_library(
         Arcade/Common/src/Color.cpp
         Arcade/Common/src/Vector.cpp
         Arcade/Common/src/Rect.cpp
+        Arcade/Games/Nibbler/include/Nibbler.hpp
+        Arcade/Games/Nibbler/src/Nibbler.cpp
 )
 
 add_library(
