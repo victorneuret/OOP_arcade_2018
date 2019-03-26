@@ -19,7 +19,8 @@ namespace Arcade {
         Rect(double x, double y, double w, double h) noexcept;
         ~Rect() = default;
 
-        bool operator==(const Rect &rhs) const;
-        bool operator!=(const Rect &rhs) const;
+        bool operator==(const Rect &rhs) const noexcept;
+        bool operator!=(const Rect &rhs) const noexcept;
+        Rect &operator=(const Rect &rhs) noexcept;
     };
 }

@@ -5,6 +5,8 @@
 ** Rect.cpp
 */
 
+#include <Math/Rect.hpp>
+
 #include "Math/Rect.hpp"
 
 Arcade::Rect::Rect() noexcept
@@ -20,13 +22,21 @@ Arcade::Rect::Rect(double x, double y, double w, double h) noexcept
     : pos(Vector(x, y)), size(Vector(w, h))
 {}
 
-bool Arcade::Rect::operator==(const Arcade::Rect &rhs) const
+bool Arcade::Rect::operator==(const Arcade::Rect &rhs) const noexcept
 {
     return pos == rhs.pos &&
            size == rhs.size;
 }
 
-bool Arcade::Rect::operator!=(const Arcade::Rect &rhs) const
+bool Arcade::Rect::operator!=(const Arcade::Rect &rhs) const noexcept
 {
     return !(rhs == *this);
+}
+
+Arcade::Rect &Arcade::Rect::operator=(const Arcade::Rect &rhs) noexcept
+{
+    pos = rhs.pos;
+    size = rhs.size;
+
+    return *this;
 }
