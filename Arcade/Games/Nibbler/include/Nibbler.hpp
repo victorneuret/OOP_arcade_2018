@@ -34,24 +34,24 @@ public:
     void reloadResources(Arcade::IGraphicLib *) override;
 
 private:
-    const char _maps[MAP_HIGH][MAP_WIDTH] = {
+    char _maps[MAP_HIGH][MAP_WIDTH] = {
         "###################",
-        "#                 #",
+        "#  @   @   @   @  #",
         "# ### # ### # ### #",
-        "# # # #     # # # #",
+        "#@# #@#     #@# #@#",
         "# ### # # # # ### #",
-        "#     # # # #     #",
+        "#     #@# #@#     #",
         "# ##### # # ##### #",
-        "# #             # #",
-        "# # ##### ##### # #",
-        "#                 #",
+        "#@# @         @ #@#",
+        "# # #####@##### # #",
+        "#   @         @   #",
         "# ##### ### ##### #",
-        "#       # #       #",
+        "#  @    # #    @  #",
         "# ### # ### # ### #",
-        "# # # #     # # # #",
+        "# # # #  @  # # # #",
         "# ### # ### # ### #",
-        "#     # # # #     #",
-        "# ##### ### ##### #",
+        "#@   @#@# #@#@   @#",
+        "#@##### ### #####@#",
         "#                 #",
         "###################"
     };
@@ -76,6 +76,7 @@ private:
     void drawMap(Arcade::IGraphicLib *graphic);
     void drawSnake(Arcade::IGraphicLib *graphic);
 
+    void move(const Arcade::Vector &head);
     void moveUp();
     void moveDown();
     void moveLeft();
