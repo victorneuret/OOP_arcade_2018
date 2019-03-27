@@ -11,6 +11,10 @@
 #include "MainMenu.hpp"
 #include "TestSprite.hpp"
 
+void MainMenu::init(Arcade::IGraphicLib *graphic)
+{
+}
+
 void MainMenu::tick(Arcade::IGraphicLib *graphic, double deltaTime)
 {
     _deltaTime = deltaTime;
@@ -19,9 +23,9 @@ void MainMenu::tick(Arcade::IGraphicLib *graphic, double deltaTime)
         return;
 
     if (_texture == nullptr) {
-        _texture = graphic->createTexture(IMAGE_DATA, sizeof(IMAGE_DATA), Arcade::Color(42, 55, 88));
-        _fullSprite = graphic->createSprite(_texture, Arcade::Rect(), Arcade::Rect(0.10, 0.10, 0.33, 0.33));
-        _pacman = graphic->createSprite(_texture, Arcade::Rect(0, 0, 16, 16), Arcade::Rect(0, 0, 0.1, 0.1));
+//        _texture = graphic->createTexture(IMAGE_DATA, sizeof(IMAGE_DATA), Arcade::Color(42, 55, 88));
+//        _fullSprite = graphic->createSprite(_texture, Arcade::Rect(), Arcade::Rect(0.10, 0.10, 0.33, 0.33));
+//        _pacman = graphic->createSprite(_texture, Arcade::Rect(0, 0, 16, 16), Arcade::Rect(0, 0, 0.1, 0.1));
     }
 
     uint8_t key = graphic->getGameKeyState();
@@ -65,8 +69,8 @@ void MainMenu::render(Arcade::IGraphicLib *graphic)
     graphic->getRenderer().clear();
     graphic->getRenderer().drawText("this is a test", 16, Arcade::Vector(_selection.first, _selection.second),
                                     Arcade::Color(0, 255, 0));
-    graphic->getRenderer().drawSprite(*_fullSprite);
-    graphic->getRenderer().drawSprite(*_pacman);
+//    graphic->getRenderer().drawSprite(*_fullSprite);
+//    graphic->getRenderer().drawSprite(*_pacman);
     graphic->getRenderer().drawRectangle(Arcade::Rect(0.33, 0.33, 0.66, 0.66), Arcade::Color(0, 42, 200), false);
     graphic->getRenderer().drawRectangle(Arcade::Rect(0.45, 0.45, 0.1, 0.1), Arcade::Color(0, 200, 42), true);
     graphic->getRenderer().display();

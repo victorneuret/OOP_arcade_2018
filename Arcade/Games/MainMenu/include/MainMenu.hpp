@@ -22,6 +22,7 @@ public:
 
     MainMenu &operator=(const MainMenu &) = delete;
 
+    void init(Arcade::IGraphicLib *graphic) override;
     void tick(Arcade::IGraphicLib *graphic, double deltaTime) override;
     void render(Arcade::IGraphicLib *graphic) override;
     bool isCloseRequested() const noexcept override;
@@ -36,7 +37,7 @@ private:
     void moveRight();
     void primaryPressed();
 
-    const std::unordered_map<uint8_t, std::function<void ()>> _gameKeys = {
+    const std::unordered_map<Arcade::IGraphicLib::GameKey, std::function<void ()>> _gameKeys = {
         {Arcade::IGraphicLib::UP, std::bind(&MainMenu::moveUp, this)},
         {Arcade::IGraphicLib::DOWN, std::bind(&MainMenu::moveDown, this)},
         {Arcade::IGraphicLib::LEFT, std::bind(&MainMenu::moveLeft, this)},

@@ -41,9 +41,9 @@ void SFMLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &
     _window.draw(sfRect);
 }
 
-void SFMLRenderer::drawSprite(const Arcade::ASprite &sprite)
+void SFMLRenderer::drawSprite(const Arcade::ASprite *sprite)
 {
-    const auto &sfmlSprite = dynamic_cast<const SFMLSprite *>(&sprite);
+    const auto &sfmlSprite = dynamic_cast<const SFMLSprite *>(sprite);
 
     _window.draw(sfmlSprite->getSfSprite());
 }

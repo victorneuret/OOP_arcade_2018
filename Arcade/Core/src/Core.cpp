@@ -173,6 +173,8 @@ void Core::loop()
     auto end = start;
     std::chrono::duration<double> elapsed = end - start;
 
+    _getGame()->init(_getGraphical());
+
     while (!_shouldExit()) {
         start = std::chrono::system_clock::now();
 

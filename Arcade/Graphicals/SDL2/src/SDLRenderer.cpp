@@ -53,7 +53,7 @@ void SDLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &c
         SDL_RenderDrawRect(_renderer, &newRect);
 }
 
-void SDLRenderer::drawSprite(const Arcade::ASprite &)
+void SDLRenderer::drawSprite(const Arcade::ASprite *)
 {
 }
 
