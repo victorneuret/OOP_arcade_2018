@@ -63,6 +63,7 @@ private:
     bool _isCloseRequested = false;
     std::vector<std::string> _libs;
     std::vector<std::string> _games;
+    double _deltaTime = 0;
 
     const std::unordered_map<uint8_t, std::function<void ()>> _coreKeys = {
         {Arcade::IGraphicLib::PREV_GRAPHICAL_LIB, std::bind(&Core::_loadPrevGraphical, this)},

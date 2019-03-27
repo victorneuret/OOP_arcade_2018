@@ -5,7 +5,11 @@
 ** Main.cpp
 */
 
-int main()
+#include "SFML.hpp"
+#include "IGraphicalLib.hpp"
+
+extern "C"
+Arcade::IGraphicLib *getInstance()
 {
-    return 0;
+    return new SFML;
 }

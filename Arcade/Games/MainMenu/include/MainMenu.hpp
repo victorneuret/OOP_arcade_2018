@@ -12,13 +12,17 @@
 
 #include "IGame.hpp"
 #include "IGraphicalLib.hpp"
+#include "Graphical/ASprite.hpp"
 
 class MainMenu final : public Arcade::IGame {
 public:
     MainMenu() = default;
+    MainMenu(const MainMenu &) = delete;
     ~MainMenu() override = default;
 
-    void tick(Arcade::IGraphicLib *graphic) override;
+    MainMenu &operator=(const MainMenu &) = delete;
+
+    void tick(Arcade::IGraphicLib *graphic, double deltaTime) override;
     void render(Arcade::IGraphicLib *graphic) override;
     bool isCloseRequested() const noexcept override;
     void reloadResources(Arcade::IGraphicLib *) override;
@@ -40,6 +44,12 @@ private:
         {Arcade::IGraphicLib::PRIMARY, std::bind(&MainMenu::primaryPressed, this)}
     };
 
-    std::pair<int, int> _selection{0, 0};
+    std::pair<double, double> _selection{0.5, 0.5};
+    double _deltaTime = 0;
+
+    // Temporary
+    Arcade::ATexture *_texture = nullptr;
+    Arcade::ASprite *_pacman = nullptr;
+    Arcade::ASprite *_fullSprite = nullptr;
 };
 

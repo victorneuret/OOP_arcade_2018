@@ -3,6 +3,7 @@
 !*/
 !*.cpp
 !*.hpp
+!*.ttf
 !Makefile
 !.gitignore
 !CMakeLists.txt

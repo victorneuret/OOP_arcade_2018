@@ -5,8 +5,6 @@
 ** Core.cpp
 */
 
-#include "Core.hpp"
-
 #include <string>
 #include <dlfcn.h>
 #include <stdexcept>
@@ -15,8 +13,8 @@
 #include <regex>
 #include <algorithm>
 #include <unistd.h>
-#include <Core.hpp>
 
+#include "Core.hpp"
 
 Core::Core(const std::string &path)
     : _libs(), _games()
@@ -171,9 +169,19 @@ void Core::_exit()
 
 void Core::loop()
 {
+    auto start = std::chrono::system_clock::now();
+    auto end = start;
+    std::chrono::duration<double> elapsed = end - start;
+
     while (!_shouldExit()) {
+        start = std::chrono::system_clock::now();
+
         _tick();
         _render();
+
+        end = std::chrono::system_clock::now();
+        elapsed = end - start;
+        _deltaTime = elapsed.count();
     }
 }
 
@@ -217,7 +225,7 @@ void Core::_tick()
             c.second();
     }
     _getGraphical()->pollEvents();
-    _getGame()->tick(_getGraphical());
+    _getGame()->tick(_getGraphical(), _deltaTime);
 }
 
 void Core::_render()

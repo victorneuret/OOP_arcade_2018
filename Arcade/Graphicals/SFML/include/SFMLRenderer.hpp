@@ -2,24 +2,22 @@
 ** EPITECH PROJECT, 2019
 ** arcade
 ** File description:
-** SDLRenderer.hpp
+** SFMLRenderer.hpp
 */
 
 #pragma once
 
-#include <string>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
+#include <SFML/Graphics.hpp>
 
 #include "IRenderer.hpp"
 
-class SDLRenderer final : public Arcade::IRenderer {
-public:
-    SDLRenderer();
-    SDLRenderer(const SDLRenderer &copy) = delete;
-    ~SDLRenderer() noexcept;
+constexpr float WIN_WIDTH = 800;
+constexpr float WIN_HEIGHT = 800;
 
-    SDLRenderer &operator=(const SDLRenderer &copy) = delete;
+class SFMLRenderer final : public Arcade::IRenderer {
+public:
+    SFMLRenderer();
+    ~SFMLRenderer() override = default;
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
     void drawSprite(const Arcade::ASprite &sprite) override;
@@ -28,7 +26,8 @@ public:
     void display() override;
     void clear() override;
 
+    sf::RenderWindow &getWindow();
 private:
-    SDL_Window *_window = nullptr;
-    SDL_Renderer *_renderer = nullptr;
+    sf::RenderWindow _window;
+    sf::Font _sfFont;
 };

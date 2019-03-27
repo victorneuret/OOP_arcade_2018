@@ -8,7 +8,7 @@
 #pragma once
 
 namespace Arcade {
-    struct Vector {
+    struct Vector final {
         double x;
         double y;
 
