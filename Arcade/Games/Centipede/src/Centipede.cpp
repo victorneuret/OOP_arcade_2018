@@ -5,15 +5,35 @@
 ** Centipede.cpp
 */
 
-#include <Centipede.hpp>
+#include <random>
 
 #include "Centipede.hpp"
 
-Centipede::~Centipede()
+Centipede::Centipede()
 {
+    double x = 0;
+    double y = 0;
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+
+    for (auto &cell : _cells) {
+        cell.pos = {x, y};
+        cell.hasObstacle = dis(gen) <= OBSTACLE_PERCENTAGE / 100.0;
+
+        if (++x >= CELL_COUNT_X) {
+            x = 0;
+            if (++y >= CELL_COUNT_Y)
+                break;
+        }
+    }
 }
 
-void Centipede::init(Arcade::IGraphicLib *graphic)
+Centipede::~Centipede()
+= default;
+
+void Centipede::init(Arcade::IGraphicLib *)
 {
 }
 
@@ -35,6 +55,11 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
     renderer.clear();
     renderer.drawRectangle(Arcade::Rect(_playerPos.x, _playerPos.y, PLAYER_WIDTH, PLAYER_HEIGHT),
                            Arcade::Color(255, 255, 255));
+    for (const auto &cell : _cells)
+        if (cell.hasObstacle)
+            renderer.drawRectangle(
+                Arcade::Rect(cell.pos.x / CELL_COUNT_X * BOARD_WIDTH, cell.pos.y / CELL_COUNT_Y * BOARD_HEIGHT,
+                             CELL_SIZE, CELL_SIZE), Arcade::Color(220, 20, 20));
     renderer.display();
 }
 

@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <vector>
 #include <functional>
 #include <unordered_map>
 
@@ -16,8 +17,19 @@ constexpr double PLAYER_WIDTH = 0.04;
 constexpr double PLAYER_HEIGHT = 0.04;
 constexpr double PLAYER_SPEED = 0.6;
 
+constexpr double BOARD_WIDTH = 1;
+constexpr double BOARD_HEIGHT = 0.76;
+
+constexpr double CELL_SIZE = 0.033;
+
+constexpr double CELL_COUNT_X = BOARD_WIDTH / CELL_SIZE;
+constexpr double CELL_COUNT_Y = BOARD_HEIGHT / CELL_SIZE;
+
+constexpr double OBSTACLE_PERCENTAGE = 5;
+
 class Centipede final : public Arcade::IGame {
 public:
+    Centipede();
     ~Centipede() override;
 
     void init(Arcade::IGraphicLib *graphic) override;
@@ -27,6 +39,12 @@ public:
     void reloadResources(Arcade::IGraphicLib *lib) override;
 
 private:
+    struct Cell {
+        Arcade::Vector pos{0, 0};
+        bool hasObstacle = false;
+        uint8_t obstacleHealth = 5;
+    };
+
     void _moveUp();
     void _moveDown();
     void _moveLeft();
@@ -43,4 +61,5 @@ private:
     double _deltaTime = 0;
 
     Arcade::Vector _playerPos{0.5, 0.9};
+    std::vector<Cell> _cells{static_cast<size_t >(CELL_COUNT_X * CELL_COUNT_Y)};
 };
