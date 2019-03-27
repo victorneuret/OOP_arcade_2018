@@ -53,6 +53,7 @@ void Nibbler::render(Arcade::IGraphicLib *graphic)
     graphic->getRenderer().clear();
     drawMap(graphic);
     drawSnake(graphic);
+    graphic->getRenderer().drawText(std::to_string(_ateFood), 22, Arcade::Vector(0.5, 0), Arcade::Color(0, 0, 0));
     graphic->getRenderer().display();
 }
 
@@ -202,4 +203,5 @@ void Nibbler::restart()
     _snake.tail = _snakeDefault.tail;
     _direction = {1, 0};
     _speed = 0.3;
+    _ateFood = 0;
 }
