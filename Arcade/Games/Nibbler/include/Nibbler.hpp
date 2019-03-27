@@ -10,12 +10,13 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
+#include <chrono>
 
 #include "IGame.hpp"
 #include "IGraphicalLib.hpp"
 
-constexpr const uint8_t MAP_WIDTH = 20;
-constexpr const uint8_t MAP_HIGH = 19;
+constexpr const uint8_t MAP_WIDTH = 41;
+constexpr const uint8_t MAP_HIGH = 40;
 
 typedef struct snake_s {
     Arcade::Vector head;
@@ -28,64 +29,92 @@ public:
     Nibbler() = default;
     ~Nibbler() override = default;
 
-    void tick(Arcade::IGraphicLib *graphic) override;
+    void tick(Arcade::IGraphicLib *graphic, double deltaTime) override;
     void render(Arcade::IGraphicLib *graphic) override;
     bool isCloseRequested() const noexcept override;
     void reloadResources(Arcade::IGraphicLib *) override;
 
 private:
+    double _deltaTime = 0;
+    double _time = 0;
+
+    double _speed = 0.3;
+    double _speedBoost = 0.0;
+    Arcade::Vector _direction = {1.0, 0.0};
+    size_t _ateFood = 0;
+
     char _maps[MAP_HIGH][MAP_WIDTH] = {
-        "###################",
-        "#  @   @   @   @  #",
-        "# ### # ### # ### #",
-        "#@# #@#     #@# #@#",
-        "# ### # # # # ### #",
-        "#     #@# #@#     #",
-        "# ##### # # ##### #",
-        "#@# @         @ #@#",
-        "# # #####@##### # #",
-        "#   @         @   #",
-        "# ##### ### ##### #",
-        "#  @    # #    @  #",
-        "# ### # ### # ### #",
-        "# # # #  @  # # # #",
-        "# ### # ### # ### #",
-        "#@   @#@# #@#@   @#",
-        "#@##### ### #####@#",
-        "#                 #",
-        "###################"
+        "########################################",
+        "#                                      #",
+        "#                  #                   #",
+        "#                                      #",
+        "#                                  #   #",
+        "#            #####   #                 #",
+        "#                #   #                 #",
+        "#                #   #                 #",
+        "#                                      #",
+        "#                #   #                 #",
+        "#                #                     #",
+        "#                #                     #",
+        "#                #                     #",
+        "#            #   #####                 #",
+        "#                                      #",
+        "#                            @         #",
+        "#                                      #",
+        "#   #                                  #",
+        "#                                      #",
+        "#                                      #",
+        "#                    ######            #",
+        "#                         #            #",
+        "#                         #            #",
+        "#                         #            #",
+        "#                                      #",
+        "#                                      #",
+        "#                                      #",
+        "#                                      #",
+        "#                                      #",
+        "#                                      #",
+        "#                 #####                #",
+        "#                     #                #",
+        "#                                      #",
+        "#                                      #",
+        "#    #                                 #",
+        "#    #                                 #",
+        "#    #                                 #",
+        "#                                      #",
+        "#                          #           #",
+        "########################################"
     };
-    snake_t _snake = {
-        {11, 17},
-        {7, 17},
+
+    const snake_t _snakeDefault = {
+        {19, 19},
+        {15, 19},
         {
-            {10, 17},
-            {9, 17},
-            {8, 17}
+            {18, 19},
+            {17, 19},
+            {16, 19}
         }
     };
-    /*Arcade::Vector _tailPos = Arcade::Vector(7, 17);
-    Arcade::Vector _headPos = Arcade::Vector(11, 17);
-    std::vector<Arcade::Vector> _snake = {
-        {11, 17},
-        {10, 17},
-        {9, 17},
-        {8, 17},
-        {7, 17}
-    };*/
+    snake_t _snake = _snakeDefault;
+
     void drawMap(Arcade::IGraphicLib *graphic);
     void drawSnake(Arcade::IGraphicLib *graphic);
 
-    void move(const Arcade::Vector &head);
+    void move();
+    void generateFood();
+    void restart();
+
     void moveUp();
     void moveDown();
     void moveLeft();
     void moveRight();
+    void speedBoost();
 
     const std::unordered_map<uint8_t, std::function<void ()>> _gameKeys = {
-            {Arcade::IGraphicLib::UP, std::bind(&Nibbler::moveUp, this)},
-            {Arcade::IGraphicLib::DOWN, std::bind(&Nibbler::moveDown, this)},
-            {Arcade::IGraphicLib::LEFT, std::bind(&Nibbler::moveLeft, this)},
-            {Arcade::IGraphicLib::RIGHT, std::bind(&Nibbler::moveRight, this)}
+        {Arcade::IGraphicLib::UP, std::bind(&Nibbler::moveUp, this)},
+        {Arcade::IGraphicLib::DOWN, std::bind(&Nibbler::moveDown, this)},
+        {Arcade::IGraphicLib::LEFT, std::bind(&Nibbler::moveLeft, this)},
+        {Arcade::IGraphicLib::RIGHT, std::bind(&Nibbler::moveRight, this)},
+        {Arcade::IGraphicLib::PRIMARY, std::bind(&Nibbler::speedBoost, this)}
     };
 };
