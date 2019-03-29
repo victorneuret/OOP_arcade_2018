@@ -22,7 +22,7 @@ public:
     ~NcursesRenderer() override;
 
     void drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill) override;
-    void drawSprite(const Arcade::ASprite &sprite) override;
+    void drawSprite(const Arcade::ASprite *sprite) override;
     void drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color) override;
 
     void display() override;

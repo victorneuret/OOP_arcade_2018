@@ -20,12 +20,15 @@ NcursesRenderer::NcursesRenderer()
     nocbreak();
     start_color();
     keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
     _size = LINES > COLS ? COLS : LINES;
     _win = newwin(_size, _size, LINES / 2 - (_size / 2), COLS / 2 - (_size / 2));
 }
 
 NcursesRenderer::~NcursesRenderer()
 {
+    erase();
+    refresh();
     delwin(_win);
     endwin();
 }
@@ -44,7 +47,7 @@ void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Colo
     delwin(tmpWin);
 }
 
-void NcursesRenderer::drawSprite(const Arcade::ASprite &)
+void NcursesRenderer::drawSprite(const Arcade::ASprite *)
 {
     // TODO: Antoine: draw rectangle with color `fallbackColor`
 }
