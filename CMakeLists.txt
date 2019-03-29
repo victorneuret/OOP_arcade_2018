@@ -39,7 +39,10 @@ add_library(
         Arcade/Common/src/Math/Rect.cpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
-        Arcade/Games/Centipede/src/Centipede.cpp Arcade/Games/Centipede/include/Centipede.hpp Arcade/Games/Centipede/include/CentipedeTexture.hpp)
+        Arcade/Games/Centipede/src/Centipede.cpp
+        Arcade/Games/Centipede/include/Centipede.hpp
+        Arcade/Games/Centipede/include/CentipedeTexture.hpp
+)
 
 add_library(
         _arcade_nibbler
