@@ -9,8 +9,8 @@
 #include <iostream>
 #include <algorithm>
 #include <chrono>
-#include <stdlib.h>
-#include <time.h>
+#include <cstdlib>
+#include <ctime>
 
 #include "Nibbler.hpp"
 
@@ -29,21 +29,21 @@ void Nibbler::tick(Arcade::IGraphicLib *graphic, double deltaTime)
                     nbSpace++;
     }
 
-    uint8_t key = graphic->getGameKeyState();
-    _speedBoost = 0;
+    auto key = graphic->getGameKeyState();
+    _boost = 0;
     for (const auto &c : _gameKeys) {
         if (c.first & key)
             c.second();
     }
 
     _time += _deltaTime;
-    if (_time >= (_speed - _speedBoost)) {
-        move();
-        _time -= _speed - _speedBoost;
+    if (_time >= (_speed - _boost)) {
+        _move();
+        _time -= _speed - _boost;
     }
 
     if ((_snake.body.size() + 2) == nbSpace)
-        restart();
+        _restart();
 }
 
 void Nibbler::render(Arcade::IGraphicLib *graphic)
@@ -51,9 +51,9 @@ void Nibbler::render(Arcade::IGraphicLib *graphic)
     if (!graphic)
         return;
     graphic->getRenderer().clear();
-    drawMap(graphic);
-    drawSnake(graphic);
-    graphic->getRenderer().drawText(std::to_string(_ateFood), 22, Arcade::Vector(0.5, 0), Arcade::Color(0, 0, 0));
+    _drawMap(graphic);
+    _drawSnake(graphic);
+    graphic->getRenderer().drawText(std::to_string(_foodEaten), 22, Arcade::Vector(0.5, 0), Arcade::Color(0, 0, 0));
     graphic->getRenderer().display();
 }
 
@@ -65,7 +65,7 @@ bool Nibbler::isCloseRequested() const noexcept
 void Nibbler::reloadResources(Arcade::IGraphicLib *)
 {}
 
-void Nibbler::drawMap(Arcade::IGraphicLib *graphic)
+void Nibbler::_drawMap(Arcade::IGraphicLib *graphic)
 {
     for (size_t i = 0; i < MAP_HIGH; i++) {
         for (size_t j = 0; j < MAP_WIDTH; j++) {
@@ -94,7 +94,7 @@ void Nibbler::drawMap(Arcade::IGraphicLib *graphic)
     }
 }
 
-void Nibbler::drawSnake(Arcade::IGraphicLib *graphic)
+void Nibbler::_drawSnake(Arcade::IGraphicLib *graphic)
 {
     graphic->getRenderer().drawRectangle(
         Arcade::Rect{
@@ -128,13 +128,13 @@ void Nibbler::drawSnake(Arcade::IGraphicLib *graphic)
     }
 }
 
-void Nibbler::move()
+void Nibbler::_move()
 {
     Arcade::Vector head = _snake.head + _direction;
     if (_maps[static_cast<int>(head.y)][static_cast<int>(head.x)] == '#'
         || std::find(_snake.body.begin(), _snake.body.end(), head) != _snake.body.end()
         || head == _snake.tail)
-        return restart();
+        return _restart();
 
     auto first = _snake.body.begin();
 
@@ -146,43 +146,43 @@ void Nibbler::move()
         _snake.body.pop_back();
     } else {
         _maps[static_cast<int>(_snake.head.y)][static_cast<int>(_snake.head.x)] = ' ';
-        _ateFood++;
-        if (_ateFood > 1 && _speed > 0.06 && _ateFood % 2 == 0)
+        _foodEaten++;
+        if (_foodEaten > 1 && _speed > 0.06 && _foodEaten % 2 == 0)
             _speed -= 0.01;
-        generateFood();
+        _generateFood();
     }
 }
 
-void Nibbler::moveUp()
+void Nibbler::_moveUp()
 {
     if (_snake.body.front() != (_snake.head + Arcade::Vector(0, -1)))
         _direction = {0, -1};
 }
 
-void Nibbler::moveDown()
+void Nibbler::_moveDown()
 {
     if (_snake.body.front() != (_snake.head + Arcade::Vector(0, 1)))
         _direction = {0, 1};
 }
 
-void Nibbler::moveLeft()
+void Nibbler::_moveLeft()
 {
     if (_snake.body.front() != (_snake.head + Arcade::Vector(-1, 0)))
         _direction = {-1, 0};
 }
 
-void Nibbler::moveRight()
+void Nibbler::_moveRight()
 {
     if (_snake.body.front() != (_snake.head + Arcade::Vector(1, 0)))
         _direction = {1, 0};
 }
 
-void Nibbler::speedBoost()
+void Nibbler::_speedBoost()
 {
-   _speedBoost = _speed / 2;
+   _boost = _speed / 2;
 }
 
-void Nibbler::generateFood()
+void Nibbler::_generateFood()
 {
     Arcade::Vector food(0.0, 0.0);
 
@@ -195,7 +195,7 @@ void Nibbler::generateFood()
     _maps[static_cast<int>(food.y)][static_cast<int>(food.x)] = '@';
 }
 
-void Nibbler::restart()
+void Nibbler::_restart()
 {
     _snake.head = _snakeDefault.head;
     _snake.body.clear();
@@ -203,5 +203,5 @@ void Nibbler::restart()
     _snake.tail = _snakeDefault.tail;
     _direction = {1, 0};
     _speed = 0.3;
-    _ateFood = 0;
+    _foodEaten = 0;
 }

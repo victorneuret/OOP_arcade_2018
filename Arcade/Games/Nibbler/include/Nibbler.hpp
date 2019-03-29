@@ -18,16 +18,16 @@
 constexpr const uint8_t MAP_WIDTH = 41;
 constexpr const uint8_t MAP_HIGH = 40;
 
-typedef struct snake_s {
-    Arcade::Vector head;
-    Arcade::Vector tail;
-    std::vector<Arcade::Vector> body;
-} snake_t;
-
 class Nibbler final : public Arcade::IGame {
 public:
     Nibbler() = default;
     ~Nibbler() override = default;
+
+    struct Snake {
+        Arcade::Vector head;
+        Arcade::Vector tail;
+        std::vector<Arcade::Vector> body;
+    };
 
     void tick(Arcade::IGraphicLib *graphic, double deltaTime) override;
     void render(Arcade::IGraphicLib *graphic) override;
@@ -39,9 +39,9 @@ private:
     double _time = 0;
 
     double _speed = 0.3;
-    double _speedBoost = 0.0;
+    double _boost = 0.0;
     Arcade::Vector _direction = {1.0, 0.0};
-    size_t _ateFood = 0;
+    size_t _foodEaten = 0;
 
     char _maps[MAP_HIGH][MAP_WIDTH] = {
         "########################################",
@@ -86,7 +86,7 @@ private:
         "########################################"
     };
 
-    const snake_t _snakeDefault = {
+    const Snake _snakeDefault = {
         {19, 19},
         {15, 19},
         {
@@ -95,26 +95,26 @@ private:
             {16, 19}
         }
     };
-    snake_t _snake = _snakeDefault;
+    Snake _snake = _snakeDefault;
 
-    void drawMap(Arcade::IGraphicLib *graphic);
-    void drawSnake(Arcade::IGraphicLib *graphic);
+    void _drawMap(Arcade::IGraphicLib *graphic);
+    void _drawSnake(Arcade::IGraphicLib *graphic);
 
-    void move();
-    void generateFood();
-    void restart();
+    void _move();
+    void _generateFood();
+    void _restart();
 
-    void moveUp();
-    void moveDown();
-    void moveLeft();
-    void moveRight();
-    void speedBoost();
+    void _moveUp();
+    void _moveDown();
+    void _moveLeft();
+    void _moveRight();
+    void _speedBoost();
 
-    const std::unordered_map<uint8_t, std::function<void ()>> _gameKeys = {
-        {Arcade::IGraphicLib::UP, std::bind(&Nibbler::moveUp, this)},
-        {Arcade::IGraphicLib::DOWN, std::bind(&Nibbler::moveDown, this)},
-        {Arcade::IGraphicLib::LEFT, std::bind(&Nibbler::moveLeft, this)},
-        {Arcade::IGraphicLib::RIGHT, std::bind(&Nibbler::moveRight, this)},
-        {Arcade::IGraphicLib::PRIMARY, std::bind(&Nibbler::speedBoost, this)}
+    const std::unordered_map<Arcade::IGraphicLib::GameKey, std::function<void ()>> _gameKeys = {
+        {Arcade::IGraphicLib::UP, std::bind(&Nibbler::_moveUp, this)},
+        {Arcade::IGraphicLib::DOWN, std::bind(&Nibbler::_moveDown, this)},
+        {Arcade::IGraphicLib::LEFT, std::bind(&Nibbler::_moveLeft, this)},
+        {Arcade::IGraphicLib::RIGHT, std::bind(&Nibbler::_moveRight, this)},
+        {Arcade::IGraphicLib::PRIMARY, std::bind(&Nibbler::_speedBoost, this)}
     };
 };
