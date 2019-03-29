@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include <MainMenu.hpp>
+#include <iostream>
 
 #include "MainMenu.hpp"
 
@@ -60,10 +61,9 @@ void MainMenu::render(Arcade::IGraphicLib *graphic)
     if (!graphic)
         return;
     graphic->getRenderer().clear();
+    graphic->getRenderer().drawRectangle(Arcade::Rect(0, 0, 0.3, 0.3), Arcade::Color(255, 255, 255), true);
     graphic->getRenderer().drawText("this is a test", 16, Arcade::Vector(_selection.first, _selection.second),
                                     Arcade::Color(0, 255, 0));
-//    graphic->getRenderer().drawSprite(*_fullSprite);
-//    graphic->getRenderer().drawSprite(*_pacman);
     graphic->getRenderer().drawRectangle(Arcade::Rect(0.33, 0.33, 0.66, 0.66), Arcade::Color(0, 42, 200), false);
     graphic->getRenderer().drawRectangle(Arcade::Rect(0.45, 0.45, 0.1, 0.1), Arcade::Color(0, 200, 42), true);
     graphic->getRenderer().display();

@@ -6,10 +6,12 @@
 */
 
 #include <iostream>
-#include <SDL.hpp>
+#include <SDL2/SDL.h>
 
 #include "IGraphicalLib.hpp"
 #include "SDL.hpp"
+#include "SDLTexture.hpp"
+#include "SDLSprite.hpp"
 
 SDL::SDL()
     : _renderer()
@@ -56,14 +58,14 @@ void SDL::pollEvents()
             _closeRequested = true;
 }
 
-Arcade::ATexture *SDL::createTexture(const void *, const size_t &, const Arcade::Color &)
+Arcade::ATexture *SDL::createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor)
 {
-    return nullptr;
+    return new SDLTexture(buffer, len, fallbackColor);
 }
 
-Arcade::ASprite *SDL::createSprite(const Arcade::ATexture *, const Arcade::Rect &, const Arcade::Rect &)
+Arcade::ASprite *SDL::createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect, const Arcade::Rect &posAndSize)
 {
-    return nullptr;
+    return new SDLSprite(texture, spriteSheetRect, posAndSize);
 }
 
 Arcade::IRenderer &SDL::getRenderer() noexcept
