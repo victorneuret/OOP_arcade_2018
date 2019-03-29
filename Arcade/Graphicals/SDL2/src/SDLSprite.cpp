@@ -31,10 +31,18 @@ void SDLSprite::setPosAndSize(const Arcade::Rect &posAndSize)
 
 void SDLSprite::setTextureRect(const Arcade::Rect &newRect)
 {
+    const auto surface = dynamic_cast<const SDLTexture *>(_texture)->getSurface();
+
     _srcrect.x = static_cast<int>(newRect.pos.x);
     _srcrect.y = static_cast<int>(newRect.pos.y);
-    _srcrect.w = static_cast<int>(newRect.size.x);
-    _srcrect.h = static_cast<int>(newRect.size.y);
+
+    if (newRect.size == Arcade::Vector(0, 0)) {
+        _srcrect.w = surface->w;
+        _srcrect.h = surface->h;
+    } else {
+        _srcrect.w = static_cast<int>(newRect.size.x);
+        _srcrect.h = static_cast<int>(newRect.size.y);
+    }
 }
 
 void SDLSprite::drawSprite(SDL_Renderer *renderer)
