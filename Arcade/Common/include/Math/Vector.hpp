@@ -7,12 +7,14 @@
 
 #pragma once
 
+#include <ostream>
+
 namespace Arcade {
     struct Vector final {
         double x;
         double y;
 
-        Vector(const Vector& v) noexcept = default;
+        Vector(const Vector &v) noexcept = default;
         Vector(double x, double y) noexcept;
         ~Vector() = default;
 

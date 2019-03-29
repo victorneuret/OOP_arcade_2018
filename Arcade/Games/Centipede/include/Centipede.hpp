@@ -34,11 +34,13 @@ constexpr double SHOT_HEIGHT = PLAYER_HEIGHT;
 
 static const Arcade::Rect PLAYER_SPRITE_RECT{20, 9, 9, 8};
 
+static const Arcade::Rect DESTROYED_OBSTACLE{90, 108, 8, 8};
+
 static const Arcade::Rect OBSTACLE_SPRITE_RECTS[] = {
     Arcade::Rect{95, 72, 8, 8},
     Arcade::Rect{86, 72, 8, 8},
     Arcade::Rect{77, 72, 8, 8},
-    Arcade::Rect{68, 72, 8, 8},
+    Arcade::Rect{77, 72, 8, 8},
     Arcade::Rect{68, 72, 8, 8}
 };
 
@@ -58,7 +60,7 @@ public:
 
 private:
     struct Cell {
-        Arcade::Vector pos{0, 0};
+        Arcade::Rect rect{0, 0, CELL_SIZE, CELL_SIZE};
         bool hasObstacle = false;
         uint8_t obstacleHealth = 5;
 
@@ -66,6 +68,9 @@ private:
     };
 
     static void _updateObstacle(Cell &cell);
+    static bool _rectanglesCollide(const Arcade::Rect &rectA, const Arcade::Rect &rectB);
+
+    void _checkShotCollision();
 
     void _shoot();
     void _moveUp();

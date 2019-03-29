@@ -7,6 +7,7 @@
 
 #pragma once
 
+#include <ostream>
 #include "Vector.hpp"
 
 namespace Arcade {
