@@ -40,7 +40,7 @@ static const Arcade::Rect OBSTACLE_SPRITE_RECTS[] = {
     Arcade::Rect{95, 72, 8, 8},
     Arcade::Rect{86, 72, 8, 8},
     Arcade::Rect{77, 72, 8, 8},
-    Arcade::Rect{77, 72, 8, 8},
+    Arcade::Rect{77, 72, 8, 8}, // Four sprites for five states...
     Arcade::Rect{68, 72, 8, 8}
 };
 
