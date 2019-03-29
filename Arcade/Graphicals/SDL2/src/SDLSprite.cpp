@@ -18,7 +18,6 @@ SDLSprite::SDLSprite(const Arcade::ATexture *texture,
 {
     setTextureRect(spriteSheetRect);
     setPosAndSize(posAndSize);
-
 }
 
 void SDLSprite::setPosAndSize(const Arcade::Rect &posAndSize)
