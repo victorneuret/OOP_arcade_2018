@@ -20,6 +20,8 @@ add_library(
         Arcade/Games/MainMenu/include/MainMenu.hpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Games/MainMenu/include/TestSprite.hpp
+        Arcade/Common/include/IMenu.hpp
 )
 
 add_library(
@@ -86,6 +88,10 @@ add_library(
         Arcade/Graphicals/NCURSES/src/Main.cpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Graphicals/NCURSES/src/NcursesSprite.cpp
+        Arcade/Graphicals/NCURSES/include/NcursesSprite.hpp
+        Arcade/Graphicals/NCURSES/src/NcursesTexture.cpp
+        Arcade/Graphicals/NCURSES/include/NcursesTexture.hpp
 )
 
 add_library(
@@ -100,7 +106,6 @@ add_library(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
         Arcade/Common/src/Graphical/Color.cpp
         Arcade/Common/src/Math/Vector.cpp
@@ -160,6 +165,7 @@ add_executable(
         Arcade/Core/include/Core.hpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Common/include/IMenu.hpp
 )
 
 include_directories(Arcade/Common/include)

@@ -10,11 +10,11 @@
 #include <unordered_map>
 #include <functional>
 
-#include "IGame.hpp"
+#include "IMenu.hpp"
 #include "IGraphicalLib.hpp"
 #include "Graphical/ASprite.hpp"
 
-class MainMenu final : public Arcade::IGame {
+class MainMenu final : public Arcade::IMenu {
 public:
     MainMenu() = default;
     MainMenu(const MainMenu &) = delete;
@@ -24,7 +24,9 @@ public:
 
     void init(Arcade::IGraphicLib *graphic) override;
     void tick(Arcade::IGraphicLib *graphic, double deltaTime) override;
+    void tick(Arcade::IGraphicLib *graphic, double deltaTime, const Arcade::IMenu::CoreExtension &core) override;
     void render(Arcade::IGraphicLib *graphic) override;
+    void render(Arcade::IGraphicLib *graphic, const Arcade::IMenu::CoreExtension &core) override;
     bool isCloseRequested() const noexcept override;
     void reloadResources(Arcade::IGraphicLib *) override;
 
@@ -49,4 +51,3 @@ private:
     double _deltaTime = 0;
 
 };
-

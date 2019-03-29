@@ -19,14 +19,13 @@
 Core::Core(const std::string &path)
     : _libs(), _games()
 {
-    _addExtension(std::string(GAME_PATH) + "/" + MAIN_MENU_NAME, GAME);
     _addExtension(path, GRAPHICAL);
-    if (_games.empty() || _libs.empty())
+    if (_libs.empty())
         throw std::runtime_error("Failed to load core modules");
     _loadDirectory(LIB_PATH);
     _loadDirectory(GAME_PATH);
     _loadGraphical(_libs[0]);
-    _loadGame(_games[0]);
+    _loadGame(MAIN_MENU_PATH);
 }
 
 Core::~Core()
@@ -188,8 +187,6 @@ void Core::_exit()
 void Core::loop()
 {
     auto start = std::chrono::system_clock::now();
-    auto end = start;
-    std::chrono::duration<double> elapsed = end - start;
 
     _getGame()->init(_getGraphical());
 
@@ -199,9 +196,7 @@ void Core::loop()
         _tick();
         _render();
 
-        end = std::chrono::system_clock::now();
-        elapsed = end - start;
-        _deltaTime = elapsed.count();
+        _deltaTime = (std::chrono::system_clock::now() - start).count();
     }
 }
 
@@ -219,18 +214,32 @@ void Core::_loadDirectory(const std::string &path) noexcept
     }
 }
 
-Arcade::IGraphicLib *Core::_getGraphical()
+Arcade::IGraphicLib *Core::_getGraphical() const
 {
     if (!_loadedLib.instance)
         return nullptr;
     return reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
 }
 
-Arcade::IGame *Core::_getGame()
+Arcade::IGame *Core::_getGame() const
 {
     if (!_loadedGame.instance)
         return nullptr;
     return reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
+}
+
+void Core::_tickMainMenu() noexcept
+{
+    dynamic_cast<Arcade::IMenu *>(_getGame())->tick(_getGraphical(), _deltaTime,
+        Arcade::IMenu::CoreExtension{_games, _libs, std::bind(&Core::_loadGame, this, std::placeholders::_1),
+                                     std::bind(&Core::_loadGraphical, this, std::placeholders::_1)});
+}
+
+void Core::_renderMainMenu() noexcept
+{
+    dynamic_cast<Arcade::IMenu *>(_getGame())->render(_getGraphical(),
+        Arcade::IMenu::CoreExtension{_games, _libs, std::bind(&Core::_loadGame, this, std::placeholders::_1),
+                                     std::bind(&Core::_loadGraphical, this, std::placeholders::_1)});
 }
 
 void Core::_tick()
@@ -246,16 +255,23 @@ void Core::_tick()
     }
     _getGraphical()->pollEvents();
     _getGame()->tick(_getGraphical(), _deltaTime);
+    if (_loadedGame.path == MAIN_MENU_PATH) {
+        _tickMainMenu();
+    } else
+        _getGame()->tick(_getGraphical(), _deltaTime);
 }
 
 void Core::_render()
 {
     if (_shouldExit())
         return _exit();
-    _getGame()->render(_getGraphical());
+    if (_loadedGame.path == MAIN_MENU_PATH)
+        _renderMainMenu();
+    else
+        _getGame()->render(_getGraphical());
 }
 
-bool Core::_shouldExit() noexcept
+bool Core::_shouldExit() const noexcept
 {
     return (_isCloseRequested || _getGraphical()->isCloseRequested() || _getGame()->isCloseRequested());
 }

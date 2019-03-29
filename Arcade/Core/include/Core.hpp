@@ -12,12 +12,13 @@
 #include <unordered_map>
 #include <functional>
 
+#include "IMenu.hpp"
 #include "IGraphicalLib.hpp"
 #include "IGame.hpp"
 
 constexpr const char * const LIB_PATH = "./lib";
 constexpr const char * const GAME_PATH = "./games";
-constexpr const char * const MAIN_MENU_NAME = "lib_arcade_main_menu.so";
+constexpr const char * const MAIN_MENU_PATH = "./games/lib_arcade_main_menu.so";
 
 class Core final {
 public:
@@ -40,14 +41,16 @@ private:
         void *instance;
     };
 
-    void _loadGraphical(const std::string &path);
-    void _loadGame(const std::string &path);
     void _addExtension(const std::string &path, EXT_TYPE type) noexcept;
     void _loadDirectory(const std::string &path) noexcept;
-    Arcade::IGraphicLib *_getGraphical();
-    Arcade::IGame *_getGame();
-    bool _shouldExit() noexcept;
+    void _loadGraphical(const std::string &path);
+    void _loadGame(const std::string &path);
+    Arcade::IGraphicLib *_getGraphical() const;
+    Arcade::IGame *_getGame() const;
 
+    bool _shouldExit() const noexcept;
+	void _tickMainMenu() noexcept;
+    void _renderMainMenu() noexcept;
     void _loadNextGraphical();
     void _loadPrevGraphical();
     void _loadNextGame();

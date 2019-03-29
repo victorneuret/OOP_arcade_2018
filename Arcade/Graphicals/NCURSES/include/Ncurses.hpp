@@ -33,6 +33,8 @@ public:
 
 private:
     NcursesRenderer _render;
+    int _key = 0;
+
     const std::unordered_map<int, Arcade::IGraphicLib::GameKey> _gameKeys = {
         {KEY_UP,    UP},
         {KEY_DOWN,  DOWN},

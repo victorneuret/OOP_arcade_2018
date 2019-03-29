@@ -35,5 +35,6 @@ private:
 
     WINDOW *_win = nullptr;
     uint16_t _colorIndex = 0;
-    int32_t _size = 0;
+    int32_t _height = 40;
+    int32_t _width = _height * 2;
 };
