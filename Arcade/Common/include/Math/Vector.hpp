@@ -7,8 +7,6 @@
 
 #pragma once
 
-#include <ostream>
-
 namespace Arcade {
     struct Vector final {
         double x;
