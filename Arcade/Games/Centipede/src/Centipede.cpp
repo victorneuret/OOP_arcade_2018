@@ -32,7 +32,9 @@ Centipede::Centipede()
 }
 
 Centipede::~Centipede()
-= default;
+{
+    _freeResources();
+}
 
 void Centipede::init(Arcade::IGraphicLib *graphic)
 {
@@ -51,6 +53,10 @@ void Centipede::tick(Arcade::IGraphicLib *graphic, double deltaTime)
 
     if (_playerSprite)
         _playerSprite->setPosAndSize({_playerPos.x, _playerPos.y, PLAYER_WIDTH, PLAYER_HEIGHT});
+
+    for (auto &cell : _cells)
+        if (cell.hasObstacle)
+            _updateObstacle(cell);
 }
 
 void Centipede::render(Arcade::IGraphicLib *graphic)
@@ -59,10 +65,8 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
 
     renderer.clear();
     for (const auto &cell : _cells)
-        if (cell.hasObstacle)
-            renderer.drawRectangle(
-                Arcade::Rect(cell.pos.x / CELL_COUNT_X * BOARD_WIDTH, cell.pos.y / CELL_COUNT_Y * BOARD_HEIGHT,
-                             CELL_SIZE, CELL_SIZE), Arcade::Color(220, 20, 20));
+        if (cell.hasObstacle && cell.sprite != nullptr)
+            renderer.drawSprite(cell.sprite);
     renderer.drawSprite(_playerSprite);
     renderer.display();
 }
@@ -74,12 +78,23 @@ bool Centipede::isCloseRequested() const noexcept
 
 void Centipede::reloadResources(Arcade::IGraphicLib *graphic)
 {
-    delete _spriteSheet;
-    delete _spriteSheet;
+    _freeResources();
 
     _spriteSheet = graphic->createTexture(SPRITE_SHEET, sizeof(SPRITE_SHEET), Arcade::Color(0, 255, 127));
-    _playerSprite = graphic->createSprite(_spriteSheet, {20, 9, 9, 8},
+    _playerSprite = graphic->createSprite(_spriteSheet, PLAYER_SPRITE_RECT,
                                           {_playerPos.x, _playerPos.y, PLAYER_WIDTH, PLAYER_HEIGHT});
+
+    for (auto &cell : _cells)
+        if (cell.hasObstacle)
+            cell.sprite = graphic->createSprite(_spriteSheet, OBSTACLE_SPRITE_RECTS[cell.obstacleHealth - 1],
+                                                {cell.pos.x / CELL_COUNT_X * BOARD_WIDTH,
+                                                 cell.pos.y / CELL_COUNT_Y * BOARD_HEIGHT, CELL_SIZE, CELL_SIZE});
+}
+
+void Centipede::_updateObstacle(Centipede::Cell &cell)
+{
+    if (cell.sprite)
+        cell.sprite->setTextureRect(OBSTACLE_SPRITE_RECTS[cell.obstacleHealth - 1]);
 }
 
 void Centipede::_moveUp()
@@ -104,4 +119,13 @@ void Centipede::_moveRight()
 {
     if (_playerPos.x < 1 - PLAYER_WIDTH)
         _playerPos.x += PLAYER_SPEED * _deltaTime;
+}
+
+void Centipede::_freeResources()
+{
+    delete _spriteSheet;
+    delete _playerSprite;
+
+    for (auto &cell : _cells)
+        delete cell.sprite;
 }

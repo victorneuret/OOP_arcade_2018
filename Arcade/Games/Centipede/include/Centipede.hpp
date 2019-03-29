@@ -26,7 +26,17 @@ constexpr double CELL_COUNT_X = BOARD_WIDTH / CELL_SIZE;
 constexpr double CELL_COUNT_Y = BOARD_HEIGHT / CELL_SIZE;
 constexpr uint64_t CELL_COUNT = static_cast<uint64_t >(CELL_COUNT_X * CELL_COUNT_Y);
 
-constexpr double OBSTACLE_PERCENTAGE = 5;
+constexpr double OBSTACLE_PERCENTAGE = 5.0;
+
+static const Arcade::Rect PLAYER_SPRITE_RECT{20, 9, 9, 8};
+
+static const Arcade::Rect OBSTACLE_SPRITE_RECTS[] = {
+    Arcade::Rect{95, 72, 8, 8},
+    Arcade::Rect{86, 72, 8, 8},
+    Arcade::Rect{77, 72, 8, 8},
+    Arcade::Rect{68, 72, 8, 8},
+    Arcade::Rect{68, 72, 8, 8}
+};
 
 class Centipede final : public Arcade::IGame {
 public:
@@ -47,12 +57,18 @@ private:
         Arcade::Vector pos{0, 0};
         bool hasObstacle = false;
         uint8_t obstacleHealth = 5;
+
+        Arcade::ASprite *sprite = nullptr;
     };
+
+    static void _updateObstacle(Cell &cell);
 
     void _moveUp();
     void _moveDown();
     void _moveLeft();
     void _moveRight();
+
+    void _freeResources();
 
     const std::unordered_map<Arcade::IGraphicLib::GameKey, std::function<void()>> _gameKeys = {
         {Arcade::IGraphicLib::UP,    std::bind(&Centipede::_moveUp, this)},
