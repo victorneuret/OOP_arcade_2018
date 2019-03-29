@@ -57,6 +57,12 @@ void Centipede::tick(Arcade::IGraphicLib *graphic, double deltaTime)
     for (auto &cell : _cells)
         if (cell.hasObstacle)
             _updateObstacle(cell);
+
+    if (_isShooting) {
+        _shotPos -= {0, SHOT_SPEED * _deltaTime};
+        if (_shotPos.y < -SHOT_HEIGHT)
+            _isShooting = false;
+    }
 }
 
 void Centipede::render(Arcade::IGraphicLib *graphic)
@@ -64,16 +70,15 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
     auto &renderer = graphic->getRenderer();
 
     renderer.clear();
+
     for (const auto &cell : _cells)
         if (cell.hasObstacle && cell.sprite != nullptr)
             renderer.drawSprite(cell.sprite);
     renderer.drawSprite(_playerSprite);
-    renderer.display();
-}
+    if (_isShooting)
+        renderer.drawRectangle({_shotPos.x, _shotPos.y, SHOT_WIDTH, SHOT_HEIGHT}, Arcade::Color(255, 0, 0));
 
-bool Centipede::isCloseRequested() const noexcept
-{
-    return _closeRequested;
+    renderer.display();
 }
 
 void Centipede::reloadResources(Arcade::IGraphicLib *graphic)
@@ -95,6 +100,15 @@ void Centipede::_updateObstacle(Centipede::Cell &cell)
 {
     if (cell.sprite)
         cell.sprite->setTextureRect(OBSTACLE_SPRITE_RECTS[cell.obstacleHealth - 1]);
+}
+
+void Centipede::_shoot()
+{
+    if (_isShooting)
+        return;
+
+    _isShooting = true;
+    _shotPos = {_playerPos.x + PLAYER_WIDTH / 2.0, _playerPos.y};
 }
 
 void Centipede::_moveUp()
@@ -128,4 +142,9 @@ void Centipede::_freeResources()
 
     for (auto &cell : _cells)
         delete cell.sprite;
+}
+
+bool Centipede::isCloseRequested() const noexcept
+{
+    return _closeRequested;
 }

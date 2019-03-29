@@ -28,6 +28,10 @@ constexpr uint64_t CELL_COUNT = static_cast<uint64_t >(CELL_COUNT_X * CELL_COUNT
 
 constexpr double OBSTACLE_PERCENTAGE = 5.0;
 
+constexpr double SHOT_SPEED = 1.75;
+constexpr double SHOT_WIDTH = PLAYER_WIDTH / 6.0;
+constexpr double SHOT_HEIGHT = PLAYER_HEIGHT;
+
 static const Arcade::Rect PLAYER_SPRITE_RECT{20, 9, 9, 8};
 
 static const Arcade::Rect OBSTACLE_SPRITE_RECTS[] = {
@@ -63,6 +67,7 @@ private:
 
     static void _updateObstacle(Cell &cell);
 
+    void _shoot();
     void _moveUp();
     void _moveDown();
     void _moveLeft();
@@ -71,10 +76,11 @@ private:
     void _freeResources();
 
     const std::unordered_map<Arcade::IGraphicLib::GameKey, std::function<void()>> _gameKeys = {
-        {Arcade::IGraphicLib::UP,    std::bind(&Centipede::_moveUp, this)},
-        {Arcade::IGraphicLib::DOWN,  std::bind(&Centipede::_moveDown, this)},
-        {Arcade::IGraphicLib::LEFT,  std::bind(&Centipede::_moveLeft, this)},
-        {Arcade::IGraphicLib::RIGHT, std::bind(&Centipede::_moveRight, this)}
+        {Arcade::IGraphicLib::UP,      std::bind(&Centipede::_moveUp, this)},
+        {Arcade::IGraphicLib::DOWN,    std::bind(&Centipede::_moveDown, this)},
+        {Arcade::IGraphicLib::LEFT,    std::bind(&Centipede::_moveLeft, this)},
+        {Arcade::IGraphicLib::RIGHT,   std::bind(&Centipede::_moveRight, this)},
+        {Arcade::IGraphicLib::PRIMARY, std::bind(&Centipede::_shoot, this)}
     };
 
     bool _closeRequested = false;
@@ -85,4 +91,7 @@ private:
 
     Arcade::ATexture *_spriteSheet = nullptr;
     Arcade::ASprite *_playerSprite = nullptr;
+
+    bool _isShooting = false;
+    Arcade::Vector _shotPos{0, 0};
 };
