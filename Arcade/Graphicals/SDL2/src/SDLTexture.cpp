@@ -8,7 +8,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-
 #include "SDLTexture.hpp"
 
 SDLTexture::SDLTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor)

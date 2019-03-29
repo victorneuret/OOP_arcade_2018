@@ -5,7 +5,6 @@
 ** SDL.cpp
 */
 
-#include <iostream>
 #include <SDL2/SDL.h>
 
 #include "IGraphicalLib.hpp"
