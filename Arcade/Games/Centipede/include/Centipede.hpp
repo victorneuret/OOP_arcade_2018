@@ -24,13 +24,17 @@ constexpr double CELL_SIZE = 0.033;
 
 constexpr double CELL_COUNT_X = BOARD_WIDTH / CELL_SIZE;
 constexpr double CELL_COUNT_Y = BOARD_HEIGHT / CELL_SIZE;
+constexpr uint64_t CELL_COUNT = static_cast<uint64_t >(CELL_COUNT_X * CELL_COUNT_Y);
 
 constexpr double OBSTACLE_PERCENTAGE = 5;
 
 class Centipede final : public Arcade::IGame {
 public:
     Centipede();
+    Centipede(const Centipede &) = delete;
     ~Centipede() override;
+
+    Centipede &operator=(const Centipede &) = delete;
 
     void init(Arcade::IGraphicLib *graphic) override;
     void tick(Arcade::IGraphicLib *graphic, double deltaTime) override;
@@ -62,4 +66,7 @@ private:
 
     Arcade::Vector _playerPos{0.5, 0.9};
     std::vector<Cell> _cells{static_cast<size_t >(CELL_COUNT_X * CELL_COUNT_Y)};
+
+    Arcade::ATexture *_spriteSheet = nullptr;
+    Arcade::ASprite *_playerSprite = nullptr;
 };

@@ -9,9 +9,8 @@
 #include <MainMenu.hpp>
 
 #include "MainMenu.hpp"
-#include "TestSprite.hpp"
 
-void MainMenu::init(Arcade::IGraphicLib *graphic)
+void MainMenu::init(Arcade::IGraphicLib *)
 {
 }
 
@@ -21,12 +20,6 @@ void MainMenu::tick(Arcade::IGraphicLib *graphic, double deltaTime)
 
     if (!graphic)
         return;
-
-    if (_texture == nullptr) {
-//        _texture = graphic->createTexture(IMAGE_DATA, sizeof(IMAGE_DATA), Arcade::Color(42, 55, 88));
-//        _fullSprite = graphic->createSprite(_texture, Arcade::Rect(), Arcade::Rect(0.10, 0.10, 0.33, 0.33));
-//        _pacman = graphic->createSprite(_texture, Arcade::Rect(0, 0, 16, 16), Arcade::Rect(0, 0, 0.1, 0.1));
-    }
 
     uint8_t key = graphic->getGameKeyState();
 

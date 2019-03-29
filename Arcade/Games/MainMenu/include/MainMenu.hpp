@@ -48,9 +48,5 @@ private:
     std::pair<double, double> _selection{0.5, 0.5};
     double _deltaTime = 0;
 
-    // Temporary
-    Arcade::ATexture *_texture = nullptr;
-    Arcade::ASprite *_pacman = nullptr;
-    Arcade::ASprite *_fullSprite = nullptr;
 };
 

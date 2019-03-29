@@ -8,6 +8,7 @@
 #include <random>
 
 #include "Centipede.hpp"
+#include "CentipedeTexture.hpp"
 
 Centipede::Centipede()
 {
@@ -33,8 +34,9 @@ Centipede::Centipede()
 Centipede::~Centipede()
 = default;
 
-void Centipede::init(Arcade::IGraphicLib *)
+void Centipede::init(Arcade::IGraphicLib *graphic)
 {
+    reloadResources(graphic);
 }
 
 void Centipede::tick(Arcade::IGraphicLib *graphic, double deltaTime)
@@ -46,6 +48,9 @@ void Centipede::tick(Arcade::IGraphicLib *graphic, double deltaTime)
     for (const auto &gameKey : _gameKeys)
         if (gameKey.first & key)
             gameKey.second();
+
+    if (_playerSprite)
+        _playerSprite->setPosAndSize({_playerPos.x, _playerPos.y, PLAYER_WIDTH, PLAYER_HEIGHT});
 }
 
 void Centipede::render(Arcade::IGraphicLib *graphic)
@@ -53,13 +58,12 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
     auto &renderer = graphic->getRenderer();
 
     renderer.clear();
-    renderer.drawRectangle(Arcade::Rect(_playerPos.x, _playerPos.y, PLAYER_WIDTH, PLAYER_HEIGHT),
-                           Arcade::Color(255, 255, 255));
     for (const auto &cell : _cells)
         if (cell.hasObstacle)
             renderer.drawRectangle(
                 Arcade::Rect(cell.pos.x / CELL_COUNT_X * BOARD_WIDTH, cell.pos.y / CELL_COUNT_Y * BOARD_HEIGHT,
                              CELL_SIZE, CELL_SIZE), Arcade::Color(220, 20, 20));
+    renderer.drawSprite(_playerSprite);
     renderer.display();
 }
 
@@ -68,8 +72,14 @@ bool Centipede::isCloseRequested() const noexcept
     return _closeRequested;
 }
 
-void Centipede::reloadResources(Arcade::IGraphicLib *)
+void Centipede::reloadResources(Arcade::IGraphicLib *graphic)
 {
+    delete _spriteSheet;
+    delete _spriteSheet;
+
+    _spriteSheet = graphic->createTexture(SPRITE_SHEET, sizeof(SPRITE_SHEET), Arcade::Color(0, 255, 127));
+    _playerSprite = graphic->createSprite(_spriteSheet, {20, 9, 9, 8},
+                                          {_playerPos.x, _playerPos.y, PLAYER_WIDTH, PLAYER_HEIGHT});
 }
 
 void Centipede::_moveUp()

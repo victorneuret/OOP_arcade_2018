@@ -71,6 +71,12 @@ void Core::_loadGraphical(const std::string &path)
     _loadedLib.instance = func();
     if (!_loadedLib.instance)
         throw std::runtime_error("Failed to create instance for graphical: " + _loadedGame.path);
+
+    auto game = _getGame();
+    auto graphical = _getGraphical();
+
+    if (game != nullptr && graphical != nullptr)
+        game->reloadResources(graphical);
 }
 
 void Core::_loadGame(const std::string &path)
@@ -92,6 +98,12 @@ void Core::_loadGame(const std::string &path)
     _loadedGame.instance = func();
     if (!_loadedGame.instance)
         throw std::runtime_error("Failed to create instance for game: " + _loadedGame.path);
+
+    auto game = _getGame();
+    auto graphical = _getGraphical();
+
+    if (game != nullptr && graphical != nullptr)
+        game->init(graphical);
 }
 
 void Core::_loadNextGame()
@@ -155,6 +167,12 @@ void Core::_restartGame()
     _loadedGame.instance = func();
     if (!_loadedGame.instance)
         throw std::runtime_error(dlerror());
+
+    auto game = _getGame();
+    auto graphical = _getGraphical();
+
+    if (game != nullptr && graphical != nullptr)
+        game->init(graphical);
 }
 
 void Core::_backToMenu()
@@ -204,14 +222,14 @@ void Core::_loadDirectory(const std::string &path) noexcept
 Arcade::IGraphicLib *Core::_getGraphical()
 {
     if (!_loadedLib.instance)
-        throw std::runtime_error("Failed to load graphical");
+        return nullptr;
     return reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
 }
 
 Arcade::IGame *Core::_getGame()
 {
     if (!_loadedGame.instance)
-        throw std::runtime_error("Failed to load game");
+        return nullptr;
     return reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
 }
 

@@ -12,7 +12,8 @@
 #include "SFMLSprite.hpp"
 
 SFMLRenderer::SFMLRenderer()
-    : _window(sf::VideoMode((int) WIN_WIDTH, (int) WIN_HEIGHT), "SFML", sf::Style::Close), _sfFont()
+    : _window(sf::VideoMode(static_cast<int>(WIN_WIDTH), static_cast<int>(WIN_HEIGHT)), "SFML", sf::Style::Close),
+      _sfFont()
 {
     if (!_sfFont.loadFromFile("res/arcade.ttf"))
         throw std::runtime_error("Failed to load default font");
@@ -43,12 +44,17 @@ void SFMLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &
 
 void SFMLRenderer::drawSprite(const Arcade::ASprite *sprite)
 {
+    if (sprite == nullptr)
+        return;
+
     const auto &sfmlSprite = dynamic_cast<const SFMLSprite *>(sprite);
 
     _window.draw(sfmlSprite->getSfSprite());
 }
 
-void SFMLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color)
+void SFMLRenderer::drawText(const std::string &text, uint8_t fontSize,
+                            const Arcade::Vector &pos,
+                            const Arcade::Color &color)
 {
     sf::Text sfText;
 
@@ -68,7 +74,7 @@ void SFMLRenderer::display()
 
 void SFMLRenderer::clear()
 {
-    _window.clear(sf::Color(0, 0, 0));
+    _window.clear(sf::Color::Black);
 }
 
 sf::RenderWindow &SFMLRenderer::getWindow()
