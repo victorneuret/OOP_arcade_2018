@@ -35,14 +35,12 @@ all:	$(OBJ)
 		@$(CXX) -o $(NAME) $(OBJ) $(LDFLAGS)
 
 clean:
-		@find .. \( -name '*.gcda' -o -name '*.gcno' -o -name '*.gcov' \) -delete
 		@$(RM) $(OBJ)
 
 cov_clean:
 		@find .. \( -name '*.gcda' -o -name '*.gcno' -o -name '*.gcov' \) -delete
 
-fclean:
-		@find .. \( -name '*.gcda' -o -name '*.gcno' -o -name '*.gcov' \) -delete
+fclean:	cov_clean
 		@$(RM) $(OBJ)
 		@$(RM) $(NAME)
 

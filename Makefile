@@ -124,6 +124,11 @@ endif
 
 re:			fclean all
 
+ifndef RAW
+%.o:		%.cpp
+			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
+			@$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
+endif
 
 tests_run:	fclean 
 			@printf "%12s: Linking %s\n" $(FRIENDLY)
