@@ -165,7 +165,7 @@ void Centipede::_updateSnakes(bool force)
 
         newPos += {snake.goingRight ? 1.0 : -1.0, 0};
 
-        if (newPos.x < 0 || newPos.x > CELL_COUNT_X) {
+        if (newPos.x < 0 || newPos.x > CELL_COUNT_X || _getCell(newPos).type == Cell::OBSTACLE) {
             newPos += {snake.goingRight ? -1.0 : 1.0, 1};
             snake.goingRight = !snake.goingRight;
         }
