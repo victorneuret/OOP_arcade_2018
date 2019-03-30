@@ -29,6 +29,7 @@ public:
         std::vector<Arcade::Vector> body;
     };
 
+    void init(Arcade::IGraphicLib *graphic) override;
     void tick(Arcade::IGraphicLib *graphic, double deltaTime) override;
     void render(Arcade::IGraphicLib *graphic) override;
     bool isCloseRequested() const noexcept override;
@@ -49,15 +50,15 @@ private:
         "#                  #                   #",
         "#                                      #",
         "#                                  #   #",
-        "#            #####   #                 #",
-        "#                #   #                 #",
-        "#                #   #                 #",
         "#                                      #",
         "#                #   #                 #",
         "#                #                     #",
+        "#                                      #",
+        "#                    #                 #",
         "#                #                     #",
-        "#                #                     #",
-        "#            #   #####                 #",
+        "#                                      #",
+        "#                                      #",
+        "#            #                         #",
         "#                                      #",
         "#                            @         #",
         "#                                      #",
@@ -68,12 +69,12 @@ private:
         "#                         #            #",
         "#                         #            #",
         "#                         #            #",
-        "#                                      #",
-        "#                                      #",
-        "#                                      #",
-        "#                                      #",
-        "#                                      #",
-        "#                                      #",
+        "#     ########                         #",
+        "#         #                            #",
+        "#         #                            #",
+        "#         #                            #",
+        "#         #                            #",
+        "#         #                            #",
         "#                 #####                #",
         "#                     #                #",
         "#                                      #",

@@ -14,6 +14,10 @@
 
 #include "Nibbler.hpp"
 
+void Nibbler::init(Arcade::IGraphicLib *)
+{
+}
+
 void Nibbler::tick(Arcade::IGraphicLib *graphic, double deltaTime)
 {
     static size_t nbSpace = 0;
@@ -22,7 +26,7 @@ void Nibbler::tick(Arcade::IGraphicLib *graphic, double deltaTime)
     if (!graphic)
         return;
     if (nbSpace == 0) {
-        srand(time(NULL));
+        srand(time(nullptr));
         for (size_t i = 0; i < MAP_HIGH; i++)
             for (size_t j = 0; j < MAP_WIDTH; j++)
                 if (_maps[i][j] == ' ')
