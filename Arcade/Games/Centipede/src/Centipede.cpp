@@ -20,7 +20,7 @@ Centipede::Centipede()
     std::uniform_real_distribution<> dis(0.0, 1.0);
 
     for (auto &cell : _cells) {
-        cell.rect.pos = {x / CELL_COUNT_X * BOARD_WIDTH, y / CELL_COUNT_Y * BOARD_HEIGHT};
+        cell.rect.pos = {x / CELL_COUNT_X * BOARD_WIDTH, y / CELL_COUNT_Y * BOARD_HEIGHT + BOARD_OFFSET};
         cell.hasObstacle = dis(gen) <= OBSTACLE_PERCENTAGE / 100.0;
 
         if (++x >= CELL_COUNT_X) {
@@ -64,6 +64,8 @@ void Centipede::tick(Arcade::IGraphicLib *graphic, double deltaTime)
         else
             _checkShotCollision();
     }
+
+    score += scorePerSecond * _deltaTime;
 }
 
 void Centipede::render(Arcade::IGraphicLib *graphic)
@@ -78,6 +80,8 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
     renderer.drawSprite(_playerSprite);
     if (_isShooting)
         renderer.drawRectangle({_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}}, Arcade::Color(0xa7, 0x42, 0x42));
+
+    renderer.drawText("Score: " + std::to_string(static_cast<long>(score)), 18, {0.01, 0.01}, {255, 255, 255});
 
     renderer.display();
 }
@@ -125,6 +129,8 @@ void Centipede::_checkShotCollision()
         if (cell.obstacleHealth > 0 && _rectanglesCollide(shotRect, cell.rect)) {
             cell.obstacleHealth -= 1;
             _isShooting = false;
+            if (cell.obstacleHealth == 0)
+                score += scorePerObstacleDestroyed;
             return;
         }
     }

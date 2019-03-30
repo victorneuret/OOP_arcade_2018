@@ -18,7 +18,8 @@ constexpr double PLAYER_HEIGHT = 0.04;
 constexpr double PLAYER_SPEED = 0.6;
 
 constexpr double BOARD_WIDTH = 1;
-constexpr double BOARD_HEIGHT = 0.76;
+constexpr double BOARD_HEIGHT = 0.70;
+constexpr double BOARD_OFFSET = 0.075;
 
 constexpr double CELL_SIZE = 0.033;
 
@@ -99,4 +100,9 @@ private:
 
     bool _isShooting = false;
     Arcade::Vector _shotPos{0, 0};
+
+    const double scorePerSecond = 2.02;
+    const double scorePerKill = 42.0;
+    const double scorePerObstacleDestroyed = 4.2;
+    double score = 0.0;
 };
