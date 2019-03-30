@@ -24,8 +24,9 @@ public:
     void sendCoreKeyInput(CoreKey input) noexcept override;
     void pollEvents() override;
 
-    Arcade::ATexture *createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor) override;
-    Arcade::ASprite *createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect, const Arcade::Rect &posAndSize) override;
+    Arcade::ATexture *createTexture(const void *buffer, const size_t &len) override;
+    Arcade::ASprite *createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect,
+                                  const Arcade::Rect &posAndSize) override;
 
     Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;
@@ -33,22 +34,22 @@ public:
 private:
     NcursesRenderer _render;
     const std::unordered_map<int, Arcade::IGraphicLib::GameKey> _gameKeys = {
-        {'z', UP},
-        {'s', DOWN},
-        {'q', LEFT},
-        {'d', RIGHT},
-        {'o', PRIMARY},
-        {'p', SECONDARY},
-        {'k', START},
-        {'l', SELECT}
+        {KEY_UP,    UP},
+        {KEY_DOWN,  DOWN},
+        {KEY_LEFT,  LEFT},
+        {KEY_RIGHT, RIGHT},
+        {'x',       PRIMARY},
+        {'c',       SECONDARY},
+        {'b',       START},
+        {'n',       SELECT}
     };
     const std::unordered_map<int, Arcade::IGraphicLib::CoreKey> _coreKeys = {
-        {'b', PREV_GRAPHICAL_LIB},
-        {'n', NEXT_GRAPHICAL_LIB},
-        {'c', PREV_GAME_LIB},
-        {'v', NEXT_GAME_LIB},
-        {'r', RESTART_GAME},
-        {'a', BACK_TO_MENU},
-        {'e', EXIT}
+        {KEY_F(1), PREV_GRAPHICAL_LIB},
+        {KEY_F(2), NEXT_GRAPHICAL_LIB},
+        {KEY_F(3), PREV_GAME_LIB},
+        {KEY_F(4), NEXT_GAME_LIB},
+        {KEY_F(5), RESTART_GAME},
+        {27,       BACK_TO_MENU},
+        {KEY_F(9), EXIT}
     };
 };

@@ -64,7 +64,7 @@ void Core::_loadGraphical(const std::string &path)
         throw std::runtime_error(dlerror());
 
     std::function<Arcade::IGraphicLib *()> func = reinterpret_cast<InstanceGraphicalPtr>
-        (dlsym(_loadedLib.dl, "getInstance"));
+        (dlsym(_loadedLib.dl, "getGraphicalInstance"));
 
     if (!func)
         throw std::runtime_error(dlerror());
@@ -91,7 +91,7 @@ void Core::_loadGame(const std::string &path)
         throw std::runtime_error(dlerror());
 
     std::function<Arcade::IGame *()> func = reinterpret_cast<InstanceGamePtr>
-        (dlsym(_loadedGame.dl, "getInstance"));
+        (dlsym(_loadedGame.dl, "getGameInstance"));
 
     if (!func)
         throw std::runtime_error(dlerror());
@@ -160,7 +160,7 @@ void Core::_restartGame()
         delete reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
 
     std::function<Arcade::IGame *()> func = reinterpret_cast<InstanceGamePtr>
-        (dlsym(_loadedGame.dl, "getInstance"));
+        (dlsym(_loadedGame.dl, "getGameInstance"));
 
     if (!func)
         throw std::runtime_error(dlerror());

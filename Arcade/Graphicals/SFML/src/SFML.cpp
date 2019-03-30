@@ -52,9 +52,9 @@ void SFML::pollEvents()
             _closeRequested = true;
 }
 
-Arcade::ATexture *SFML::createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor)
+Arcade::ATexture *SFML::createTexture(const void *buffer, const size_t &len)
 {
-    return new SFMLTexture(buffer, len, fallbackColor);
+    return new SFMLTexture(buffer, len);
 }
 
 Arcade::ASprite *SFML::createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect, const Arcade::Rect &posAndSize)

@@ -8,7 +8,7 @@
 #include "SDL.hpp"
 
 extern "C"
-Arcade::IGraphicLib *getInstance()
+Arcade::IGraphicLib *getGraphicalInstance()
 {
     return new SDL;
 }

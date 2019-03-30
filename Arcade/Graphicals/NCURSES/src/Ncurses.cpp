@@ -38,7 +38,7 @@ void Ncurses::sendCoreKeyInput(CoreKey) noexcept
 void Ncurses::pollEvents()
 {}
 
-Arcade::ATexture *Ncurses::createTexture(const void *, const size_t &, const Arcade::Color &)
+Arcade::ATexture *Ncurses::createTexture(const void *, const size_t &)
 {
     throw std::runtime_error("Ncurses::createTexture: Not implemented");
 }

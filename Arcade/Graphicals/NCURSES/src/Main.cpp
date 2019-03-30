@@ -9,7 +9,7 @@
 #include "Ncurses.hpp"
 
 extern "C"
-Arcade::IGraphicLib *getInstance()
+Arcade::IGraphicLib *getGraphicalInstance()
 {
     return new Ncurses;
 }

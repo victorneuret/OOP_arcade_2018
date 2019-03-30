@@ -57,9 +57,9 @@ void SDL::pollEvents()
             _closeRequested = true;
 }
 
-Arcade::ATexture *SDL::createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor)
+Arcade::ATexture *SDL::createTexture(const void *buffer, const size_t &len)
 {
-    return new SDLTexture(buffer, len, fallbackColor);
+    return new SDLTexture(buffer, len);
 }
 
 Arcade::ASprite *SDL::createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect, const Arcade::Rect &posAndSize)
