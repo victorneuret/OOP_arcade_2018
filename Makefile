@@ -21,7 +21,7 @@ CORE	=	$(SUB_MAKE) SRC_DIR="./Core/src"						\
 MENU	=	$(SUB_MAKE) SRC_DIR="./Games/MainMenu/src"				\
 						INCLUDE_DIR="./Games/MainMenu/include"		\
 						LDFLAGS="-shared"							\
-						NAME="../games/lib_arcade_main_menu.so"		\
+						NAME="../menu/lib_arcade_main_menu.so"		\
 						FRIENDLY="MainMenu"
 
 CENTIP	=	$(SUB_MAKE) SRC_DIR=./Games/Centipede/src				\

@@ -247,18 +247,19 @@ void Core::_tick()
     if (_shouldExit())
         return _exit();
 
+    _getGraphical()->pollEvents();
+
+    if (_loadedGame.path == MAIN_MENU_PATH) {
+        _tickMainMenu();
+    } else
+        _getGame()->tick(_getGraphical(), _deltaTime);
+
     uint8_t key = _getGraphical()->getCoreKeyState();
 
     for (const auto &c : _coreKeys) {
         if (c.first & key)
             c.second();
     }
-    _getGraphical()->pollEvents();
-    _getGame()->tick(_getGraphical(), _deltaTime);
-    if (_loadedGame.path == MAIN_MENU_PATH) {
-        _tickMainMenu();
-    } else
-        _getGame()->tick(_getGraphical(), _deltaTime);
 }
 
 void Core::_render()

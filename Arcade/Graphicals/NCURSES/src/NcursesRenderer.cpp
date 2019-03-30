@@ -18,7 +18,7 @@ NcursesRenderer::NcursesRenderer()
         throw std::runtime_error("Failed to create Ncurses window");
     noecho();
     curs_set(0);
-    nodelay(_win, true);
+    timeout(0);
     if (start_color())
         throw std::runtime_error("Failed to initialize color");
     keypad(stdscr, TRUE);

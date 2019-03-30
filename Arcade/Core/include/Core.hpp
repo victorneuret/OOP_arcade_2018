@@ -18,7 +18,7 @@
 
 constexpr const char * const LIB_PATH = "./lib";
 constexpr const char * const GAME_PATH = "./games";
-constexpr const char * const MAIN_MENU_PATH = "./games/lib_arcade_main_menu.so";
+constexpr const char * const MAIN_MENU_PATH = "./menu/lib_arcade_main_menu.so";
 
 class Core final {
 public:

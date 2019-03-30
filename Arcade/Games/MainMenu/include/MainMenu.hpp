@@ -14,8 +14,15 @@
 #include "IGraphicalLib.hpp"
 #include "Graphical/ASprite.hpp"
 
+constexpr const char * const LIB_PREFIX = "/lib_arcade_";
+
 class MainMenu final : public Arcade::IMenu {
 public:
+    enum SELECTION_TYPE {
+        SELECT_GAME,
+        SELECT_LIB
+    };
+
     MainMenu() = default;
     MainMenu(const MainMenu &) = delete;
     ~MainMenu() override = default;
@@ -33,21 +40,24 @@ public:
 private:
     using MainMenuPtr = void (MainMenu::*)();
 
-    void moveUp();
-    void moveDown();
-    void moveLeft();
-    void moveRight();
-    void primaryPressed();
+    void moveUp(const CoreExtension &core);
+    void moveDown(const CoreExtension &core);
+    void moveLeft(const CoreExtension &core);
+    void moveRight(const CoreExtension &core);
+    void primaryPressed(const CoreExtension &core);
+    const std::string getLibName(const std::string &path);
 
-    const std::unordered_map<Arcade::IGraphicLib::GameKey, std::function<void ()>> _gameKeys = {
-        {Arcade::IGraphicLib::UP, std::bind(&MainMenu::moveUp, this)},
-        {Arcade::IGraphicLib::DOWN, std::bind(&MainMenu::moveDown, this)},
-        {Arcade::IGraphicLib::LEFT, std::bind(&MainMenu::moveLeft, this)},
-        {Arcade::IGraphicLib::RIGHT, std::bind(&MainMenu::moveRight, this)},
-        {Arcade::IGraphicLib::PRIMARY, std::bind(&MainMenu::primaryPressed, this)}
+    const Arcade::Color _selectedColor = Arcade::Color(255, 255, 255);
+    const Arcade::Color _unselectedColor = Arcade::Color(100, 100, 100);
+
+    const std::unordered_map<uint8_t, std::function<void (const CoreExtension &)>> _gameKeys = {
+        {Arcade::IGraphicLib::UP, std::bind(&MainMenu::moveUp, this, std::placeholders::_1)},
+        {Arcade::IGraphicLib::DOWN, std::bind(&MainMenu::moveDown, this, std::placeholders::_1)},
+        {Arcade::IGraphicLib::LEFT, std::bind(&MainMenu::moveLeft, this, std::placeholders::_1)},
+        {Arcade::IGraphicLib::RIGHT, std::bind(&MainMenu::moveRight, this, std::placeholders::_1)},
+        {Arcade::IGraphicLib::PRIMARY, std::bind(&MainMenu::primaryPressed, this, std::placeholders::_1)}
     };
 
-    std::pair<double, double> _selection{0.5, 0.5};
+    std::pair<SELECTION_TYPE, double> _selection{SELECT_GAME, 1};
     double _deltaTime = 0;
-
 };
