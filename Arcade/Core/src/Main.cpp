@@ -13,8 +13,11 @@
 
 int main(int ac, char **av)
 {
-    if (ac != 2)
+    if (ac != 2) {
+        std::cout
+        << "Usage: " << av[0] << "[pathToTheDefaultGraphicLib]" << std::endl;
         return 84;
+    }
     try {
         Core c(av[1]);
 
