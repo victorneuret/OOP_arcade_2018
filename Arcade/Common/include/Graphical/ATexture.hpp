@@ -14,7 +14,7 @@
 namespace Arcade {
     class ATexture {
     public:
-        ATexture(const void *buffer, const size_t &len, const Color &fallbackColor);
+        ATexture(const void *buffer, const size_t &len);
         virtual ~ATexture() = default;
 
         ATexture(const ATexture &) = delete;
@@ -22,10 +22,8 @@ namespace Arcade {
 
         virtual const void *getBuffer() const noexcept final;
         virtual const size_t &getBufferLength() const noexcept final;
-        virtual const Color &getFallbackColor() const noexcept final;
     protected:
         const void *_buffer;
         const size_t _len;
-        const Color _fallbackColor;
     };
 }

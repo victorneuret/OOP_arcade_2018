@@ -10,7 +10,7 @@
 #include <cstdint>
 
 namespace Arcade {
-    struct Color {
+    struct Color final {
         uint8_t r;
         uint8_t g;
         uint8_t b;

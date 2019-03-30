@@ -86,7 +86,7 @@ void Centipede::reloadResources(Arcade::IGraphicLib *graphic)
 {
     _freeResources();
 
-    _spriteSheet = graphic->createTexture(SPRITE_SHEET, sizeof(SPRITE_SHEET), Arcade::Color(0, 255, 127));
+    _spriteSheet = graphic->createTexture(SPRITE_SHEET, sizeof(SPRITE_SHEET));
     _playerSprite = graphic->createSprite(_spriteSheet, PLAYER_SPRITE_RECT,
                                           {_playerPos, {PLAYER_WIDTH, PLAYER_HEIGHT}});
 

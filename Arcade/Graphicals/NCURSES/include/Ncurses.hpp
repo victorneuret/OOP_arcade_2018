@@ -24,7 +24,7 @@ public:
     void sendCoreKeyInput(CoreKey input) noexcept override;
     void pollEvents() override;
 
-    Arcade::ATexture *createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor) override;
+    Arcade::ATexture *createTexture(const void *buffer, const size_t &len) override;
     Arcade::ASprite *createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect, const Arcade::Rect &posAndSize) override;
 
     Arcade::IRenderer &getRenderer() noexcept override;

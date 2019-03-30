@@ -10,8 +10,8 @@
 
 #include "SDLTexture.hpp"
 
-SDLTexture::SDLTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor)
-    : ATexture(buffer, len, fallbackColor)
+SDLTexture::SDLTexture(const void *buffer, const size_t &len)
+    : ATexture(buffer, len)
 {
     SDL_RWops *rw = SDL_RWFromMem(const_cast<void *>(buffer), static_cast<int>(len));
     _surface = IMG_Load_RW(rw, 1);
