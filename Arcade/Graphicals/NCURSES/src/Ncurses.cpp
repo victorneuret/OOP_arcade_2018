@@ -27,11 +27,15 @@ uint8_t Ncurses::getCoreKeyState() const noexcept
     return 0;
 }
 
-void Ncurses::sendGameKeyInput(GameKey) noexcept
-{}
+void Ncurses::sendGameKeyInput(GameKey key) noexcept
+{
+    _key = key;
+}
 
-void Ncurses::sendCoreKeyInput(CoreKey) noexcept
-{}
+void Ncurses::sendCoreKeyInput(CoreKey key) noexcept
+{
+    _key = key;
+}
 
 void Ncurses::pollEvents()
 {

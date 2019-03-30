@@ -15,6 +15,7 @@
 #include <unistd.h>
 
 #include "Core.hpp"
+#include "IMenu.hpp"
 
 Core::Core(const std::string &path)
     : _libs(), _games()
@@ -53,6 +54,9 @@ void Core::_addExtension(const std::string &path, EXT_TYPE type) noexcept
 
 void Core::_loadGraphical(const std::string &path)
 {
+    if (path == _loadedLib.path)
+        return;
+
     if (_loadedLib.dl) {
         delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
         dlclose(_loadedLib.dl);
@@ -74,8 +78,10 @@ void Core::_loadGraphical(const std::string &path)
     auto game = _getGame();
     auto graphical = _getGraphical();
 
-    if (game != nullptr && graphical != nullptr)
+    if (game != nullptr && graphical != nullptr) {
         game->reloadResources(graphical);
+        throw std::runtime_error("Failed to create instance for graphical: " + _loadedLib.path);
+    }
 }
 
 void Core::_loadGame(const std::string &path)
@@ -107,6 +113,9 @@ void Core::_loadGame(const std::string &path)
 
 void Core::_loadNextGame()
 {
+    if (_loadedGame.path == MAIN_MENU_PATH)
+        return;
+
     const auto it = std::find(_games.begin(), _games.end(), _loadedGame.path);
 
     if (it == _games.end())
@@ -131,6 +140,9 @@ void Core::_loadNextGraphical()
 
 void Core::_loadPrevGame()
 {
+    if (_loadedGame.path == MAIN_MENU_PATH)
+        return;
+
     const auto it = std::find(_games.begin(), _games.end(), _loadedGame.path);
 
     if (it == _games.end())
@@ -231,15 +243,15 @@ Arcade::IGame *Core::_getGame() const
 void Core::_tickMainMenu() noexcept
 {
     dynamic_cast<Arcade::IMenu *>(_getGame())->tick(_getGraphical(), _deltaTime,
-        Arcade::IMenu::CoreExtension{_games, _libs, std::bind(&Core::_loadGame, this, std::placeholders::_1),
-                                     std::bind(&Core::_loadGraphical, this, std::placeholders::_1)});
+        Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path, std::bind(&Core::_loadGame, this, std::placeholders::_1),
+            std::bind(&Core::_loadGraphical, this, std::placeholders::_1)));
 }
 
 void Core::_renderMainMenu() noexcept
 {
     dynamic_cast<Arcade::IMenu *>(_getGame())->render(_getGraphical(),
-        Arcade::IMenu::CoreExtension{_games, _libs, std::bind(&Core::_loadGame, this, std::placeholders::_1),
-                                     std::bind(&Core::_loadGraphical, this, std::placeholders::_1)});
+        Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path, std::bind(&Core::_loadGame, this, std::placeholders::_1),
+            std::bind(&Core::_loadGraphical, this, std::placeholders::_1)));
 }
 
 void Core::_tick()
@@ -272,7 +284,7 @@ void Core::_render()
         _getGame()->render(_getGraphical());
 }
 
-bool Core::_shouldExit() const noexcept
+bool Core::_shouldExit() const
 {
     return (_isCloseRequested || _getGraphical()->isCloseRequested() || _getGame()->isCloseRequested());
 }

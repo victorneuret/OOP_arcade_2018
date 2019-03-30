@@ -6,7 +6,6 @@
 */
 
 #include <stdexcept>
-#include <thread>
 #include <chrono>
 
 #include "NcursesRenderer.hpp"
@@ -19,11 +18,11 @@ NcursesRenderer::NcursesRenderer()
     noecho();
     curs_set(0);
     timeout(0);
+    nocbreak();
     if (start_color())
         throw std::runtime_error("Failed to initialize color");
-    keypad(stdscr, TRUE);
     _win = newwin(_height, _width, (LINES / 2) - (_height / 2), (COLS / 2) - (_width / 2));
-    if (!_win)
+    if (!_win || keypad(stdscr, TRUE != OK || keypad(_win, TRUE) != OK))
         throw std::runtime_error("Failed to create Ncurses window");
 }
 
@@ -52,9 +51,9 @@ void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Colo
     delwin(tmpWin);
 }
 
-void NcursesRenderer::drawSprite(const Arcade::ASprite &sprite)
+void NcursesRenderer::drawSprite(const Arcade::ASprite *sprite)
 {
-    drawRectangle(sprite.getPosAndSize(), sprite.getFallbackColor(), true);
+    drawRectangle(sprite->getPosAndSize(), sprite->getFallbackColor(), true);
 }
 
 void NcursesRenderer::drawText(const std::string &text, uint8_t, const Arcade::Vector &pos, const Arcade::Color &color)
@@ -70,14 +69,13 @@ void NcursesRenderer::display()
 {
     wnoutrefresh(_win);
     doupdate();
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 24));
 }
 
 void NcursesRenderer::clear()
 {
-    if (werase(_win) == ERR)
-        throw std::runtime_error("Failed to clear window");
-    wmove(_win, (LINES / 2) - (_height / 2), (COLS / 2) - (_width / 2));
+    werase(_win);
+    mvwin(_win, (LINES / 2) - (_height / 2), (COLS / 2) - (_width / 2));
+    wresize(_win, _height, _width);
     _colorIndex = 0;
 }
 

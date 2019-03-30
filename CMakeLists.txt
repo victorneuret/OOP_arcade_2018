@@ -166,6 +166,7 @@ add_executable(
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
         Arcade/Common/include/IMenu.hpp
+        Arcade/Common/src/IMenu.cpp
 )
 
 include_directories(Arcade/Common/include)

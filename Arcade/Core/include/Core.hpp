@@ -43,14 +43,14 @@ private:
 
     void _addExtension(const std::string &path, EXT_TYPE type) noexcept;
     void _loadDirectory(const std::string &path) noexcept;
-    void _loadGraphical(const std::string &path);
-    void _loadGame(const std::string &path);
     Arcade::IGraphicLib *_getGraphical() const;
     Arcade::IGame *_getGame() const;
-
-    bool _shouldExit() const noexcept;
-	void _tickMainMenu() noexcept;
+    bool _shouldExit() const;
+    void _tickMainMenu() noexcept;
     void _renderMainMenu() noexcept;
+    void _loadGame(const std::string &path);
+    void _loadGraphical(const std::string &path);
+
     void _loadNextGraphical();
     void _loadPrevGraphical();
     void _loadNextGame();
