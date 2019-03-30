@@ -109,6 +109,10 @@ add_library(
         Arcade/Graphicals/SDL2/include/SDLRenderer.hpp
         Arcade/Graphicals/SDL2/src/SDLRenderer.cpp
         Arcade/Graphicals/SDL2/src/Main.cpp
+        Arcade/Graphicals/SDL2/include/SDLSprite.hpp
+        Arcade/Graphicals/SDL2/include/SDLTexture.hpp
+        Arcade/Graphicals/SDL2/src/SDLSprite.cpp
+        Arcade/Graphicals/SDL2/src/SDLTexture.cpp
 )
 
 add_library(

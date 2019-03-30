@@ -5,17 +5,19 @@
 ** SDLRenderer.cpp
 */
 
-#include <iostream>
 #include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
 
 #include "IGraphicalLib.hpp"
 #include "SDLRenderer.hpp"
+#include "SDLSprite.hpp"
 
 SDLRenderer::SDLRenderer()
 {
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         throw std::runtime_error("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
-    _window = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 800, SDL_WINDOW_SHOWN);
+
+    _window = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!_window)
         throw std::runtime_error("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
 
@@ -24,11 +26,13 @@ SDLRenderer::SDLRenderer()
         throw std::runtime_error("Renderer could not be created! SDL Error: " + std::string(SDL_GetError()));
 
     TTF_Init();
+    IMG_Init(IMG_INIT_PNG);
 }
 
 SDLRenderer::~SDLRenderer() noexcept
 {
     TTF_Quit();
+    IMG_Quit();
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
     SDL_Quit();
@@ -52,8 +56,10 @@ void SDLRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &c
         SDL_RenderDrawRect(_renderer, &newRect);
 }
 
-void SDLRenderer::drawSprite(const Arcade::ASprite *)
+void SDLRenderer::drawSprite(const Arcade::ASprite *sprite)
 {
+    const auto &sdlSprite = dynamic_cast<const SDLSprite *>(sprite);
+    const_cast<SDLSprite *>(sdlSprite)->drawSprite(_renderer);
 }
 
 void SDLRenderer::drawText(const std::string &text, uint8_t fontSize, const Arcade::Vector &pos, const Arcade::Color &color)
