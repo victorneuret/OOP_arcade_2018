@@ -11,7 +11,6 @@
 
 class NcursesTexture : public Arcade::ATexture {
 public:
-    NcursesTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor);
+    NcursesTexture(const void *buffer, const size_t &len);
     ~NcursesTexture() override = default;
 };
-

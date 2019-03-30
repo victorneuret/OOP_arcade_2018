@@ -42,9 +42,9 @@ void Ncurses::pollEvents()
     _key = getch();
 }
 
-Arcade::ATexture *Ncurses::createTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor)
+Arcade::ATexture *Ncurses::createTexture(const void *buffer, const size_t &len)
 {
-    return new NcursesTexture(buffer, len, fallbackColor);
+    return new NcursesTexture(buffer, len);
 }
 
 Arcade::ASprite *Ncurses::createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect, const Arcade::Rect &posAndSize)

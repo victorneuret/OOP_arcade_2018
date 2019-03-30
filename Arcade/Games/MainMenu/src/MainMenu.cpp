@@ -10,8 +10,7 @@
 #include "MainMenu.hpp"
 
 void MainMenu::init(Arcade::IGraphicLib *)
-{
-}
+{}
 
 MainMenu::MainMenu()
     : _pseudo()
@@ -122,9 +121,6 @@ void MainMenu::render(Arcade::IGraphicLib *graphic)
                 (_selection.first == SELECT_PSEUDO) ? Arcade::Color(200, 200, 200) : _unselectedColor);
     }
 }
-
-void MainMenu::init(Arcade::IGraphicLib *)
-{}
 
 void MainMenu::render(Arcade::IGraphicLib *graphic, const Arcade::IMenu::CoreExtension &core)
 {

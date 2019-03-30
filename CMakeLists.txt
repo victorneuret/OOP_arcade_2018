@@ -20,7 +20,6 @@ add_library(
         Arcade/Games/MainMenu/include/MainMenu.hpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
-        Arcade/Games/MainMenu/include/TestSprite.hpp
         Arcade/Common/include/IMenu.hpp
 )
 
