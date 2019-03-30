@@ -32,3 +32,8 @@ uint64_t Random::getUnsigned(uint64_t min, uint64_t max)
 {
     return static_cast<uint64_t>(std::roundl(getDouble(min, max)));
 }
+
+bool Random::getBool()
+{
+    return getUnsigned(0, 1);
+}

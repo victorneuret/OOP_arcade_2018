@@ -70,13 +70,13 @@ private:
 
     double _deltaTime = 0;
 
-    const std::unordered_map<uint8_t, std::function<void ()>> _coreKeys = {
+    const std::unordered_map<uint8_t, std::function<void()>> _coreKeys = {
         {Arcade::IGraphicLib::PREV_GRAPHICAL_LIB, std::bind(&Core::_loadPrevGraphical, this)},
         {Arcade::IGraphicLib::NEXT_GRAPHICAL_LIB, std::bind(&Core::_loadNextGraphical, this)},
-        {Arcade::IGraphicLib::PREV_GAME_LIB, std::bind(&Core::_loadPrevGame, this)},
-        {Arcade::IGraphicLib::NEXT_GAME_LIB, std::bind(&Core::_loadNextGame, this)},
-        {Arcade::IGraphicLib::RESTART_GAME, std::bind(&Core::_restartGame, this)},
-        {Arcade::IGraphicLib::BACK_TO_MENU, std::bind(&Core::_backToMenu, this)},
-        {Arcade::IGraphicLib::EXIT, std::bind(&Core::_exit, this)}
+        {Arcade::IGraphicLib::PREV_GAME_LIB,      std::bind(&Core::_loadPrevGame, this)},
+        {Arcade::IGraphicLib::NEXT_GAME_LIB,      std::bind(&Core::_loadNextGame, this)},
+        {Arcade::IGraphicLib::RESTART_GAME,       std::bind(&Core::_restartGame, this)},
+        {Arcade::IGraphicLib::BACK_TO_MENU,       std::bind(&Core::_backToMenu, this)},
+        {Arcade::IGraphicLib::EXIT,               std::bind(&Core::_exit, this)}
     };
 };
