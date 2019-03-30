@@ -97,10 +97,10 @@ clean:
 			@$(SFML) clean
 
 ifndef RAW
-			@$(RM) $(OBJ_UNIT)
+			@make --no-print-directory -C tests clean
 			@printf "%12s: Removed object files\n" $(FRIENDLY)
 else
-			$(RM) $(OBJ_UNIT)
+			make --no-print-directory -C tests clean
 endif
 
 fclean:
@@ -113,41 +113,30 @@ fclean:
 			@$(SFML) fclean
 
 ifndef RAW
-			@$(RM) $(OBJ_UNIT) $(CMN_OBJ)
-			@$(RM) tests_run
+			@$(RM) $(CMN_OBJ)
+			@make -C tests clean --no-print-directory
+			@$(RM) tests/tests_run
 			@printf "%12s: Removed object files\n" $(FRIENDLY)
 			@printf "%12s: Removed unit tests target\n\n" $(FRIENDLY)
 else
-			$(RM) $(OBJ_UNIT) $(CMN_OBJ)
-			$(RM) tests_run
+			$(RM) $(CMN_OBJ)
+			make -C tests clean --no-print-directory
+			$(RM) tests/tests_run
 endif
 
 re:			fclean all
 
-ifndef RAW
-%.o:		%.cpp
-			@printf "%12s: Compiling %s\n" $(FRIENDLY) $<
-			@$(CXX) -c $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
-endif
 
-tests_run:	LDFLAGS		+=	-lsfml-graphics -lsfml-window -lsfml-system		\
-							-lSDL2 -lSDL2_ttf -lSDL2_image -lncurses		\
-							-lcriterion --coverage
-tests_run:	CPPFLAGS	+=	--coverage
-tests_run:	fclean $(OBJ_UNIT)
-ifndef RAW
+tests_run:	fclean 
 			@printf "%12s: Linking %s\n" $(FRIENDLY)
-			@$(CXX) -o tests_run $(OBJ_UNIT) $(LDFLAGS)
-else
-			$(CXX) -o tests_run $(OBJ_UNIT) $(LDFLAGS)
-endif
-			@./tests_run --verbose -j1
+			@make --no-print-directory -C tests 
+			@./tests/tests_run --verbose -j1
 
 cov_gen:
 			@gcovr -s --exclude tests
 
 cov_clean:
-			find . \( -name '*.gcda' -o -name '*.gcno' -o -name '*.gcov' \) -delete
+			@make --no-print-directory -C tests cov_clean
 
 bigclean:	fclean cov_clean
 
