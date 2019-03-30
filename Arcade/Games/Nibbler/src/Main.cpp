@@ -5,7 +5,11 @@
 ** Main.cpp
 */
 
-int main()
+#include "IGame.hpp"
+#include "Nibbler.hpp"
+
+extern "C"
+Arcade::IGame *getInstance()
 {
-    return 0;
+    return new Nibbler;
 }

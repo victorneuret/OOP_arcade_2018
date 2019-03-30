@@ -61,6 +61,8 @@ add_library(
         Arcade/Common/src/Math/Rect.cpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Games/Nibbler/include/Nibbler.hpp
+        Arcade/Games/Nibbler/src/Nibbler.cpp
 )
 
 add_library(

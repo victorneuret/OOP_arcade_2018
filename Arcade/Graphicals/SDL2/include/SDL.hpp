@@ -47,12 +47,12 @@ private:
             {SDL_SCANCODE_L, SELECT}
     };
     const std::unordered_map<int, CoreKey> _coreKeys = {
-            {SDL_SCANCODE_LEFT,     PREV_GRAPHICAL_LIB},
-            {SDL_SCANCODE_RIGHT,    NEXT_GRAPHICAL_LIB},
-            {SDL_SCANCODE_DOWN,     PREV_GAME_LIB},
-            {SDL_SCANCODE_UP,       NEXT_GAME_LIB},
-            {SDL_SCANCODE_R,        RESTART_GAME},
-            {SDL_SCANCODE_Q,        BACK_TO_MENU},
-            {SDL_SCANCODE_E,        EXIT}
+            {SDL_SCANCODE_B,    PREV_GRAPHICAL_LIB},
+            {SDL_SCANCODE_N,    NEXT_GRAPHICAL_LIB},
+            {SDL_SCANCODE_C,    PREV_GAME_LIB},
+            {SDL_SCANCODE_V,    NEXT_GAME_LIB},
+            {SDL_SCANCODE_R,    RESTART_GAME},
+            {SDL_SCANCODE_Q,    BACK_TO_MENU},
+            {SDL_SCANCODE_E,    EXIT}
     };
 };
