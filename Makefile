@@ -114,14 +114,12 @@ fclean:
 
 ifndef RAW
 			@$(RM) $(CMN_OBJ)
-			@make -C tests clean --no-print-directory
-			@$(RM) tests/tests_run
+			@make --no-print-directory -C tests fclean
 			@printf "%12s: Removed object files\n" $(FRIENDLY)
 			@printf "%12s: Removed unit tests target\n\n" $(FRIENDLY)
 else
 			$(RM) $(CMN_OBJ)
-			make -C tests clean --no-print-directory
-			$(RM) tests/tests_run
+			make --no-print-directory -C tests fclean
 endif
 
 re:			fclean all
