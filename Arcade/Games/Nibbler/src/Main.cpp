@@ -9,7 +9,7 @@
 #include "Nibbler.hpp"
 
 extern "C"
-Arcade::IGame *getInstance()
+Arcade::IGame *getGameInstance()
 {
     return new Nibbler;
 }
