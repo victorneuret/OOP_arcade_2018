@@ -14,7 +14,7 @@
 class SDLTexture : public Arcade::ATexture {
 public:
     SDLTexture(const void *buffer, const size_t &len, const Arcade::Color &fallbackColor);
-    ~SDLTexture() override = default;
+    ~SDLTexture() override;
     SDLTexture(const SDLTexture&) = delete;
 
     SDLTexture &operator=(const SDLTexture&) = delete;

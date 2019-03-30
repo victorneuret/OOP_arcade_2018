@@ -17,6 +17,11 @@ SDLTexture::SDLTexture(const void *buffer, const size_t &len, const Arcade::Colo
     _surface = IMG_Load_RW(rw, 1);
 }
 
+SDLTexture::~SDLTexture()
+{
+    SDL_FreeSurface(_surface);
+}
+
 SDL_Surface *SDLTexture::getSurface() const
 {
     return _surface;

@@ -48,4 +48,5 @@ void SDLSprite::drawSprite(SDL_Renderer *renderer)
 {
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, dynamic_cast<const SDLTexture *>(_texture)->getSurface());
     SDL_RenderCopy(renderer, texture, &_srcrect, &_dstrect);
+    SDL_DestroyTexture(texture);
 }
