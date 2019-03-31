@@ -68,8 +68,9 @@ void Centipede::tick(Arcade::IGraphicLib *graphic, double deltaTime)
             if (_shotPos.y < -SHOT_HEIGHT)
                 _isShooting = false;
             else
-                _checkShotCollision();
+                _checkShotCollisions();
         }
+        _checkPlayerCollisions();
 
         _score += _scorePerSecond * _deltaTime;
     }
@@ -95,7 +96,7 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
             renderer.drawRectangle({_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}}, Arcade::Color(255, 0, 0));
         renderer.drawText("Score: " + std::to_string(static_cast<long>(_score)), 18, {0.01, 0.01}, {255, 255, 255});
     } else {
-        renderer.drawText("GAME OVER - Score: " + std::to_string(static_cast<long>(_score)), 18, {0.01, 0.01},
+        renderer.drawText("GAME OVER - Score: " + std::to_string(static_cast<long>(_score)), 22, {0.25, 0.25},
                           {255, 255, 255});
     }
 
@@ -205,12 +206,11 @@ void Centipede::_updateSnakes(bool force)
     elapsed = now - lastSpawn;
     if (elapsed.count() >= SNAKE_SPAWN_INTERVAL || _snakes.empty()) {
         _createSnake(false);
-
         lastSpawn = now;
     }
 }
 
-void Centipede::_checkShotCollision()
+void Centipede::_checkShotCollisions()
 {
     const Arcade::Rect shotRect = {_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}};
 
@@ -226,6 +226,18 @@ void Centipede::_checkShotCollision()
                 cell.type = Cell::EMPTY;
             }
             return;
+        }
+    }
+}
+
+void Centipede::_checkPlayerCollisions()
+{
+    for (auto &snake : _snakes) {
+        for (auto &part : snake.body) {
+            if (_rectanglesCollide({_playerPos, {PLAYER_WIDTH, PLAYER_HEIGHT}}, _getCell(part).rect)) {
+                _playerAlive = false;
+                return;
+            }
         }
     }
 }

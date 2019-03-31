@@ -93,7 +93,8 @@ private:
 
     void _createSnake(bool forceUpdate = true);
     void _updateSnakes(bool force = false);
-    void _checkShotCollision();
+    void _checkShotCollisions();
+    void _checkPlayerCollisions();
 
     void _shoot();
     void _moveUp();
