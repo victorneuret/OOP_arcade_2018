@@ -16,6 +16,16 @@ MainMenu::MainMenu()
 void MainMenu::init(Arcade::IGraphicLib *)
 {}
 
+bool MainMenu::isGameFinished() const noexcept
+{
+    return false;
+}
+
+size_t MainMenu::getScore() const noexcept
+{
+    return 0;
+}
+
 void MainMenu::reloadResources(Arcade::IGraphicLib *)
 {}
 

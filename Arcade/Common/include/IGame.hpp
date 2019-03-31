@@ -19,5 +19,8 @@ namespace Arcade {
         virtual void render(IGraphicLib *graphic) = 0;
         virtual void reloadResources(IGraphicLib *graphic) = 0;
         virtual bool isCloseRequested() const noexcept = 0;
+
+        virtual bool isGameFinished() const noexcept = 0;
+        virtual size_t getScore() const noexcept = 0;
     };
 }

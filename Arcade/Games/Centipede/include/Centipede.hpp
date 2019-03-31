@@ -57,6 +57,8 @@ public:
     void render(Arcade::IGraphicLib *graphic) override;
     bool isCloseRequested() const noexcept override;
     void reloadResources(Arcade::IGraphicLib *lib) override;
+    bool isGameFinished() const noexcept override;
+    size_t getScore() const noexcept override;
 
 private:
     struct Cell {

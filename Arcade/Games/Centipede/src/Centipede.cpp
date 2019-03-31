@@ -176,3 +176,13 @@ bool Centipede::isCloseRequested() const noexcept
 {
     return _closeRequested;
 }
+
+bool Centipede::isGameFinished() const noexcept
+{
+    return false;
+}
+
+size_t Centipede::getScore() const noexcept
+{
+    return 0;
+}

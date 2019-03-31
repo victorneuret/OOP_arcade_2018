@@ -34,6 +34,8 @@ public:
     void render(Arcade::IGraphicLib *graphic) override;
     bool isCloseRequested() const noexcept override;
     void reloadResources(Arcade::IGraphicLib *) override;
+    bool isGameFinished() const noexcept override;
+    size_t getScore() const noexcept override;
 
 private:
     double _deltaTime = 0;
@@ -43,6 +45,8 @@ private:
     double _boost = 0.0;
     Arcade::Vector _direction = {1.0, 0.0};
     size_t _foodEaten = 0;
+    size_t _score = 0;
+    bool _isFinished = false;
 
     char _maps[MAP_HIGH][MAP_WIDTH] = {
         "########################################",

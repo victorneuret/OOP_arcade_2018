@@ -22,6 +22,8 @@ void Nibbler::tick(Arcade::IGraphicLib *graphic, double deltaTime)
 {
     static size_t nbSpace = 0;
     _deltaTime = deltaTime;
+    _isFinished = false;
+    _score = 0;
 
     if (!graphic)
         return;
@@ -59,6 +61,16 @@ void Nibbler::render(Arcade::IGraphicLib *graphic)
     _drawSnake(graphic);
     graphic->getRenderer().drawText(std::to_string(_foodEaten), 22, Arcade::Vector(0.5, 0), Arcade::Color(0xff, 0xff, 0xff));
     graphic->getRenderer().display();
+}
+
+bool Nibbler::isGameFinished() const noexcept
+{
+    return _isFinished;
+}
+
+size_t Nibbler::getScore() const noexcept
+{
+    return _score;
 }
 
 bool Nibbler::isCloseRequested() const noexcept
@@ -201,6 +213,8 @@ void Nibbler::_generateFood()
 
 void Nibbler::_restart()
 {
+    _isFinished = true;
+    _score = _foodEaten;
     _snake.head = _snakeDefault.head;
     _snake.body.clear();
     _snake.body = _snakeDefault.body;
