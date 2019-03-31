@@ -84,12 +84,14 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
 
     if (_playerAlive) {
         for (const auto &cell : _cells) {
-            if (cell.type == Cell::OBSTACLE && cell.sprite != nullptr)
+            if (cell.type == Cell::OBSTACLE && cell.sprite != nullptr) {
+                cell.sprite->setFallbackColor({255, 255, 255, static_cast<uint8_t>(cell.health / 5.0 * 255)});
                 renderer.drawSprite(cell.sprite);
-            else if (cell.type == Cell::SNAKE_HEAD)
+            } else if (cell.type == Cell::SNAKE_HEAD) {
                 renderer.drawRectangle(cell.rect, {255, 0, 0});
-            else if (cell.type == Cell::SNAKE_BODY)
+            } else if (cell.type == Cell::SNAKE_BODY) {
                 renderer.drawRectangle(cell.rect, {127, 0, 0});
+            }
         }
         renderer.drawSprite(_playerSprite);
         if (_isShooting)
@@ -148,6 +150,29 @@ Centipede::Cell &Centipede::_getCell(size_t x, size_t y)
 Centipede::Cell &Centipede::_getCell(const Arcade::Vector &vec)
 {
     return _getCell(static_cast<size_t>(vec.x), static_cast<size_t>(vec.y));
+}
+
+Centipede::Snake &Centipede::_getSnake(size_t x, size_t y)
+{
+    return _getSnake({static_cast<double>(x), static_cast<double>(y)});
+}
+
+Centipede::Snake &Centipede::_getSnake(const Arcade::Vector &vec)
+{
+    for (auto &snake : _snakes)
+        for (auto &part : snake.body)
+            if (static_cast<size_t>(part.x) == static_cast<size_t>(vec.x) &&
+                static_cast<size_t>(part.y) == static_cast<size_t>(vec.y))
+                return snake;
+    throw std::runtime_error("Snake " + std::to_string(vec.x) + ", " + std::to_string(vec.y) + " not found");
+}
+
+size_t Centipede::_getSnakeIndex(const Snake &snake)
+{
+    for (size_t i = 0; i < _snakes.size(); ++i)
+        if (_snakes[i] == snake)
+            return i;
+    throw std::runtime_error("Snake index not found");
 }
 
 void Centipede::_createSnake(bool forceUpdate)
@@ -215,17 +240,29 @@ void Centipede::_checkShotCollisions()
     const Arcade::Rect shotRect = {_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}};
 
     for (auto &cell : _cells) {
-        if (cell.type != Cell::OBSTACLE)
+        if (cell.type == Cell::EMPTY)
             continue;
 
-        if (cell.health > 0 && _rectanglesCollide(shotRect, cell.rect)) {
-            cell.health -= 1;
-            _isShooting = false;
-            if (cell.health == 0) {
-                _score += _scorePerObstacleDestroyed;
-                cell.type = Cell::EMPTY;
+        const auto collision = _rectanglesCollide(shotRect, cell.rect);
+
+        if (cell.type == Cell::OBSTACLE) {
+            if (cell.health > 0 && collision) {
+                cell.health -= 1;
+                _isShooting = false;
+                if (cell.health == 0) {
+                    _score += _scorePerObstacleDestroyed;
+                    cell.type = Cell::EMPTY;
+                }
+                return;
             }
-            return;
+        } else if (cell.type == Cell::SNAKE_HEAD) {
+            if (collision) {
+                auto &snake = _getSnake(cell.absolutePos);
+                _score += _scorePerKill;
+                for (auto &part : snake.body)
+                    _getCell(part).type = Cell::EMPTY;
+                _snakes.erase(_snakes.begin() + _getSnakeIndex(snake));
+            }
         }
     }
 }
@@ -287,4 +324,15 @@ void Centipede::_freeResources()
 bool Centipede::isCloseRequested() const noexcept
 {
     return _closeRequested;
+}
+
+bool Centipede::Snake::operator==(const Centipede::Snake &rhs) const
+{
+    return body == rhs.body &&
+           goingRight == rhs.goingRight;
+}
+
+bool Centipede::Snake::operator!=(const Centipede::Snake &rhs) const
+{
+    return !(rhs == *this);
 }

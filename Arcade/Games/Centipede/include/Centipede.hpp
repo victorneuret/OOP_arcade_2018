@@ -28,7 +28,7 @@ constexpr double CELL_SIZE = BOARD_WIDTH / CELL_COUNT_X;
 constexpr double OBS_SPAWN_WIDTH = BOARD_WIDTH;
 constexpr double OBS_SPAWN_HEIGHT = 0.70;
 constexpr double OBS_SPAWN_OFFSET = 0.05;
-constexpr double OBS_PRCT = 7.5;
+constexpr double OBS_PRCT = 5;
 
 constexpr double SHOT_SPEED = 1.75;
 constexpr double SHOT_WIDTH = PLAYER_WIDTH / 6.0;
@@ -83,6 +83,9 @@ private:
     struct Snake {
         std::vector<Arcade::Vector> body{};
         bool goingRight = true;
+
+        bool operator==(const Snake &rhs) const;
+        bool operator!=(const Snake &rhs) const;
     };
 
     static void _updateObstacle(Cell &cell);
@@ -90,6 +93,9 @@ private:
 
     Cell &_getCell(size_t x, size_t y);
     Cell &_getCell(const Arcade::Vector &vec);
+    Snake &_getSnake(size_t x, size_t y);
+    Snake &_getSnake(const Arcade::Vector &vec);
+    size_t _getSnakeIndex(const Snake &snake);
 
     void _createSnake(bool forceUpdate = true);
     void _updateSnakes(bool force = false);
