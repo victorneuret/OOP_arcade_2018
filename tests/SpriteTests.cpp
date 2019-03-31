@@ -12,6 +12,7 @@
 #include "SFMLSprite.hpp"
 #include "SDL.hpp"
 #include "SDLSprite.hpp"
+#include "SDLTexture.hpp"
 #include "Centipede.hpp"
 #include "CentipedeTexture.hpp"
 
@@ -76,6 +77,7 @@ Test(Sprite, SDLcreation)
     cr_assert_eq(playerSprite->getFallbackColor().g, 0xff);
     cr_assert_eq(playerSprite->getFallbackColor().b, 0xff);
     cr_assert_eq(playerSprite->getFallbackColor().a, 0xff);
+    dynamic_cast<SDLTexture *>(spriteSheet)->~SDLTexture();
 }
 
 Test(Sprite, SDL0RectCreation)
@@ -86,6 +88,7 @@ Test(Sprite, SDL0RectCreation)
 
     cr_assert_eq(playerSprite->getSpriteSheetRect().size.x, 0);
     cr_assert_eq(playerSprite->getSpriteSheetRect().size.y, 0);
+    dynamic_cast<SDLTexture *>(spriteSheet)->~SDLTexture();
 }
 
 Test(Sprite, SDL_SurfacefallbackColor)
@@ -100,6 +103,7 @@ Test(Sprite, SDL_SurfacefallbackColor)
     cr_assert_eq(playerSprite->getFallbackColor().g, 0x42);
     cr_assert_eq(playerSprite->getFallbackColor().b, 0x42);
     cr_assert_eq(playerSprite->getFallbackColor().a, 0x42);
+    dynamic_cast<SDLTexture *>(spriteSheet)->~SDLTexture();
 }
 
 Test(Sprite, SDLDrawSprite)
@@ -109,4 +113,5 @@ Test(Sprite, SDLDrawSprite)
     Arcade::ASprite *playerSprite = sdl.createSprite(spriteSheet, PLAYER_SPRITE_RECT, {{10, 10}, {20, 20}});
 
     sdl.getRenderer().drawSprite(playerSprite);
+    dynamic_cast<SDLTexture *>(spriteSheet)->~SDLTexture();
 }
