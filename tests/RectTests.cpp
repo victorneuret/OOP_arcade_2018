@@ -19,6 +19,7 @@ Test(Rect, vectorConstructor)
     cr_assert_eq(rect.pos.y, pos.y);
     cr_assert_eq(rect.size.x, size.x);
     cr_assert_eq(rect.size.y, size.y);
+    rect.~Rect();
 }
 
 Test(Rect, valueConstructor)
