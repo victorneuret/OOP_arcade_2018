@@ -67,6 +67,9 @@ Test(Vector, OpreratorDivEqual)
     cr_assert_eq(one.y, 1);
     cr_assert_eq(two.x, 3);
     cr_assert_eq(two.y, 2);
+    cr_assert_throw(one /= Arcade::Vector(0, 0), std::runtime_error);
+    cr_assert_throw(one /= Arcade::Vector(1, 0), std::runtime_error);
+    cr_assert_throw(one /= 0, std::runtime_error);
 }
 
 Test(Vector, OpreratorAdd)
@@ -119,6 +122,9 @@ Test(Vector, OpreratorDiv)
     cr_assert_eq(one.y, 1);
     cr_assert_eq(two.x, 3);
     cr_assert_eq(two.y, 2);
+    cr_assert_throw(one / Arcade::Vector(0, 0), std::runtime_error);
+    cr_assert_throw(one / Arcade::Vector(1, 0), std::runtime_error);
+    cr_assert_throw(one / 0, std::runtime_error);
 }
 
 Test(Vector, OpreratorEqual)
