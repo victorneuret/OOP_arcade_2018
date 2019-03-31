@@ -15,31 +15,34 @@ Ncurses::Ncurses()
 
 uint8_t Ncurses::getGameKeyState() const noexcept
 {
-    if (_gameKeys.find(_key) != _gameKeys.end())
-        return _gameKeys.at(_key);
-    return 0;
+    return _gameKey;
 }
 
 uint8_t Ncurses::getCoreKeyState() const noexcept
 {
-    if (_coreKeys.find(_key) != _coreKeys.end())
-        return _coreKeys.at(_key);
-    return 0;
+    return _coreKey;
 }
 
 void Ncurses::sendGameKeyInput(GameKey key) noexcept
 {
-    _key = key;
+    _gameKey = key;
 }
 
 void Ncurses::sendCoreKeyInput(CoreKey key) noexcept
 {
-    _key = key;
+    _coreKey = key;
 }
 
 void Ncurses::pollEvents()
 {
-    _key = getch();
+    int key = getch();
+
+    _gameKey = 0;
+    _coreKey = 0;
+    if (_gameKeys.find(key) != _gameKeys.end())
+        _gameKey = _gameKeys.at(key);
+    if (_coreKeys.find(key) != _coreKeys.end())
+        _coreKey = _coreKeys.at(key);
 }
 
 Arcade::ATexture *Ncurses::createTexture(const void *buffer, const size_t &len)

@@ -77,7 +77,7 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
             renderer.drawSprite(cell.sprite);
     renderer.drawSprite(_playerSprite);
     if (_isShooting)
-        renderer.drawRectangle({_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}}, Arcade::Color(255, 0, 0));
+        renderer.drawRectangle({_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}}, Arcade::Color(0xa7, 0x42, 0x42));
 
     renderer.display();
 }
@@ -86,14 +86,16 @@ void Centipede::reloadResources(Arcade::IGraphicLib *graphic)
 {
     _freeResources();
 
-    _spriteSheet = graphic->createTexture(SPRITE_SHEET, sizeof(SPRITE_SHEET));
+    _spriteSheet = graphic->createTexture( SPRITE_SHEET, sizeof(SPRITE_SHEET));
     _playerSprite = graphic->createSprite(_spriteSheet, PLAYER_SPRITE_RECT,
                                           {_playerPos, {PLAYER_WIDTH, PLAYER_HEIGHT}});
 
+    _playerSprite->setFallbackColor(Arcade::Color(0xff, 0xff, 0xb7));
     for (auto &cell : _cells)
-        if (cell.hasObstacle)
-            cell.sprite = graphic->createSprite(_spriteSheet, OBSTACLE_SPRITE_RECTS[cell.obstacleHealth - 1],
-                                                cell.rect);
+        if (cell.hasObstacle) {
+            cell.sprite = graphic->createSprite(_spriteSheet, OBSTACLE_SPRITE_RECTS[cell.obstacleHealth - 1], cell.rect);
+            cell.sprite->setFallbackColor(Arcade::Color(0xf4, 0xa7, 0xb7));
+        }
 }
 
 void Centipede::_updateObstacle(Centipede::Cell &cell)

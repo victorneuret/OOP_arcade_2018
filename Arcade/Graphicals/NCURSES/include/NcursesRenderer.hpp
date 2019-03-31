@@ -34,7 +34,7 @@ private:
     void _initColor(const Arcade::Color &color, bool fill = false) noexcept;
 
     WINDOW *_win = nullptr;
-    uint16_t _colorIndex = 0;
+    int16_t _colorIndex = 0;
     int32_t _height = 40;
     int32_t _width = _height * 2;
 };

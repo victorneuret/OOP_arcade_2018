@@ -63,9 +63,11 @@ private:
 
     Extension _loadedLib = {"", nullptr, nullptr};
     Extension _loadedGame = {"", nullptr, nullptr};
+    Extension _loadedMenu = {"", nullptr, nullptr};
     bool _isCloseRequested = false;
     std::vector<std::string> _libs;
     std::vector<std::string> _games;
+
     double _deltaTime = 0;
 
     const std::unordered_map<uint8_t, std::function<void ()>> _coreKeys = {

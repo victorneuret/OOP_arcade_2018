@@ -78,17 +78,22 @@ void Core::_loadGraphical(const std::string &path)
     auto game = _getGame();
     auto graphical = _getGraphical();
 
-    if (game != nullptr && graphical != nullptr) {
+    if (game != nullptr && graphical != nullptr)
         game->reloadResources(graphical);
-        throw std::runtime_error("Failed to create instance for graphical: " + _loadedLib.path);
-    }
 }
 
 void Core::_loadGame(const std::string &path)
 {
-    if (_loadedGame.dl) {
+    if (_loadedGame.dl && _loadedGame.path != MAIN_MENU_PATH) {
         delete reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
         dlclose(_loadedGame.dl);
+    }
+
+    if (path == MAIN_MENU_PATH && _loadedMenu.instance) {
+        _loadedGame.path = _loadedMenu.path;
+        _loadedGame.dl = _loadedMenu.dl;
+        _loadedGame.instance = _loadedMenu.instance;
+        return;
     }
 
     _loadedGame = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
@@ -109,6 +114,12 @@ void Core::_loadGame(const std::string &path)
 
     if (game != nullptr && graphical != nullptr)
         game->init(graphical);
+
+    if (path == MAIN_MENU_PATH) {
+        _loadedMenu.path = _loadedGame.path;
+        _loadedMenu.dl = _loadedGame.dl;
+        _loadedMenu.instance = _loadedGame.instance;
+    }
 }
 
 void Core::_loadNextGame()
@@ -188,7 +199,8 @@ void Core::_restartGame()
 
 void Core::_backToMenu()
 {
-    _loadGame(_games[0]);
+    if (_loadedGame.path != MAIN_MENU_PATH)
+        _loadGame(MAIN_MENU_PATH);
 }
 
 void Core::_exit()
@@ -199,7 +211,11 @@ void Core::_exit()
 void Core::loop()
 {
     auto start = std::chrono::system_clock::now();
+    auto end = start;
+    std::chrono::duration<double> elapsed = end - start;
 
+    if (!_getGame())
+        throw std::runtime_error("Failed to load game: " + _loadedGame.path);
     _getGame()->init(_getGraphical());
 
     while (!_shouldExit()) {
@@ -208,7 +224,9 @@ void Core::loop()
         _tick();
         _render();
 
-        _deltaTime = (std::chrono::system_clock::now() - start).count();
+        end = std::chrono::system_clock::now();
+        elapsed = end - start;
+        _deltaTime = elapsed.count();
     }
 }
 
@@ -243,20 +261,22 @@ Arcade::IGame *Core::_getGame() const
 void Core::_tickMainMenu() noexcept
 {
     dynamic_cast<Arcade::IMenu *>(_getGame())->tick(_getGraphical(), _deltaTime,
-        Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path, std::bind(&Core::_loadGame, this, std::placeholders::_1),
-            std::bind(&Core::_loadGraphical, this, std::placeholders::_1)));
+        Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path,
+            [this](const std::string &path) { _loadGame(path); },
+            [this](const std::string &path) { _loadGraphical(path); }));
 }
 
 void Core::_renderMainMenu() noexcept
 {
     dynamic_cast<Arcade::IMenu *>(_getGame())->render(_getGraphical(),
-        Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path, std::bind(&Core::_loadGame, this, std::placeholders::_1),
-            std::bind(&Core::_loadGraphical, this, std::placeholders::_1)));
+        Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path,
+            [this](const std::string &path) { _loadGame(path); },
+            [this](const std::string &path) { _loadGraphical(path); }));
 }
 
 void Core::_tick()
 {
-    if (_shouldExit())
+    if (_shouldExit() || !_getGraphical() || !_getGame())
         return _exit();
 
     _getGraphical()->pollEvents();
@@ -276,8 +296,9 @@ void Core::_tick()
 
 void Core::_render()
 {
-    if (_shouldExit())
+    if (_shouldExit() || !_getGraphical() || !_getGame())
         return _exit();
+
     if (_loadedGame.path == MAIN_MENU_PATH)
         _renderMainMenu();
     else

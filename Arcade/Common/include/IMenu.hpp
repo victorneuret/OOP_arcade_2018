@@ -32,9 +32,7 @@ namespace Arcade {
         };
 
         virtual ~IMenu() = default;
-        virtual void tick(IGraphicLib *graphic, double deltaTime) override = 0;
         virtual void tick(IGraphicLib *graphic, double deltaTime, const CoreExtension &core) = 0;
-        virtual void render(IGraphicLib *graphic) override = 0;
         virtual void render(IGraphicLib *graphic, const Arcade::IMenu::CoreExtension &core) = 0;
     };
 }

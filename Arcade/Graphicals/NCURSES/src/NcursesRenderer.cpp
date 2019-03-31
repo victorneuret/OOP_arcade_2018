@@ -6,23 +6,20 @@
 */
 
 #include <stdexcept>
-#include <chrono>
 
 #include "NcursesRenderer.hpp"
 
 NcursesRenderer::NcursesRenderer()
 {
-    initscr();
-    if (!stdscr)
+    if (!initscr())
         throw std::runtime_error("Failed to create Ncurses window");
-    noecho();
-    curs_set(0);
+    if (noecho() == ERR || nodelay(stdscr, true) == ERR || curs_set(0) == ERR || keypad(stdscr, TRUE) == ERR)
+        throw std::runtime_error("Failed to initialize Ncurses window");
     timeout(0);
-    nocbreak();
-    if (start_color())
+    if (start_color() == ERR)
         throw std::runtime_error("Failed to initialize color");
     _win = newwin(_height, _width, (LINES / 2) - (_height / 2), (COLS / 2) - (_width / 2));
-    if (!_win || keypad(stdscr, TRUE != OK || keypad(_win, TRUE) != OK))
+    if (!_win)
         throw std::runtime_error("Failed to create Ncurses window");
 }
 
@@ -36,19 +33,16 @@ NcursesRenderer::~NcursesRenderer()
 
 void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
 {
-    WINDOW *tmpWin = derwin(_win, static_cast<int>(_height * rect.size.y),
-        static_cast<int>(_width * rect.size.x), static_cast<int>(_height * rect.pos.y),
-        static_cast<int>(_width * rect.pos.x));
-
-    if (!tmpWin)
-        throw std::runtime_error("Failed to create Ncurses rectangle");
     _initColor(color, fill);
-    box(tmpWin, 0, 0);
-    if (wbkgd(tmpWin, COLOR_PAIR(_colorIndex)))
-        throw std::runtime_error("Failed to set rectangle color");
-    wnoutrefresh(tmpWin);
-    werase(tmpWin);
-    delwin(tmpWin);
+
+    wattron(_win, COLOR_PAIR(_colorIndex));
+    for (auto y = 0; y < (rect.size.y * _height); y++) {
+        for (auto x = 0; x < (rect.size.x * _width); x++) {
+            mvwaddch(_win, (rect.pos.y * _height) + (static_cast<double>(y) / _height),
+                (rect.pos.x * _width) + (static_cast<double>(x) / _width), 0);
+        }
+    }
+    wattroff(_win, COLOR_PAIR(_colorIndex));
 }
 
 void NcursesRenderer::drawSprite(const Arcade::ASprite *sprite)
