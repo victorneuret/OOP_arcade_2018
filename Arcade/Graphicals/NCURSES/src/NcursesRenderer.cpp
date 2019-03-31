@@ -38,8 +38,7 @@ void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Colo
     wattron(_win, COLOR_PAIR(_colorIndex));
     for (auto y = 0; y < (rect.size.y * _height); y++) {
         for (auto x = 0; x < (rect.size.x * _width); x++) {
-            mvwaddch(_win, (rect.pos.y * _height) + (static_cast<double>(y) / _height),
-                (rect.pos.x * _width) + (static_cast<double>(x) / _width), 0);
+            mvwaddch(_win, (rect.pos.y * _height) + y, (rect.pos.x * _width) + x, 0);
         }
     }
     wattroff(_win, COLOR_PAIR(_colorIndex));

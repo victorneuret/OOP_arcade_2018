@@ -29,7 +29,6 @@ public:
 
     struct Username {
         char name[USERNAME_LEN] = {'A', 'A', 'A'};
-        uint8_t index = 0;
         bool selected = false;
     };
 
@@ -43,6 +42,8 @@ public:
     void render(Arcade::IGraphicLib *graphic, const Arcade::IMenu::CoreExtension &core) override;
     bool isCloseRequested() const noexcept override;
     void reloadResources(Arcade::IGraphicLib *) override;
+    bool isGameFinished() const noexcept override;
+    size_t getScore() const noexcept override ;
 
 private:
     using MainMenuPtr = void (MainMenu::*)();

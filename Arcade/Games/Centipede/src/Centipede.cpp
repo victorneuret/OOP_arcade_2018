@@ -366,3 +366,13 @@ bool Centipede::Snake::operator!=(const Centipede::Snake &rhs) const
 {
     return !(rhs == *this);
 }
+
+bool Centipede::isGameFinished() const noexcept
+{
+    return false;
+}
+
+size_t Centipede::getScore() const noexcept
+{
+    return 0;
+}

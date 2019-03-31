@@ -16,6 +16,16 @@ MainMenu::MainMenu()
 void MainMenu::init(Arcade::IGraphicLib *)
 {}
 
+bool MainMenu::isGameFinished() const noexcept
+{
+    return false;
+}
+
+size_t MainMenu::getScore() const noexcept
+{
+    return 0;
+}
+
 void MainMenu::reloadResources(Arcade::IGraphicLib *)
 {}
 
@@ -84,6 +94,8 @@ void MainMenu::moveLeft(const CoreExtension &core)
             _selection.second -= 1;
     } else if (_selection.first > 0)
         _selection.first -= 1;
+    else
+        _selection.first = SELECT_USERNAME;
     onChange(core);
 }
 
@@ -93,6 +105,8 @@ void MainMenu::moveRight(const CoreExtension &core)
             _selection.second += 1;
     } else if (_selection.first < SELECT_USERNAME)
         _selection.first += 1;
+    else
+        _selection.first = SELECT_GAME;
     onChange(core);
 }
 
@@ -102,8 +116,11 @@ void MainMenu::primaryPressed(const Arcade::IMenu::CoreExtension &core)
         core.loadGame(core.games[static_cast<size_t>(_selection.second)]);
     else if (_selection.first == SELECT_LIB)
         core.loadGraphical(core.libs[static_cast<size_t>(_selection.second)]);
-    else if (_selection.first == SELECT_USERNAME)
+    else if (_selection.first == SELECT_USERNAME) {
         _username.selected = !_username.selected;
+        if (!_username.selected)
+            core.setUsername((&(*_username.name)));
+    }
 }
 
 const std::string MainMenu::getLibName(const std::string &path)
@@ -115,13 +132,13 @@ const std::string MainMenu::getLibName(const std::string &path)
 
 void MainMenu::render(Arcade::IGraphicLib *graphic)
 {
-    graphic->getRenderer().drawText("Player", 30, Arcade::Vector(0.48, 0.08), Arcade::Color(0, 255, 255));
+    graphic->getRenderer().drawText("Player:", 30, Arcade::Vector(0.25, 0.1), Arcade::Color(0, 255, 255));
     for (uint8_t i = 0; i < USERNAME_LEN; i++) {
         if (_selection.first == SELECT_USERNAME && _username.selected)
-            graphic->getRenderer().drawText(std::string(1, _username.name[i]), 30, Arcade::Vector(0.49 + static_cast<double>(i) / 40, 0.1),
+            graphic->getRenderer().drawText(std::string(1, _username.name[i]), 30, Arcade::Vector(0.4 + static_cast<double>(i) / 40, 0.1),
                 (_selection.first == SELECT_USERNAME && _selection.second == i && _username.selected) ? Arcade::Color(0, 255, 255) : Arcade::Color(200, 200, 200));
         else
-            graphic->getRenderer().drawText(std::string(1, _username.name[i]), 30, Arcade::Vector(0.49 + static_cast<double>(i) / 40, 0.1),
+            graphic->getRenderer().drawText(std::string(1, _username.name[i]), 30, Arcade::Vector(0.4 + static_cast<double>(i) / 40, 0.1),
                 (_selection.first == SELECT_USERNAME) ? Arcade::Color(200, 200, 200) : _unselectedColor);
     }
 }

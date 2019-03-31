@@ -18,7 +18,7 @@
 #include "IMenu.hpp"
 
 Core::Core(const std::string &path)
-    : _libs(), _games()
+    : _libs(), _games(), _username()
 {
     _addExtension(path, GRAPHICAL);
     if (_libs.empty())
@@ -27,6 +27,7 @@ Core::Core(const std::string &path)
     _loadDirectory(GAME_PATH);
     _loadGraphical(_libs[0]);
     _loadGame(MAIN_MENU_PATH);
+    strncpy(_username, DEFAULT_USERNAME, 4);
 }
 
 Core::~Core()
@@ -176,6 +177,11 @@ void Core::_loadPrevGraphical()
         _loadGraphical(*(it - 1));
 }
 
+void Core::_setUsername(const char *username) noexcept
+{
+    strncpy(_username, username, 3);
+}
+
 void Core::_restartGame()
 {
     if (_loadedGame.instance)
@@ -262,6 +268,7 @@ void Core::_tickMainMenu() noexcept
 {
     dynamic_cast<Arcade::IMenu *>(_getGame())->tick(_getGraphical(), _deltaTime,
         Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path,
+            [this](const char *username) { _setUsername(username); },
             [this](const std::string &path) { _loadGame(path); },
             [this](const std::string &path) { _loadGraphical(path); }));
 }
@@ -270,6 +277,7 @@ void Core::_renderMainMenu() noexcept
 {
     dynamic_cast<Arcade::IMenu *>(_getGame())->render(_getGraphical(),
         Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path,
+            [this](const char *username) { _setUsername(username); },
             [this](const std::string &path) { _loadGame(path); },
             [this](const std::string &path) { _loadGraphical(path); }));
 }
