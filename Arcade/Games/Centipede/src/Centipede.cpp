@@ -34,11 +34,6 @@ Centipede::Centipede()
     _createSnake();
 }
 
-Centipede::~Centipede()
-{
-    _freeResources();
-}
-
 void Centipede::init(Arcade::IGraphicLib *graphic)
 {
     reloadResources(graphic);
@@ -123,8 +118,6 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
 
 void Centipede::reloadResources(Arcade::IGraphicLib *graphic)
 {
-    _freeResources();
-
     _spriteSheet = graphic->createTexture(SPRITE_SHEET, sizeof(SPRITE_SHEET));
     _playerSprite = graphic->createSprite(_spriteSheet, PLAYER_SPRITE_RECT,
                                           {_playerPos, {PLAYER_WIDTH, PLAYER_HEIGHT}});
@@ -340,15 +333,6 @@ void Centipede::_moveRight()
 {
     if (_playerPos.x < 1 - PLAYER_WIDTH)
         _playerPos.x += PLAYER_SPEED * _deltaTime;
-}
-
-void Centipede::_freeResources()
-{
-    delete _spriteSheet;
-    delete _playerSprite;
-
-    for (auto &cell : _cells)
-        delete cell.sprite;
 }
 
 bool Centipede::isCloseRequested() const noexcept

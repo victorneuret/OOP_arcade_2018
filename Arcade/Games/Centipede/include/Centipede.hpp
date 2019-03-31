@@ -55,7 +55,7 @@ class Centipede final : public Arcade::IGame {
 public:
     Centipede();
     Centipede(const Centipede &) = delete;
-    ~Centipede() override;
+    ~Centipede() override = default;
 
     Centipede &operator=(const Centipede &) = delete;
 
@@ -111,8 +111,6 @@ private:
     void _moveDown();
     void _moveLeft();
     void _moveRight();
-
-    void _freeResources();
 
     const std::unordered_map<Arcade::IGraphicLib::GameKey, std::function<void()>> _gameKeys = {
         {Arcade::IGraphicLib::UP,      std::bind(&Centipede::_moveUp, this)},
