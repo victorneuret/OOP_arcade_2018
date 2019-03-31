@@ -1,0 +1,458 @@
+@startuml
+
+
+/' Objects '/
+
+class Core {
+	+Core(const std::string& path)
+	+~Core()
+	-_getGame() : Arcade::IGame*
+	-_getGraphical() : Arcade::IGraphicLib*
+	-_isCloseRequested : bool
+	-_shouldExit() : bool
+	-_deltaTime : double
+	-<void() : std::unordered_map<uint8_t , std::function
+	-_games : std::vector<std::string>
+	-_libs : std::vector<std::string>
+	- : using InstanceGamePtr = Arcade::IGame* (* ) ( )
+	- : using InstanceGraphicalPtr = Arcade::IGraphicLib* (* ) ( )
+	-_addExtension(const std::string& path, EXT_TYPE type) : void
+	-_backToMenu() : void
+	-_exit() : void
+	-_loadDirectory(const std::string& path) : void
+	-_loadGame(const std::string& path) : void
+	-_loadGraphical(const std::string& path) : void
+	-_loadNextGame() : void
+	-_loadNextGraphical() : void
+	-_loadPrevGame() : void
+	-_loadPrevGraphical() : void
+	-_render() : void
+	-_restartGame() : void
+	-_tick() : void
+	+loop() : void
+}
+
+
+class Core::Extension {
+    +path : std::string
+    +dl : void*
+    +instance : void*
+}
+
+namespace Arcade {
+	abstract class ASprite {
+		+ASprite(const ATexture* texture, const Rect& spriteSheetRect, const Rect& posAndSize)
+		+ASprite(const ASprite &)
+		+~ASprite()
+		+operator=(const ASprite &) : ASprite&
+		+getTexture() : ATexture* {query}
+		+getFallbackColor() : Color& {query}
+		#_posAndSize : Rect
+		#_spriteSheetRect : Rect
+		+getPosAndSize() : Rect& {query}
+		+getSpriteSheetRect() : Rect& {query}
+		#_texture : const ATexture*
+		+setFallbackColor(const Color& color) : void
+		+{abstract} setPosAndSize(const Rect& posAndSize) : void
+		+{abstract} setTextureRect(const Rect& newRect) : void
+	}
+}
+
+
+namespace Arcade {
+	class ATexture {
+		+ATexture(const void* buffer, const size_t& len)
+		+ATexture(const ATexture &)
+		+~ATexture()
+		+operator=(const ATexture &) : ATexture&
+		#_len : const size_t
+		#_buffer : const void*
+		+getBufferLength() : size_t& {query}
+		+getBuffer() : void* {query}
+	}
+}
+
+
+class Centipede {
+	+Centipede()
+	+Centipede(const Centipede &)
+	+~Centipede()
+	-_playerSprite : Arcade::ASprite*
+	-_spriteSheet : Arcade::ATexture*
+	+operator=(const Centipede &) : Centipede&
+	-_closeRequested : bool
+	-_isShooting : bool
+	-{static} _rectanglesCollide(const Arcade::Rect& rectA, const Arcade::Rect& rectB) : bool
+	+isCloseRequested() : bool {query}
+	-_deltaTime : double
+	-<void() : std::unordered_map<Arcade::IGraphicLib::GameKey , std::function
+	-_checkShotCollision() : void
+	-_freeResources() : void
+	-_moveDown() : void
+	-_moveLeft() : void
+	-_moveRight() : void
+	-_moveUp() : void
+	-_shoot() : void
+	-{static} _updateObstacle(Cell& cell) : void
+	+init(Arcade::IGraphicLib* graphic) : void
+	+reloadResources(Arcade::IGraphicLib* lib) : void
+	+render(Arcade::IGraphicLib* graphic) : void
+	+tick(Arcade::IGraphicLib* graphic, double deltaTime) : void
+}
+
+
+class Centipede::Cell {
+    +sprite : Arcade::ASprite*
+    +hasObstacle : bool
+    +obstacleHealth : uint8_t
+}
+
+
+
+namespace Arcade {
+	class Color {
+		+Color(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+		+~Color()
+		+operator=(const Color& rhs) : Color&
+		+getValue() : uint32_t {query}
+		+a : uint8_t
+		+b : uint8_t
+		+g : uint8_t
+		+r : uint8_t
+	}
+}
+
+
+namespace Arcade {
+	abstract class IGame {
+		+~IGame()
+		+{abstract} isCloseRequested() : bool {query}
+		+{abstract} init(IGraphicLib* graphic) : void
+		+{abstract} reloadResources(IGraphicLib* graphic) : void
+		+{abstract} render(IGraphicLib* graphic) : void
+		+{abstract} tick(IGraphicLib* graphic, double deltaTime) : void
+	}
+}
+
+
+namespace Arcade {
+	abstract class IGraphicLib {
+		+~IGraphicLib()
+		+{abstract} createSprite(const ATexture* texture, const Rect& spriteSheetRect, const Rect& posAndSize) : ASprite*
+		+{abstract} createTexture(const void* buffer, const size_t& len) : ATexture*
+		+{abstract} getRenderer() : IRenderer&
+		+{abstract} isCloseRequested() : bool {query}
+		+{abstract} getCoreKeyState() : uint8_t {query}
+		+{abstract} getGameKeyState() : uint8_t {query}
+		+{abstract} pollEvents() : void
+		+{abstract} sendCoreKeyInput(CoreKey input) : void
+		+{abstract} sendGameKeyInput(GameKey input) : void
+	}
+}
+
+
+namespace Arcade {
+	abstract class IRenderer {
+		+~IRenderer()
+		+{abstract} clear() : void
+		+{abstract} display() : void
+		+{abstract} drawRectangle(const Rect& rect, const Color& color, bool fill) : void
+		+{abstract} drawSprite(const ASprite* sprite) : void
+		+{abstract} drawText(const std::string& text, uint8_t fontSize, const Vector& pos, const Color& color) : void
+	}
+}
+
+
+class MainMenu {
+	+MainMenu()
+	+MainMenu(const MainMenu &)
+	+~MainMenu()
+	+operator=(const MainMenu &) : MainMenu&
+	+isCloseRequested() : bool {query}
+	-_deltaTime : double
+	-<void() : std::unordered_map<Arcade::IGraphicLib::GameKey , std::function
+	-MainMenuPtr : using
+	+init(Arcade::IGraphicLib* graphic) : void
+	-moveDown() : void
+	-moveLeft() : void
+	-moveRight() : void
+	-moveUp() : void
+	-primaryPressed() : void
+	+reloadResources(Arcade::IGraphicLib*) : void
+	+render(Arcade::IGraphicLib* graphic) : void
+	+tick(Arcade::IGraphicLib* graphic, double deltaTime) : void
+}
+
+
+class Ncurses {
+	+Ncurses()
+	+~Ncurses()
+	+createSprite(const Arcade::ATexture* texture, const Arcade::Rect& spriteSheetRect, const Arcade::Rect& posAndSize) : Arcade::ASprite*
+	+createTexture(const void* buffer, const size_t& len) : Arcade::ATexture*
+	+getRenderer() : Arcade::IRenderer&
+	-_render : NcursesRenderer
+	+isCloseRequested() : bool {query}
+	+getCoreKeyState() : uint8_t {query}
+	+getGameKeyState() : uint8_t {query}
+	+pollEvents() : void
+	+sendCoreKeyInput(CoreKey input) : void
+	+sendGameKeyInput(GameKey input) : void
+}
+
+
+class NcursesRenderer {
+	+NcursesRenderer()
+	+NcursesRenderer(const NcursesRenderer &)
+	+~NcursesRenderer()
+	+operator=(const NcursesRenderer &) : NcursesRenderer&
+	-_win : WINDOW*
+	-_size : int32_t
+	-_colorIndex : uint16_t
+	-_initColor(const Arcade::Color& color, bool fill) : void
+	+clear() : void
+	+display() : void
+	+drawRectangle(const Arcade::Rect& rect, const Arcade::Color& color, bool fill) : void
+	+drawSprite(const Arcade::ASprite* sprite) : void
+	+drawText(const std::string& text, uint8_t fontSize, const Arcade::Vector& pos, const Arcade::Color& color) : void
+}
+
+
+class Nibbler {
+	+Nibbler()
+	+~Nibbler()
+	-_snake : Snake
+	+isCloseRequested() : bool {query}
+	-_boost : double
+	-_deltaTime : double
+	-_speed : double
+	-_time : double
+	-_foodEaten : size_t
+	-<void() : std::unordered_map<Arcade::IGraphicLib::GameKey , std::function
+	-_drawMap(Arcade::IGraphicLib* graphic) : void
+	-_drawSnake(Arcade::IGraphicLib* graphic) : void
+	-_generateFood() : void
+	-_move() : void
+	-_moveDown() : void
+	-_moveLeft() : void
+	-_moveRight() : void
+	-_moveUp() : void
+	-_restart() : void
+	-_speedBoost() : void
+	+init(Arcade::IGraphicLib* graphic) : void
+	+reloadResources(Arcade::IGraphicLib*) : void
+	+render(Arcade::IGraphicLib* graphic) : void
+	+tick(Arcade::IGraphicLib* graphic, double deltaTime) : void
+}
+
+
+class Nibbler::Snake {
+    +head : Arcade::Vector
+    +tail : Arcade::Vector
+    +body : std::vector<Arcade::Vector>
+}
+
+
+
+namespace Arcade {
+	class Rect {
+		+Rect()
+		+Rect(const Vector& pos, const Vector& size)
+		+Rect(double x, double y, double w, double h)
+		+~Rect()
+		+operator=(const Rect& rhs) : Rect&
+		+pos : Vector
+		+size : Vector
+		+operator!=(const Rect& rhs) : bool {query}
+		+operator==(const Rect& rhs) : bool {query}
+	}
+}
+
+
+class SDL {
+	+SDL()
+	+~SDL()
+	+createSprite(const Arcade::ATexture* texture, const Arcade::Rect& spriteSheetRect, const Arcade::Rect& posAndSize) : Arcade::ASprite*
+	+createTexture(const void* buffer, const size_t& len) : Arcade::ATexture*
+	+getRenderer() : Arcade::IRenderer&
+	-_renderer : SDLRenderer
+	-_closeRequested : bool
+	+isCloseRequested() : bool {query}
+	+getCoreKeyState() : uint8_t {query}
+	+getGameKeyState() : uint8_t {query}
+	+pollEvents() : void
+	+sendCoreKeyInput(CoreKey input) : void
+	+sendGameKeyInput(GameKey input) : void
+}
+
+
+class SDLRenderer {
+	+SDLRenderer()
+	+SDLRenderer(const SDLRenderer& copy)
+	+~SDLRenderer()
+	+operator=(const SDLRenderer& copy) : SDLRenderer&
+	-_renderer : SDL_Renderer*
+	-_window : SDL_Window*
+	+clear() : void
+	+display() : void
+	+drawRectangle(const Arcade::Rect& rect, const Arcade::Color& color, bool fill) : void
+	+drawSprite(const Arcade::ASprite* sprite) : void
+	+drawText(const std::string& text, uint8_t fontSize, const Arcade::Vector& pos, const Arcade::Color& color) : void
+}
+
+
+class SDLSprite {
+	+SDLSprite(const Arcade::ATexture* texture, const Arcade::Rect& spriteSheetRect, const Arcade::Rect& posAndSize)
+	+SDLSprite(const SDLSprite &)
+	+SDLSprite(const ASprite& sprite)
+	+~SDLSprite()
+	+operator=(const ASprite& sprite) : ASprite&
+	+operator=(const SDLSprite &) : SDLSprite&
+	+drawSprite(SDL_Renderer* renderer) : void
+	+setPosAndSize(const Arcade::Rect& posAndSize) : void
+	+setTextureRect(const Arcade::Rect& newRect) : void
+}
+
+
+class SDLTexture {
+	+SDLTexture(const void* buffer, const size_t& len)
+	+SDLTexture(const SDLTexture &)
+	+~SDLTexture()
+	+operator=(const SDLTexture &) : SDLTexture&
+	-_surface : SDL_Surface*
+	+getSurface() : SDL_Surface* {query}
+}
+
+
+class SFML {
+	+SFML()
+	+~SFML()
+	+createSprite(const Arcade::ATexture* texture, const Arcade::Rect& spriteSheetRect, const Arcade::Rect& posAndSize) : Arcade::ASprite*
+	+createTexture(const void* buffer, const size_t& len) : Arcade::ATexture*
+	+getRenderer() : Arcade::IRenderer&
+	-renderer : SFMLRenderer
+	-_closeRequested : bool
+	+isCloseRequested() : bool {query}
+	+getCoreKeyState() : uint8_t {query}
+	+getGameKeyState() : uint8_t {query}
+	+pollEvents() : void
+	+sendCoreKeyInput(CoreKey input) : void
+	+sendGameKeyInput(GameKey input) : void
+}
+
+
+class SFMLRenderer {
+	+SFMLRenderer()
+	+~SFMLRenderer()
+	-_sfFont : sf::Font
+	-_window : sf::RenderWindow
+	+getWindow() : sf::RenderWindow&
+	+clear() : void
+	+display() : void
+	+drawRectangle(const Arcade::Rect& rect, const Arcade::Color& color, bool fill) : void
+	+drawSprite(const Arcade::ASprite* sprite) : void
+	+drawText(const std::string& text, uint8_t fontSize, const Arcade::Vector& pos, const Arcade::Color& color) : void
+}
+
+
+class SFMLSprite {
+	+SFMLSprite(const Arcade::ATexture* texture, const Arcade::Rect& spriteSheetRect, const Arcade::Rect& posAndSize)
+	+SFMLSprite(const ASprite& sprite)
+	+~SFMLSprite()
+	+operator=(const ASprite& sprite) : ASprite&
+	-_sfSprite : sf::Sprite
+	+getSfSprite() : sf::Sprite& {query}
+	+setPosAndSize(const Arcade::Rect& posAndSize) : void
+	+setTextureRect(const Arcade::Rect& newRect) : void
+}
+
+
+class SFMLTexture {
+	+SFMLTexture(const void* buffer, const size_t& len)
+	+~SFMLTexture()
+	-_sfTexure : sf::Texture
+	+getSfTexure() : sf::Texture& {query}
+}
+
+
+namespace Arcade {
+	class Vector {
+		+Vector(const Vector& v)
+		+Vector(double x, double y)
+		+~Vector()
+		+operator*(const Vector& vec) : Vector {query}
+		+operator*(const double& val) : Vector {query}
+		+operator+(const Vector& vec) : Vector {query}
+		+operator+(const double& val) : Vector {query}
+		+operator-(const Vector& vec) : Vector {query}
+		+operator-(const double& val) : Vector {query}
+		+operator/(const Vector& vec) : Vector {query}
+		+operator/(const double& val) : Vector {query}
+		+operator*=(const Vector& vec) : Vector&
+		+operator*=(const double& val) : Vector&
+		+operator+=(const Vector& vec) : Vector&
+		+operator+=(const double& val) : Vector&
+		+operator-=(const Vector& vec) : Vector&
+		+operator-=(const double& val) : Vector&
+		+operator/=(const Vector& vec) : Vector&
+		+operator/=(const double& val) : Vector&
+		+operator=(const Vector& vec) : Vector&
+		+operator=(const double& val) : Vector&
+		+operator!=(const Vector& vec) : bool {query}
+		+operator==(const Vector& vec) : bool {query}
+		+x : double
+		+y : double
+	}
+}
+
+
+
+
+
+/' Inheritance relationships '/
+
+.Nibbler -|> Arcade.IGame
+.Centipede -|> Arcade.IGame
+.MainMenu -|> Arcade.IGame
+
+.SFML -|> .Arcade.IGraphicLib
+.SFMLSprite -|> .Arcade.ASprite
+.SFMLTexture -|> .Arcade.ATexture
+.SFMLRenderer -|> .Arcade.IRenderer
+
+.SDL -|> .Arcade.IGraphicLib
+.SDLSprite -|> .Arcade.ASprite
+.SDLTexture -|> .Arcade.ATexture
+.SDLRenderer -|> .Arcade.IRenderer
+
+.Ncurses -|> .Arcade.IGraphicLib
+.NcursesSprite -|> .Arcade.ASprite
+.NcursesTexture -|> .Arcade.ATexture
+.NcursesRenderer -|> .Arcade.IRenderer
+
+/' Aggregation relationships '/
+
+
+.Centipede::Cell --* .Centipede
+
+.Nibbler::Snake --* .Nibbler
+
+.Core::Extension --* .Core
+
+
+.Nibbler -[Hidden]> .Centipede
+.Nibbler -[Hidden]> .MainMenu
+
+.SFML -[Hidden]-> .SFMLSprite
+.SFMLSprite -[Hidden]-> .SFMLTexture
+.SFMLTexture -[Hidden]-> .SFMLRenderer
+
+.SDL -[Hidden]-> .SDLSprite
+.SDLSprite -[Hidden]-> .SDLTexture
+.SDLTexture -[Hidden]-> .SDLRenderer
+
+.Ncurses -[Hidden]-> .NcursesSprite
+.NcursesSprite -[Hidden]-> .NcursesTexture
+.NcursesTexture -[Hidden]-> .NcursesRenderer
+
+
+@enduml
