@@ -17,24 +17,25 @@ constexpr double PLAYER_WIDTH = 0.04;
 constexpr double PLAYER_HEIGHT = 0.04;
 constexpr double PLAYER_SPEED = 0.6;
 
-constexpr double CELL_SIZE = 0.033;
+constexpr double BOARD_WIDTH = 1;
+constexpr double BOARD_HEIGHT = BOARD_WIDTH;
 
-constexpr double BOARD_WIDTH = 1 - CELL_SIZE;
-constexpr double BOARD_HEIGHT = 0.70;
-constexpr double BOARD_OFFSET = 0.075;
-
-constexpr double CELL_COUNT_X = BOARD_WIDTH / CELL_SIZE + 1;
-constexpr double CELL_COUNT_Y = BOARD_HEIGHT / CELL_SIZE;
+constexpr double CELL_COUNT_X = 35;
+constexpr double CELL_COUNT_Y = CELL_COUNT_X;
 constexpr uint64_t CELL_COUNT = static_cast<uint64_t >(CELL_COUNT_X * CELL_COUNT_Y);
+constexpr double CELL_SIZE = BOARD_WIDTH / CELL_COUNT_X;
 
-constexpr double OBSTACLE_PERCENTAGE = 5.0;
+constexpr double OBS_SPAWN_WIDTH = BOARD_WIDTH;
+constexpr double OBS_SPAWN_HEIGHT = 0.70;
+constexpr double OBS_SPAWN_OFFSET = 0.05;
+constexpr double OBS_PRCT = 7.5;
 
 constexpr double SHOT_SPEED = 1.75;
 constexpr double SHOT_WIDTH = PLAYER_WIDTH / 6.0;
 constexpr double SHOT_HEIGHT = PLAYER_HEIGHT;
 
-constexpr double SNAKE_MOVE_INTERVAL = 1.0 / 8.0;
-constexpr double SNAKE_SPAWN_INTERVAL = 8.0;
+constexpr double SNAKE_MOVE_INTERVAL = 1.0 / 10.0;
+constexpr double SNAKE_SPAWN_INTERVAL = 20.0;
 
 static const std::pair<size_t, size_t> SNAKE_SIZE_MIN_MAX{5, 15};
 static const Arcade::Rect PLAYER_SPRITE_RECT{20, 9, 9, 8};
@@ -90,7 +91,7 @@ private:
     Cell &_getCell(size_t x, size_t y);
     Cell &_getCell(const Arcade::Vector &vec);
 
-    void _createSnake();
+    void _createSnake(bool forceUpdate = true);
     void _updateSnakes(bool force = false);
     void _checkShotCollision();
 
@@ -119,6 +120,7 @@ private:
     Arcade::ATexture *_spriteSheet = nullptr;
     Arcade::ASprite *_playerSprite = nullptr;
 
+    bool _playerAlive = true;
     bool _isShooting = false;
     Arcade::Vector _shotPos{0, 0};
 
@@ -126,6 +128,6 @@ private:
 
     const double _scorePerSecond = 2.02;
     const double _scorePerKill = 42.0;
-    const double _scorePerObstacleDestroyed = 4.2;
+    const double _scorePerObstacleDestroyed = _scorePerSecond * 3;
     double _score = 0.0;
 };
