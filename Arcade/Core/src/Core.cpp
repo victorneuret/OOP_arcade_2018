@@ -276,6 +276,10 @@ void Core::_renderMainMenu() noexcept
 
 void Core::_tick()
 {
+    static auto lastCheck = std::chrono::system_clock::now();
+    auto now = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed = now - lastCheck;
+
     if (!_getGraphical() || !_getGame() || _shouldExit())
         return _exit();
 
@@ -286,11 +290,16 @@ void Core::_tick()
     } else
         _getGame()->tick(_getGraphical(), _deltaTime);
 
-    uint8_t key = _getGraphical()->getCoreKeyState();
+    if (elapsed.count() >= 0.33) {
+        uint8_t key = _getGraphical()->getCoreKeyState();
 
-    for (const auto &c : _coreKeys) {
-        if (c.first & key)
-            c.second();
+        if (key != 0)
+            lastCheck = now;
+
+        for (const auto &c : _coreKeys) {
+            if (c.first & key)
+                c.second();
+        }
     }
 }
 

@@ -18,22 +18,29 @@ constexpr double PLAYER_HEIGHT = 0.04;
 constexpr double PLAYER_SPEED = 0.6;
 
 constexpr double BOARD_WIDTH = 1;
-constexpr double BOARD_HEIGHT = 0.76;
+constexpr double BOARD_HEIGHT = BOARD_WIDTH;
 
-constexpr double CELL_SIZE = 0.033;
-
-constexpr double CELL_COUNT_X = BOARD_WIDTH / CELL_SIZE;
-constexpr double CELL_COUNT_Y = BOARD_HEIGHT / CELL_SIZE;
+constexpr double CELL_COUNT_X = 35;
+constexpr double CELL_COUNT_Y = CELL_COUNT_X;
 constexpr uint64_t CELL_COUNT = static_cast<uint64_t >(CELL_COUNT_X * CELL_COUNT_Y);
+constexpr double CELL_SIZE = BOARD_WIDTH / CELL_COUNT_X;
 
-constexpr double OBSTACLE_PERCENTAGE = 5.0;
+constexpr double OBS_SPAWN_WIDTH = BOARD_WIDTH;
+constexpr double OBS_SPAWN_HEIGHT = 0.70;
+constexpr double OBS_SPAWN_OFFSET = 0.05;
+constexpr double OBS_PRCT = 5;
 
 constexpr double SHOT_SPEED = 1.75;
 constexpr double SHOT_WIDTH = PLAYER_WIDTH / 6.0;
 constexpr double SHOT_HEIGHT = PLAYER_HEIGHT;
 
-static const Arcade::Rect PLAYER_SPRITE_RECT{20, 9, 9, 8};
+constexpr double SNAKE_MOVE_INTERVAL = 1.0 / 15.0;
+constexpr double SNAKE_SPAWN_INTERVAL = 5.0;
 
+constexpr size_t KILL_LIMIT = 20;
+
+static const std::pair<size_t, size_t> SNAKE_SIZE_MIN_MAX{5, 15};
+static const Arcade::Rect PLAYER_SPRITE_RECT{20, 9, 9, 8};
 static const Arcade::Rect DESTROYED_OBSTACLE{90, 108, 8, 8};
 
 static const Arcade::Rect OBSTACLE_SPRITE_RECTS[] = {
@@ -60,17 +67,42 @@ public:
 
 private:
     struct Cell {
-        Arcade::Rect rect{0, 0, CELL_SIZE, CELL_SIZE};
-        bool hasObstacle = false;
-        uint8_t obstacleHealth = 5;
+        enum CellType {
+            EMPTY,
+            OBSTACLE,
+            SNAKE_HEAD,
+            SNAKE_BODY
+        };
 
+        Arcade::Vector absolutePos{0, 0};
+        Arcade::Rect rect{0, 0, CELL_SIZE, CELL_SIZE};
+        uint8_t health = 5;
+
+        CellType type{EMPTY};
         Arcade::ASprite *sprite = nullptr;
+    };
+
+    struct Snake {
+        std::vector<Arcade::Vector> body{};
+        bool goingRight = true;
+
+        bool operator==(const Snake &rhs) const;
+        bool operator!=(const Snake &rhs) const;
     };
 
     static void _updateObstacle(Cell &cell);
     static bool _rectanglesCollide(const Arcade::Rect &rectA, const Arcade::Rect &rectB);
 
-    void _checkShotCollision();
+    Cell &_getCell(size_t x, size_t y);
+    Cell &_getCell(const Arcade::Vector &vec);
+    Snake &_getSnake(size_t x, size_t y);
+    Snake &_getSnake(const Arcade::Vector &vec);
+    size_t _getSnakeIndex(const Snake &snake);
+
+    void _createSnake(bool forceUpdate = true);
+    void _updateSnakes(bool force = false);
+    void _checkShotCollisions();
+    void _checkPlayerCollisions();
 
     void _shoot();
     void _moveUp();
@@ -97,6 +129,15 @@ private:
     Arcade::ATexture *_spriteSheet = nullptr;
     Arcade::ASprite *_playerSprite = nullptr;
 
+    size_t _kills = 0;
+    bool _playerAlive = true;
     bool _isShooting = false;
     Arcade::Vector _shotPos{0, 0};
+
+    std::vector<Snake> _snakes{};
+
+    const double _scorePerSecond = 2.02;
+    const double _scorePerKill = 42.0;
+    const double _scorePerObstacleDestroyed = _scorePerSecond * 3;
+    double _score = 0.0;
 };
