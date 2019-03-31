@@ -5,8 +5,10 @@
 ** Centipede.cpp
 */
 
-#include <random>
+#include <chrono>
+#include <iostream>
 
+#include "Random.hpp"
 #include "Centipede.hpp"
 #include "CentipedeTexture.hpp"
 
@@ -15,13 +17,12 @@ Centipede::Centipede()
     double x = 0;
     double y = 0;
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(0.0, 1.0);
-
     for (auto &cell : _cells) {
+        cell.absolutePos = {x, y};
         cell.rect.pos = {x / CELL_COUNT_X * BOARD_WIDTH, y / CELL_COUNT_Y * BOARD_HEIGHT};
-        cell.hasObstacle = dis(gen) <= OBSTACLE_PERCENTAGE / 100.0;
+
+        if (cell.rect.pos.y >= OBS_SPAWN_OFFSET && cell.rect.pos.y + CELL_SIZE < OBS_SPAWN_OFFSET + OBS_SPAWN_HEIGHT)
+            cell.type = Random::range() <= OBS_PRCT / 100.0 ? Cell::OBSTACLE : Cell::EMPTY;
 
         if (++x >= CELL_COUNT_X) {
             x = 0;
@@ -29,6 +30,8 @@ Centipede::Centipede()
                 break;
         }
     }
+
+    _createSnake();
 }
 
 Centipede::~Centipede()
@@ -50,19 +53,26 @@ void Centipede::tick(Arcade::IGraphicLib *graphic, double deltaTime)
         if (gameKey.first & key)
             gameKey.second();
 
-    if (_playerSprite)
-        _playerSprite->setPosAndSize({_playerPos, {PLAYER_WIDTH, PLAYER_HEIGHT}});
+    if (_playerAlive) {
+        if (_playerSprite)
+            _playerSprite->setPosAndSize({_playerPos, {PLAYER_WIDTH, PLAYER_HEIGHT}});
 
-    for (auto &cell : _cells)
-        if (cell.hasObstacle)
-            _updateObstacle(cell);
+        _updateSnakes();
 
-    if (_isShooting) {
-        _shotPos -= {0, SHOT_SPEED * _deltaTime};
-        if (_shotPos.y < -SHOT_HEIGHT)
-            _isShooting = false;
-        else
-            _checkShotCollision();
+        for (auto &cell : _cells)
+            if (cell.type == Cell::OBSTACLE)
+                _updateObstacle(cell);
+
+        if (_isShooting) {
+            _shotPos -= {0, SHOT_SPEED * _deltaTime};
+            if (_shotPos.y < -SHOT_HEIGHT)
+                _isShooting = false;
+            else
+                _checkShotCollisions();
+        }
+        _checkPlayerCollisions();
+
+        _score += _scorePerSecond * _deltaTime;
     }
 }
 
@@ -72,12 +82,31 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
 
     renderer.clear();
 
-    for (const auto &cell : _cells)
-        if (cell.hasObstacle && cell.sprite != nullptr)
-            renderer.drawSprite(cell.sprite);
-    renderer.drawSprite(_playerSprite);
-    if (_isShooting)
-        renderer.drawRectangle({_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}}, Arcade::Color(255, 0, 0));
+    if (_playerAlive) {
+        for (auto &cell : _cells) {
+            if (cell.type == Cell::OBSTACLE) {
+                if (cell.sprite == nullptr)
+                    cell.sprite = graphic->createSprite(_spriteSheet, OBSTACLE_SPRITE_RECTS[cell.health - 1],
+                                                        cell.rect);
+                cell.sprite->setFallbackColor({255, 255, 255, static_cast<uint8_t>(cell.health / 5.0 * 255)});
+                renderer.drawSprite(cell.sprite);
+            } else if (cell.type == Cell::SNAKE_HEAD) {
+                renderer.drawRectangle(cell.rect, {255, 0, 0});
+            } else if (cell.type == Cell::SNAKE_BODY) {
+                renderer.drawRectangle(cell.rect, {127, 0, 0});
+            }
+        }
+        renderer.drawSprite(_playerSprite);
+        if (_isShooting)
+            renderer.drawRectangle({_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}}, Arcade::Color(255, 0, 0));
+        renderer.drawText("Score: " + std::to_string(static_cast<long>(_score)) +
+                          " | Kills: " + std::to_string(_kills), 18, {0.01, 0.01}, {255, 255, 255});
+    } else {
+        renderer.drawText(std::string(_kills >= KILL_LIMIT ? "YOU WIN!" : "GAME OVER") +
+                          " - Score: " + std::to_string(static_cast<long>(_score)) +
+                          " | Kills: " + std::to_string(_kills),
+                          30, {0.15, 0.25}, {255, 255, 255});
+    }
 
     renderer.display();
 }
@@ -89,18 +118,22 @@ void Centipede::reloadResources(Arcade::IGraphicLib *graphic)
     _spriteSheet = graphic->createTexture(SPRITE_SHEET, sizeof(SPRITE_SHEET));
     _playerSprite = graphic->createSprite(_spriteSheet, PLAYER_SPRITE_RECT,
                                           {_playerPos, {PLAYER_WIDTH, PLAYER_HEIGHT}});
+    _playerSprite->setFallbackColor({0, 255, 127});
 
-    for (auto &cell : _cells)
-        if (cell.hasObstacle)
-            cell.sprite = graphic->createSprite(_spriteSheet, OBSTACLE_SPRITE_RECTS[cell.obstacleHealth - 1],
+    for (auto &cell : _cells) {
+        if (cell.type == Cell::OBSTACLE) {
+            cell.sprite = graphic->createSprite(_spriteSheet, OBSTACLE_SPRITE_RECTS[cell.health - 1],
                                                 cell.rect);
+            cell.sprite->setFallbackColor({127, 127, 0});
+        }
+    }
 }
 
 void Centipede::_updateObstacle(Centipede::Cell &cell)
 {
     if (cell.sprite) {
-        if (cell.obstacleHealth > 0)
-            cell.sprite->setTextureRect(OBSTACLE_SPRITE_RECTS[cell.obstacleHealth - 1]);
+        if (cell.health > 0)
+            cell.sprite->setTextureRect(OBSTACLE_SPRITE_RECTS[cell.health - 1]);
         else
             cell.sprite->setTextureRect(DESTROYED_OBSTACLE);
     }
@@ -112,18 +145,156 @@ bool Centipede::_rectanglesCollide(const Arcade::Rect &rectA, const Arcade::Rect
             rectA.pos.y < rectB.pos.y + rectB.size.y && rectA.pos.y + rectA.size.y > rectB.pos.y);
 }
 
-void Centipede::_checkShotCollision()
+Centipede::Cell &Centipede::_getCell(size_t x, size_t y)
+{
+    for (auto &cell : _cells)
+        if (cell.absolutePos.x == x && cell.absolutePos.y == y)
+            return cell;
+    throw std::runtime_error("Cell (" + std::to_string(x) + ", " + std::to_string(y) + ") not found");
+}
+
+Centipede::Cell &Centipede::_getCell(const Arcade::Vector &vec)
+{
+    return _getCell(static_cast<size_t>(vec.x), static_cast<size_t>(vec.y));
+}
+
+Centipede::Snake &Centipede::_getSnake(size_t x, size_t y)
+{
+    return _getSnake({static_cast<double>(x), static_cast<double>(y)});
+}
+
+Centipede::Snake &Centipede::_getSnake(const Arcade::Vector &vec)
+{
+    for (auto &snake : _snakes)
+        for (auto &part : snake.body)
+            if (static_cast<size_t>(part.x) == static_cast<size_t>(vec.x) &&
+                static_cast<size_t>(part.y) == static_cast<size_t>(vec.y))
+                return snake;
+    throw std::runtime_error("Snake " + std::to_string(vec.x) + ", " + std::to_string(vec.y) + " not found");
+}
+
+size_t Centipede::_getSnakeIndex(const Snake &snake)
+{
+    for (size_t i = 0; i < _snakes.size(); ++i)
+        if (_snakes[i] == snake)
+            return i;
+    throw std::runtime_error("Snake index not found");
+}
+
+void Centipede::_createSnake(bool forceUpdate)
+{
+    const auto snakeSize = Random::getUnsigned(SNAKE_SIZE_MIN_MAX.first, SNAKE_SIZE_MIN_MAX.second);
+    Snake snake{};
+
+    snake.goingRight = Random::getBool();
+    for (size_t i = 0; i < snakeSize; ++i)
+        snake.body.emplace_back(CELL_COUNT_X / 2.0 + (snake.goingRight ? -i : i), 0);
+
+    _snakes.push_back(snake);
+
+    if (forceUpdate)
+        _updateSnakes(true);
+}
+
+void Centipede::_updateSnakes(bool force)
+{
+    static auto lastSpawn = std::chrono::system_clock::now();
+    static auto lastUpdate = std::chrono::system_clock::now();
+    auto now = std::chrono::system_clock::now();
+
+    std::chrono::duration<double> elapsed = now - lastUpdate;
+    if (force || elapsed.count() >= SNAKE_MOVE_INTERVAL) {
+        for (size_t i = 0; i < _snakes.size(); ++i) {
+            auto &snake = _snakes[i];
+
+            if (snake.body.empty()) {
+                _snakes.erase(_snakes.begin() + i);
+                break;
+            }
+            Arcade::Vector newPos = snake.body.front();
+
+            newPos += {snake.goingRight ? 1.0 : -1.0, 0};
+            if (newPos.x < 0 || newPos.x > CELL_COUNT_X || _getCell(newPos).type == Cell::OBSTACLE) {
+                newPos += {snake.goingRight ? -1.0 : 1.0, 1};
+                snake.goingRight = !snake.goingRight;
+            }
+            if (newPos.y >= CELL_COUNT_Y - 1) {
+                _score -= _scorePerKill * 2;
+                for (auto &cell : snake.body)
+                    _getCell(cell).type = Cell::EMPTY;
+                _snakes.erase(_snakes.begin() + i);
+                _createSnake(false);
+                continue;
+            }
+
+            _getCell(snake.body.back()).type = Cell::EMPTY;
+            snake.body.erase(snake.body.end());
+            snake.body.insert(snake.body.begin(), newPos);
+
+            for (auto &part : snake.body)
+                _getCell(part).type = Cell::SNAKE_BODY;
+            _getCell(snake.body.front()).type = Cell::SNAKE_HEAD;
+        }
+
+        lastUpdate = now;
+    }
+
+    elapsed = now - lastSpawn;
+    if (elapsed.count() >= SNAKE_SPAWN_INTERVAL || _snakes.empty()) {
+        _createSnake(false);
+        lastSpawn = now;
+    }
+}
+
+void Centipede::_checkShotCollisions()
 {
     const Arcade::Rect shotRect = {_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}};
 
     for (auto &cell : _cells) {
-        if (!cell.hasObstacle)
+        if (cell.type == Cell::EMPTY)
             continue;
 
-        if (cell.obstacleHealth > 0 && _rectanglesCollide(shotRect, cell.rect)) {
-            cell.obstacleHealth -= 1;
-            _isShooting = false;
-            return;
+        const auto collision = _rectanglesCollide(shotRect, cell.rect);
+
+        if (collision) {
+            if (cell.type == Cell::OBSTACLE) {
+                if (cell.health > 0) {
+                    cell.health -= 1;
+                    _isShooting = false;
+                    if (cell.health == 0) {
+                        _score += _scorePerObstacleDestroyed;
+                        cell.type = Cell::EMPTY;
+                    }
+                    return;
+                }
+            } else if (cell.type == Cell::SNAKE_HEAD) {
+                auto &snake = _getSnake(cell.absolutePos);
+
+                _isShooting = false;
+                _score += _scorePerKill;
+                _kills += 1;
+                for (auto &part : snake.body) {
+                    auto &corpse = _getCell(part);
+
+                    corpse.type = Cell::OBSTACLE;
+                    corpse.health = Random::getUnsigned(1, 3);
+                }
+                _snakes.erase(_snakes.begin() + _getSnakeIndex(snake));
+                if (_kills >= KILL_LIMIT)
+                    _playerAlive = false;
+            }
+        }
+    }
+}
+
+void Centipede::_checkPlayerCollisions()
+{
+    for (auto &snake : _snakes) {
+        for (auto &part : snake.body) {
+            if (_rectanglesCollide({_playerPos, {PLAYER_WIDTH, PLAYER_HEIGHT}}, _getCell(part).rect)) {
+                _playerAlive = false;
+                return;
+            }
         }
     }
 }
@@ -173,4 +344,15 @@ void Centipede::_freeResources()
 bool Centipede::isCloseRequested() const noexcept
 {
     return _closeRequested;
+}
+
+bool Centipede::Snake::operator==(const Centipede::Snake &rhs) const
+{
+    return body == rhs.body &&
+           goingRight == rhs.goingRight;
+}
+
+bool Centipede::Snake::operator!=(const Centipede::Snake &rhs) const
+{
+    return !(rhs == *this);
 }

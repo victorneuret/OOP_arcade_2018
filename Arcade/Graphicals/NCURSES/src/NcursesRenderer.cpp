@@ -6,23 +6,21 @@
 */
 
 #include <stdexcept>
-#include <thread>
-#include <chrono>
 
 #include "NcursesRenderer.hpp"
 
 NcursesRenderer::NcursesRenderer()
 {
-    initscr();
-    noecho();
-    curs_set(0);
+    if (!initscr())
+        throw std::runtime_error("Failed to create Ncurses window");
+    if (noecho() == ERR || nodelay(stdscr, true) == ERR || curs_set(0) == ERR || keypad(stdscr, TRUE) == ERR)
+        throw std::runtime_error("Failed to initialize Ncurses window");
     timeout(0);
-    nocbreak();
-    start_color();
-    keypad(stdscr, TRUE);
-    nodelay(stdscr, TRUE);
-    _size = LINES > COLS ? COLS : LINES;
-    _win = newwin(_size, _size, LINES / 2 - (_size / 2), COLS / 2 - (_size / 2));
+    if (start_color() == ERR)
+        throw std::runtime_error("Failed to initialize color");
+    _win = newwin(_height, _width, (LINES / 2) - (_height / 2), (COLS / 2) - (_width / 2));
+    if (!_win)
+        throw std::runtime_error("Failed to create Ncurses window");
 }
 
 NcursesRenderer::~NcursesRenderer()
@@ -35,29 +33,29 @@ NcursesRenderer::~NcursesRenderer()
 
 void NcursesRenderer::drawRectangle(const Arcade::Rect &rect, const Arcade::Color &color, bool fill)
 {
-    WINDOW *tmpWin = derwin(_win, static_cast<int>(_size * rect.size.y),
-        static_cast<int>(_size* rect.size.x), static_cast<int>(_size * rect.pos.y),
-        static_cast<int>(_size * rect.pos.x));
-
     _initColor(color, fill);
-    box(tmpWin, 0, 0);
-    wbkgd(tmpWin, COLOR_PAIR(_colorIndex));
-    wnoutrefresh(tmpWin);
-    werase(tmpWin);
-    delwin(tmpWin);
+
+    wattron(_win, COLOR_PAIR(_colorIndex));
+    for (auto y = 0; y < (rect.size.y * _height); y++) {
+        for (auto x = 0; x < (rect.size.x * _width); x++) {
+            mvwaddch(_win, (rect.pos.y * _height) + (static_cast<double>(y) / _height),
+                (rect.pos.x * _width) + (static_cast<double>(x) / _width), 0);
+        }
+    }
+    wattroff(_win, COLOR_PAIR(_colorIndex));
 }
 
-void NcursesRenderer::drawSprite(const Arcade::ASprite *)
+void NcursesRenderer::drawSprite(const Arcade::ASprite *sprite)
 {
-    // TODO: Antoine: draw rectangle with color `fallbackColor`
+    drawRectangle(sprite->getPosAndSize(), sprite->getFallbackColor(), true);
 }
 
 void NcursesRenderer::drawText(const std::string &text, uint8_t, const Arcade::Vector &pos, const Arcade::Color &color)
 {
     _initColor(color);
     wattron(_win, COLOR_PAIR(_colorIndex));
-    mvwaddstr(_win, static_cast<int>(_size * pos.y),
-        static_cast<int>(_size * pos.x), text.c_str());
+    mvwaddstr(_win, static_cast<int>(_height * pos.y),
+        static_cast<int>(_width * pos.x), text.c_str());
     wattroff(_win, COLOR_PAIR(_colorIndex));
 }
 
@@ -65,17 +63,13 @@ void NcursesRenderer::display()
 {
     wnoutrefresh(_win);
     doupdate();
-    std::this_thread::sleep_for(std::chrono::milliseconds(1000 / 24));
 }
 
 void NcursesRenderer::clear()
 {
     werase(_win);
-    if (_size != (LINES > COLS ? COLS : LINES)) {
-        _size = LINES > COLS ? COLS : LINES;
-        wresize(_win, _size, _size);
-        wmove(_win, LINES / 2 - (_size / 2), COLS / 2 - (_size / 2));
-    }
+    mvwin(_win, (LINES / 2) - (_height / 2), (COLS / 2) - (_width / 2));
+    wresize(_win, _height, _width);
     _colorIndex = 0;
 }
 

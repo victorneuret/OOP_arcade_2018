@@ -22,10 +22,10 @@ SDLSprite::SDLSprite(const Arcade::ATexture *texture,
 
 void SDLSprite::setPosAndSize(const Arcade::Rect &posAndSize)
 {
-    _dstrect.x = posAndSize.pos.x * WIN_WIDTH;
-    _dstrect.y = posAndSize.pos.y * WIN_HEIGHT;
-    _dstrect.w = posAndSize.size.x * WIN_WIDTH;
-    _dstrect.h = posAndSize.size.y * WIN_HEIGHT;
+    _dstrect.x = posAndSize.pos.x * SDL_WIN_WIDTH;
+    _dstrect.y = posAndSize.pos.y * SDL_WIN_HEIGHT;
+    _dstrect.w = posAndSize.size.x * SDL_WIN_WIDTH;
+    _dstrect.h = posAndSize.size.y * SDL_WIN_HEIGHT;
 }
 
 void SDLSprite::setTextureRect(const Arcade::Rect &newRect)

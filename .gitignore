@@ -7,7 +7,7 @@
 !Makefile
 !.gitignore
 !CMakeLists.txt
-!README.md
+!*.md
 !doc/*
 
 cmake-*

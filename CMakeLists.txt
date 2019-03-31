@@ -20,6 +20,9 @@ add_library(
         Arcade/Games/MainMenu/include/MainMenu.hpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Common/include/IMenu.hpp
+        Arcade/Common/src/Random.cpp
+        Arcade/Common/include/Random.hpp
 )
 
 add_library(
@@ -42,6 +45,8 @@ add_library(
         Arcade/Games/Centipede/src/Centipede.cpp
         Arcade/Games/Centipede/include/Centipede.hpp
         Arcade/Games/Centipede/include/CentipedeTexture.hpp
+        Arcade/Common/src/Random.cpp
+        Arcade/Common/include/Random.hpp
 )
 
 add_library(
@@ -63,6 +68,8 @@ add_library(
         Arcade/Common/src/Graphical/ASprite.cpp
         Arcade/Games/Nibbler/include/Nibbler.hpp
         Arcade/Games/Nibbler/src/Nibbler.cpp
+        Arcade/Common/src/Random.cpp
+        Arcade/Common/include/Random.hpp
 )
 
 add_library(
@@ -86,6 +93,12 @@ add_library(
         Arcade/Graphicals/NCURSES/src/Main.cpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Graphicals/NCURSES/src/NcursesSprite.cpp
+        Arcade/Graphicals/NCURSES/include/NcursesSprite.hpp
+        Arcade/Graphicals/NCURSES/src/NcursesTexture.cpp
+        Arcade/Graphicals/NCURSES/include/NcursesTexture.hpp
+        Arcade/Common/src/Random.cpp
+        Arcade/Common/include/Random.hpp
 )
 
 add_library(
@@ -100,7 +113,6 @@ add_library(
         Arcade/Common/include/Graphical/ATexture.hpp
         Arcade/Common/include/Graphical/ASprite.hpp
         Arcade/Common/include/Graphical/Color.hpp
-        Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
         Arcade/Common/src/Graphical/Color.cpp
         Arcade/Common/src/Math/Vector.cpp
@@ -113,6 +125,8 @@ add_library(
         Arcade/Graphicals/SDL2/include/SDLTexture.hpp
         Arcade/Graphicals/SDL2/src/SDLSprite.cpp
         Arcade/Graphicals/SDL2/src/SDLTexture.cpp
+        Arcade/Common/src/Random.cpp
+        Arcade/Common/include/Random.hpp
 )
 
 add_library(
@@ -140,6 +154,8 @@ add_library(
         Arcade/Graphicals/SFML/include/SFMLTexture.hpp
         Arcade/Graphicals/SFML/src/SFMLSprite.cpp
         Arcade/Graphicals/SFML/include/SFMLSprite.hpp
+        Arcade/Common/src/Random.cpp
+        Arcade/Common/include/Random.hpp
 )
 
 add_executable(
@@ -160,6 +176,10 @@ add_executable(
         Arcade/Core/include/Core.hpp
         Arcade/Common/src/Graphical/ATexture.cpp
         Arcade/Common/src/Graphical/ASprite.cpp
+        Arcade/Common/include/IMenu.hpp
+        Arcade/Common/src/IMenu.cpp
+        Arcade/Common/src/Random.cpp
+        Arcade/Common/include/Random.hpp
 )
 
 include_directories(Arcade/Common/include)
