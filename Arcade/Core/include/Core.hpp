@@ -15,10 +15,13 @@
 #include "IMenu.hpp"
 #include "IGraphicalLib.hpp"
 #include "IGame.hpp"
+#include "Score.hpp"
 
 constexpr const char * const LIB_PATH = "./lib";
 constexpr const char * const GAME_PATH = "./games";
 constexpr const char * const MAIN_MENU_PATH = "./menu/lib_arcade_main_menu.so";
+constexpr const char * const SCORE_PATH = "./score.txt";
+constexpr const char * const DEFAULT_USERNAME = "AAA";
 
 class Core final {
 public:
@@ -50,6 +53,7 @@ private:
     void _renderMainMenu() noexcept;
     void _loadGame(const std::string &path);
     void _loadGraphical(const std::string &path);
+    void _setUsername(const char *username) noexcept;
 
     void _loadNextGraphical();
     void _loadPrevGraphical();
@@ -69,6 +73,9 @@ private:
     std::vector<std::string> _games;
 
     double _deltaTime = 0;
+    char _username[4];
+
+    Arcade::Score _score;
 
     const std::unordered_map<uint8_t, std::function<void ()>> _coreKeys = {
         {Arcade::IGraphicLib::PREV_GRAPHICAL_LIB, std::bind(&Core::_loadPrevGraphical, this)},

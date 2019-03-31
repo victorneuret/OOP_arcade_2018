@@ -58,7 +58,7 @@ void SFMLRenderer::drawText(const std::string &text, uint8_t fontSize,
 {
     sf::Text sfText;
 
-    sfText.setFillColor(sf::Color(color.getValue()));
+    sfText.setColor(sf::Color(color.getValue()));
     sfText.setFont(_sfFont);
     sfText.setString(text);
     sfText.setCharacterSize(fontSize);
