@@ -12,6 +12,7 @@ namespace Arcade {
         double x;
         double y;
 
+        Vector() noexcept;
         Vector(const Vector &v) noexcept = default;
         Vector(double x, double y) noexcept;
         ~Vector() = default;

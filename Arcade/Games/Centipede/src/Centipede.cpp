@@ -200,6 +200,11 @@ void Centipede::_updateSnakes(bool force)
     if (force || elapsed.count() >= SNAKE_MOVE_INTERVAL) {
         for (size_t i = 0; i < _snakes.size(); ++i) {
             auto &snake = _snakes[i];
+
+            if (snake.body.empty()) {
+                _snakes.erase(_snakes.begin() + i);
+                break;
+            }
             Arcade::Vector newPos = snake.body.front();
 
             newPos += {snake.goingRight ? 1.0 : -1.0, 0};
@@ -245,19 +250,21 @@ void Centipede::_checkShotCollisions()
 
         const auto collision = _rectanglesCollide(shotRect, cell.rect);
 
-        if (cell.type == Cell::OBSTACLE) {
-            if (cell.health > 0 && collision) {
-                cell.health -= 1;
-                _isShooting = false;
-                if (cell.health == 0) {
-                    _score += _scorePerObstacleDestroyed;
-                    cell.type = Cell::EMPTY;
+        if (collision) {
+            if (cell.type == Cell::OBSTACLE) {
+                if (cell.health > 0) {
+                    cell.health -= 1;
+                    _isShooting = false;
+                    if (cell.health == 0) {
+                        _score += _scorePerObstacleDestroyed;
+                        cell.type = Cell::EMPTY;
+                    }
+                    return;
                 }
-                return;
-            }
-        } else if (cell.type == Cell::SNAKE_HEAD) {
-            if (collision) {
+            } else if (cell.type == Cell::SNAKE_HEAD) {
                 auto &snake = _getSnake(cell.absolutePos);
+
+                _isShooting = false;
                 _score += _scorePerKill;
                 for (auto &part : snake.body)
                     _getCell(part).type = Cell::EMPTY;
