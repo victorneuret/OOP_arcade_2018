@@ -15,18 +15,18 @@
 #include <unistd.h>
 
 #include "Core.hpp"
+#include "IMenu.hpp"
 
 Core::Core(const std::string &path)
     : _libs(), _games()
 {
-    _addExtension(std::string(GAME_PATH) + "/" + MAIN_MENU_NAME, GAME);
     _addExtension(path, GRAPHICAL);
-    if (_games.empty() || _libs.empty())
+    if (_libs.empty())
         throw std::runtime_error("Failed to load core modules");
     _loadDirectory(LIB_PATH);
     _loadDirectory(GAME_PATH);
     _loadGraphical(_libs[0]);
-    _loadGame(_games[0]);
+    _loadGame(MAIN_MENU_PATH);
 }
 
 Core::~Core()
@@ -54,6 +54,9 @@ void Core::_addExtension(const std::string &path, EXT_TYPE type) noexcept
 
 void Core::_loadGraphical(const std::string &path)
 {
+    if (path == _loadedLib.path)
+        return;
+
     if (_loadedLib.dl) {
         delete reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
         dlclose(_loadedLib.dl);
@@ -81,9 +84,16 @@ void Core::_loadGraphical(const std::string &path)
 
 void Core::_loadGame(const std::string &path)
 {
-    if (_loadedGame.dl) {
+    if (_loadedGame.dl && _loadedGame.path != MAIN_MENU_PATH) {
         delete reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
         dlclose(_loadedGame.dl);
+    }
+
+    if (path == MAIN_MENU_PATH && _loadedMenu.instance) {
+        _loadedGame.path = _loadedMenu.path;
+        _loadedGame.dl = _loadedMenu.dl;
+        _loadedGame.instance = _loadedMenu.instance;
+        return;
     }
 
     _loadedGame = {path, dlopen(path.c_str(), RTLD_LAZY), nullptr};
@@ -104,10 +114,19 @@ void Core::_loadGame(const std::string &path)
 
     if (game != nullptr && graphical != nullptr)
         game->init(graphical);
+
+    if (path == MAIN_MENU_PATH) {
+        _loadedMenu.path = _loadedGame.path;
+        _loadedMenu.dl = _loadedGame.dl;
+        _loadedMenu.instance = _loadedGame.instance;
+    }
 }
 
 void Core::_loadNextGame()
 {
+    if (_loadedGame.path == MAIN_MENU_PATH)
+        return;
+
     const auto it = std::find(_games.begin(), _games.end(), _loadedGame.path);
 
     if (it == _games.end())
@@ -132,6 +151,9 @@ void Core::_loadNextGraphical()
 
 void Core::_loadPrevGame()
 {
+    if (_loadedGame.path == MAIN_MENU_PATH)
+        return;
+
     const auto it = std::find(_games.begin(), _games.end(), _loadedGame.path);
 
     if (it == _games.end())
@@ -177,7 +199,8 @@ void Core::_restartGame()
 
 void Core::_backToMenu()
 {
-    _loadGame(_games[0]);
+    if (_loadedGame.path != MAIN_MENU_PATH)
+        _loadGame(MAIN_MENU_PATH);
 }
 
 void Core::_exit()
@@ -191,6 +214,8 @@ void Core::loop()
     auto end = start;
     std::chrono::duration<double> elapsed = end - start;
 
+    if (!_getGame())
+        throw std::runtime_error("Failed to load game: " + _loadedGame.path);
     _getGame()->init(_getGraphical());
 
     while (!_shouldExit()) {
@@ -219,24 +244,47 @@ void Core::_loadDirectory(const std::string &path) noexcept
     }
 }
 
-Arcade::IGraphicLib *Core::_getGraphical()
+Arcade::IGraphicLib *Core::_getGraphical() const
 {
     if (!_loadedLib.instance)
         return nullptr;
     return reinterpret_cast<Arcade::IGraphicLib *>(_loadedLib.instance);
 }
 
-Arcade::IGame *Core::_getGame()
+Arcade::IGame *Core::_getGame() const
 {
     if (!_loadedGame.instance)
         return nullptr;
     return reinterpret_cast<Arcade::IGame *>(_loadedGame.instance);
 }
 
+void Core::_tickMainMenu() noexcept
+{
+    dynamic_cast<Arcade::IMenu *>(_getGame())->tick(_getGraphical(), _deltaTime,
+        Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path,
+            [this](const std::string &path) { _loadGame(path); },
+            [this](const std::string &path) { _loadGraphical(path); }));
+}
+
+void Core::_renderMainMenu() noexcept
+{
+    dynamic_cast<Arcade::IMenu *>(_getGame())->render(_getGraphical(),
+        Arcade::IMenu::CoreExtension(_games, _libs, _loadedLib.path,
+            [this](const std::string &path) { _loadGame(path); },
+            [this](const std::string &path) { _loadGraphical(path); }));
+}
+
 void Core::_tick()
 {
-    if (_shouldExit())
+    if (!_getGraphical() || !_getGame() || _shouldExit())
         return _exit();
+
+    _getGraphical()->pollEvents();
+
+    if (_loadedGame.path == MAIN_MENU_PATH) {
+        _tickMainMenu();
+    } else
+        _getGame()->tick(_getGraphical(), _deltaTime);
 
     uint8_t key = _getGraphical()->getCoreKeyState();
 
@@ -244,18 +292,20 @@ void Core::_tick()
         if (c.first & key)
             c.second();
     }
-    _getGraphical()->pollEvents();
-    _getGame()->tick(_getGraphical(), _deltaTime);
 }
 
 void Core::_render()
 {
-    if (_shouldExit())
+    if (!_getGraphical() || !_getGame() || _shouldExit())
         return _exit();
-    _getGame()->render(_getGraphical());
+
+    if (_loadedGame.path == MAIN_MENU_PATH)
+        _renderMainMenu();
+    else
+        _getGame()->render(_getGraphical());
 }
 
-bool Core::_shouldExit() noexcept
+bool Core::_shouldExit() const
 {
     return (_isCloseRequested || _getGraphical()->isCloseRequested() || _getGame()->isCloseRequested());
 }

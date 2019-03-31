@@ -6,6 +6,8 @@
 */
 
 #include "Ncurses.hpp"
+#include "NcursesSprite.hpp"
+#include "NcursesTexture.hpp"
 
 Ncurses::Ncurses()
     : _render()
@@ -13,39 +15,44 @@ Ncurses::Ncurses()
 
 uint8_t Ncurses::getGameKeyState() const noexcept
 {
-    int key = getch();
-
-    if (_gameKeys.find(key) != _gameKeys.end())
-        return _gameKeys.at(key);
-    return 0;
+    return _gameKey;
 }
 
 uint8_t Ncurses::getCoreKeyState() const noexcept
 {
-    int key = getch();
-
-    if (_coreKeys.find(key) != _coreKeys.end())
-        return _coreKeys.at(key);
-    return 0;
+    return _coreKey;
 }
 
-void Ncurses::sendGameKeyInput(GameKey) noexcept
-{}
+void Ncurses::sendGameKeyInput(GameKey key) noexcept
+{
+    _gameKey = key;
+}
 
-void Ncurses::sendCoreKeyInput(CoreKey) noexcept
-{}
+void Ncurses::sendCoreKeyInput(CoreKey key) noexcept
+{
+    _coreKey = key;
+}
 
 void Ncurses::pollEvents()
-{}
-
-Arcade::ATexture *Ncurses::createTexture(const void *, const size_t &)
 {
-    throw std::runtime_error("Ncurses::createTexture: Not implemented");
+    int key = getch();
+
+    _gameKey = 0;
+    _coreKey = 0;
+    if (_gameKeys.find(key) != _gameKeys.end())
+        _gameKey = _gameKeys.at(key);
+    if (_coreKeys.find(key) != _coreKeys.end())
+        _coreKey = _coreKeys.at(key);
 }
 
-Arcade::ASprite *Ncurses::createSprite(const Arcade::ATexture *, const Arcade::Rect &, const Arcade::Rect &)
+Arcade::ATexture *Ncurses::createTexture(const void *buffer, const size_t &len)
 {
-    throw std::runtime_error("Ncurses::createSprite: Not implemented");
+    return new NcursesTexture(buffer, len);
+}
+
+Arcade::ASprite *Ncurses::createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect, const Arcade::Rect &posAndSize)
+{
+    return new NcursesSprite(texture, spriteSheetRect, posAndSize);
 }
 
 Arcade::IRenderer &Ncurses::getRenderer() noexcept

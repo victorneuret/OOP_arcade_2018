@@ -57,7 +57,7 @@ void Nibbler::render(Arcade::IGraphicLib *graphic)
     graphic->getRenderer().clear();
     _drawMap(graphic);
     _drawSnake(graphic);
-    graphic->getRenderer().drawText(std::to_string(_foodEaten), 22, Arcade::Vector(0.5, 0), Arcade::Color(0, 0, 0));
+    graphic->getRenderer().drawText(std::to_string(_foodEaten), 22, Arcade::Vector(0.5, 0), Arcade::Color(0xff, 0xff, 0xff));
     graphic->getRenderer().display();
 }
 

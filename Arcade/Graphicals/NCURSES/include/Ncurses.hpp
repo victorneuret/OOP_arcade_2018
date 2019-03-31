@@ -26,13 +26,16 @@ public:
 
     Arcade::ATexture *createTexture(const void *buffer, const size_t &len) override;
     Arcade::ASprite *createSprite(const Arcade::ATexture *texture, const Arcade::Rect &spriteSheetRect,
-                                  const Arcade::Rect &posAndSize) override;
+        const Arcade::Rect &posAndSize) override;
 
     Arcade::IRenderer &getRenderer() noexcept override;
     bool isCloseRequested() const noexcept override;
 
 private:
     NcursesRenderer _render;
+    uint8_t _coreKey = 0;
+    uint8_t _gameKey = 0;
+
     const std::unordered_map<int, Arcade::IGraphicLib::GameKey> _gameKeys = {
         {KEY_UP,    UP},
         {KEY_DOWN,  DOWN},

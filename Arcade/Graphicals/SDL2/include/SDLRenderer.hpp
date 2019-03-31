@@ -20,7 +20,7 @@ class SDLRenderer final : public Arcade::IRenderer {
 public:
     SDLRenderer();
     SDLRenderer(const SDLRenderer &copy) = delete;
-    ~SDLRenderer() noexcept;
+    ~SDLRenderer() noexcept override;
 
     SDLRenderer &operator=(const SDLRenderer &copy) = delete;
 
