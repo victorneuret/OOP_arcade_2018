@@ -83,8 +83,11 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
     renderer.clear();
 
     if (_playerAlive) {
-        for (const auto &cell : _cells) {
-            if (cell.type == Cell::OBSTACLE && cell.sprite != nullptr) {
+        for (auto &cell : _cells) {
+            if (cell.type == Cell::OBSTACLE) {
+                if (cell.sprite == nullptr)
+                    cell.sprite = graphic->createSprite(_spriteSheet, OBSTACLE_SPRITE_RECTS[cell.health - 1],
+                                                        cell.rect);
                 cell.sprite->setFallbackColor({255, 255, 255, static_cast<uint8_t>(cell.health / 5.0 * 255)});
                 renderer.drawSprite(cell.sprite);
             } else if (cell.type == Cell::SNAKE_HEAD) {
@@ -96,10 +99,13 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
         renderer.drawSprite(_playerSprite);
         if (_isShooting)
             renderer.drawRectangle({_shotPos, {SHOT_WIDTH, SHOT_HEIGHT}}, Arcade::Color(255, 0, 0));
-        renderer.drawText("Score: " + std::to_string(static_cast<long>(_score)), 18, {0.01, 0.01}, {255, 255, 255});
+        renderer.drawText("Score: " + std::to_string(static_cast<long>(_score)) +
+                          " | Kills: " + std::to_string(_kills), 18, {0.01, 0.01}, {255, 255, 255});
     } else {
-        renderer.drawText("GAME OVER - Score: " + std::to_string(static_cast<long>(_score)), 22, {0.25, 0.25},
-                          {255, 255, 255});
+        renderer.drawText(std::string(_kills >= KILL_LIMIT ? "YOU WIN!" : "GAME OVER") +
+                          " - Score: " + std::to_string(static_cast<long>(_score)) +
+                          " | Kills: " + std::to_string(_kills),
+                          30, {0.15, 0.25}, {255, 255, 255});
     }
 
     renderer.display();
@@ -266,9 +272,16 @@ void Centipede::_checkShotCollisions()
 
                 _isShooting = false;
                 _score += _scorePerKill;
-                for (auto &part : snake.body)
-                    _getCell(part).type = Cell::EMPTY;
+                _kills += 1;
+                for (auto &part : snake.body) {
+                    auto &corpse = _getCell(part);
+
+                    corpse.type = Cell::OBSTACLE;
+                    corpse.health = Random::getUnsigned(1, 3);
+                }
                 _snakes.erase(_snakes.begin() + _getSnakeIndex(snake));
+                if (_kills >= KILL_LIMIT)
+                    _playerAlive = false;
             }
         }
     }

@@ -34,8 +34,10 @@ constexpr double SHOT_SPEED = 1.75;
 constexpr double SHOT_WIDTH = PLAYER_WIDTH / 6.0;
 constexpr double SHOT_HEIGHT = PLAYER_HEIGHT;
 
-constexpr double SNAKE_MOVE_INTERVAL = 1.0 / 10.0;
-constexpr double SNAKE_SPAWN_INTERVAL = 20.0;
+constexpr double SNAKE_MOVE_INTERVAL = 1.0 / 15.0;
+constexpr double SNAKE_SPAWN_INTERVAL = 5.0;
+
+constexpr size_t KILL_LIMIT = 20;
 
 static const std::pair<size_t, size_t> SNAKE_SIZE_MIN_MAX{5, 15};
 static const Arcade::Rect PLAYER_SPRITE_RECT{20, 9, 9, 8};
@@ -127,6 +129,7 @@ private:
     Arcade::ATexture *_spriteSheet = nullptr;
     Arcade::ASprite *_playerSprite = nullptr;
 
+    size_t _kills = 0;
     bool _playerAlive = true;
     bool _isShooting = false;
     Arcade::Vector _shotPos{0, 0};
