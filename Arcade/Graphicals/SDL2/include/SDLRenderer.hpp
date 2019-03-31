@@ -13,8 +13,8 @@
 
 #include "IRenderer.hpp"
 
-constexpr float WIN_WIDTH = 800;
-constexpr float WIN_HEIGHT = 800;
+constexpr float SDL_WIN_WIDTH = 800;
+constexpr float SDL_WIN_HEIGHT = 800;
 
 class SDLRenderer final : public Arcade::IRenderer {
 public:
