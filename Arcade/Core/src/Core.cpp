@@ -276,7 +276,7 @@ void Core::_renderMainMenu() noexcept
 
 void Core::_tick()
 {
-    if (_shouldExit() || !_getGraphical() || !_getGame())
+    if (!_getGraphical() || !_getGame() || _shouldExit())
         return _exit();
 
     _getGraphical()->pollEvents();
@@ -296,7 +296,7 @@ void Core::_tick()
 
 void Core::_render()
 {
-    if (_shouldExit() || !_getGraphical() || !_getGame())
+    if (!_getGraphical() || !_getGame() || _shouldExit())
         return _exit();
 
     if (_loadedGame.path == MAIN_MENU_PATH)
