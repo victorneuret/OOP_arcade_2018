@@ -8,5 +8,6 @@
 !.gitignore
 !CMakeLists.txt
 !README.md
+!README
 
 cmake-*
