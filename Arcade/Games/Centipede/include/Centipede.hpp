@@ -140,4 +140,8 @@ private:
     const double _scorePerKill = 42.0;
     const double _scorePerObstacleDestroyed = _scorePerSecond * 3;
     double _score = 0.0;
+
+    bool _restart = false;
+    const double _restartTimeNeeded = 5.0;
+    double _restartTimer = 0;
 };

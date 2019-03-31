@@ -73,6 +73,15 @@ void Centipede::tick(Arcade::IGraphicLib *graphic, double deltaTime)
         _checkPlayerCollisions();
 
         _score += _scorePerSecond * _deltaTime;
+    } else {
+        static const auto endTime = std::chrono::system_clock::now();
+        const auto now = std::chrono::system_clock::now();
+
+        const std::chrono::duration<double> elapsed = now - endTime;
+
+        _restartTimer = elapsed.count();
+        if (_restartTimer >= _restartTimeNeeded)
+            _restart = true;
     }
 }
 
@@ -102,6 +111,7 @@ void Centipede::render(Arcade::IGraphicLib *graphic)
         renderer.drawText("Score: " + std::to_string(static_cast<long>(_score)) +
                           " | Kills: " + std::to_string(_kills), 18, {0.01, 0.01}, {255, 255, 255});
     } else {
+        renderer.drawRectangle({0, 0, _restartTimer / _restartTimeNeeded, CELL_SIZE}, {255, 127, 0});
         renderer.drawText(std::string(_kills >= KILL_LIMIT ? "YOU WIN!" : "GAME OVER") +
                           " - Score: " + std::to_string(static_cast<long>(_score)) +
                           " | Kills: " + std::to_string(_kills),
