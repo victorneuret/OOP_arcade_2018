@@ -17,7 +17,7 @@ SDLRenderer::SDLRenderer()
     if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
         throw std::runtime_error("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
 
-    _window = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, WIN_WIDTH, WIN_HEIGHT, SDL_WINDOW_SHOWN);
+    _window = SDL_CreateWindow("SDL2", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SDL_WIN_WIDTH, SDL_WIN_HEIGHT, SDL_WINDOW_SHOWN);
     if (!_window)
         throw std::runtime_error("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
 
