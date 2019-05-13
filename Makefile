@@ -10,7 +10,7 @@ CXX		=	g++
 RM		=	rm -f
 FRIENDLY=	"UnitTests"
 
-SUB_MAKE=	make --no-print-directory -C Arcade
+SUB_MAKE=	+make --no-print-directory -C Arcade
 
 CORE	=	$(SUB_MAKE) SRC_DIR="./Core/src"						\
 						INCLUDE_DIR="./Core/include"				\
